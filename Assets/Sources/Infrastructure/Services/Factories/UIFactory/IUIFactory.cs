@@ -3,5 +3,6 @@
     public interface IUIFactory
     {
         void CreateUIRoot();
+        void CreateSlotsUI();
     }
 }

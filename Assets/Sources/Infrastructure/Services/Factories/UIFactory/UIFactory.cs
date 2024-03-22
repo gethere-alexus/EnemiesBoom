@@ -1,17 +1,31 @@
-﻿using UnityEngine;
+﻿using Sources.Infrastructure.Services.AssetsProvider;
+using UnityEngine;
+using Zenject;
 
 namespace Sources.Infrastructure.Services.Factories.UIFactory
 {
-    public class UIFactory : IUIFactory
+    // Factory where the ui elements are being created
+    public class UIFactory : IUIFactory 
     {
-        public UIFactory()
+        private readonly IAssetProvider _assetProvider;
+        private readonly DiContainer _diContainer;
+        private Canvas _uiRoot;
+        public UIFactory(IAssetProvider assetProvider, DiContainer diContainer)
         {
-            Debug.Log("Factory created");
+            _assetProvider = assetProvider;
+            _diContainer = diContainer;
         }
 
-        public void CreateUIRoot()
+        public void CreateUIRoot() =>
+            _uiRoot = _assetProvider.Instantiate<Canvas>(AssetPaths.UIRoot);
+
+        public void CreateSlotsUI()
         {
-            
+            if(_uiRoot == null)
+                CreateUIRoot();
+
+            var slotsHolder = _diContainer.InstantiatePrefab
+                (_assetProvider.LoadPrefab(AssetPaths.SlotsHolderUI),_uiRoot.transform);
         }
     }
 }
