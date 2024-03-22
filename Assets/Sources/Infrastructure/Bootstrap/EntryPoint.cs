@@ -1,5 +1,7 @@
-﻿using Sources.Infrastructure.SceneLoad;
+﻿using Sources.Infrastructure.GameMachine.States;
+using Sources.Infrastructure.SceneLoad;
 using UnityEngine;
+using Zenject;
 
 namespace Sources.Infrastructure.Bootstrap
 {
@@ -9,15 +11,12 @@ namespace Sources.Infrastructure.Bootstrap
 
         private void Awake()
         {
-            if (_gameInstance == null)
-            {
-                _gameInstance = new Game(this);
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            DiContainer container = FindObjectOfType<ProjectContext>().Container;
+            
+            _gameInstance = new Game(this, container);
+            _gameInstance.GameStateMachine.Enter<BootstrapState>();
+            
+            DontDestroyOnLoad(this);
         }
     }
 }

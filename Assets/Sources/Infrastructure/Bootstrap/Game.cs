@@ -1,19 +1,19 @@
 ﻿using Sources.Infrastructure.GameMachine;
 using Sources.Infrastructure.GameMachine.States;
 using Sources.Infrastructure.SceneLoad;
+using Zenject;
 
 namespace Sources.Infrastructure.Bootstrap
 {
     public class Game
     {
-        private readonly GameStateMachine _gameStateMachine;
-        private readonly SceneLoader _sceneLoader;
+        public readonly GameStateMachine GameStateMachine;
+        public readonly SceneLoader SceneLoader;
 
-        public Game(ICoroutineRunner coroutineRunner)
+        public Game(ICoroutineRunner coroutineRunner, DiContainer container)
         {
-            _sceneLoader = new SceneLoader(coroutineRunner);
-            _gameStateMachine = new GameStateMachine(_sceneLoader);
-            _gameStateMachine.Enter<GameState>();
+            SceneLoader = new SceneLoader(coroutineRunner);
+            GameStateMachine = new GameStateMachine(SceneLoader, container);
         }
     }
 }
