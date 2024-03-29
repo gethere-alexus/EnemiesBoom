@@ -17,7 +17,8 @@ namespace Sources.AnvilBase
         private int _chargesLeft;
 
         private int _craftingItemLevel;
-        public event Action AnvilUsed;
+        public event Action ItemCrafted;
+        public event Action ChargesUpdated;
 
         public Anvil(SlotsHolder slotsHolder, AnvilConfig anvilConfig)
         {
@@ -48,16 +49,20 @@ namespace Sources.AnvilBase
             if (_chargesLeft > 0)
             {
                 _slotsHolder.PlaceItem(new Item(_craftingItemLevel), out bool isSucceeded);
+                
                 if (isSucceeded)
+                {
                     SpendCharge();
+                    ItemCrafted?.Invoke();
+                }
             }
         }
         
         /// <param name="amount">amount of charges to add</param>
         public void AddCharge(int amount)
         {
-            _chargesLeft += amount;
-            AnvilUsed?.Invoke();
+            _chargesLeft += amount; 
+            ChargesUpdated?.Invoke();
         }
 
         /// <summary>
@@ -66,7 +71,7 @@ namespace Sources.AnvilBase
         private void SpendCharge()
         {
             _chargesLeft--;
-            AnvilUsed?.Invoke();
+            ChargesUpdated?.Invoke();
         }
 
         public bool IsFullOfCharges => _chargesLeft >= _maxCharges;

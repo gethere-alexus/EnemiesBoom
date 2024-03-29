@@ -20,10 +20,16 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
             _anvil = anvil;
             _refillCoolDown = autoRefillerConfig.RefillCoolDown;
             _amountChargesToAdd = autoRefillerConfig.AmountChargesToAdd;
+            anvil.ItemCrafted += RestartAutoRefilling;
             
             StartCoroutine(StartAutoRefilling());
         }
 
+        private void RestartAutoRefilling()
+        {
+            StopAllCoroutines();
+            StartCoroutine(StartAutoRefilling());
+        }
         private IEnumerator StartAutoRefilling()
         {
             while (true)
@@ -35,7 +41,10 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
             }
         }
 
-        private void OnDisable() => 
+        private void OnDisable()
+        {
             StopAllCoroutines();
+            _anvil.ItemCrafted -= RestartAutoRefilling;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Infrastructure.Configurations.SlotsField;
 using Sources.SlotBase;
 using UnityEngine;
@@ -19,9 +20,19 @@ namespace Sources.SlotsHolderBase.Extensions.AutoMerge
         {
             _slotsHolder = slotsHolder;
             _usageCoolDown = config.UsageCoolDown;
+            _slotsHolder.SlotsMerged += RestartAutoMerge;
             StartCoroutine(MergeAutomatically());
         }
 
+        /// <summary>
+        /// Restart auto-merging cooldown
+        /// </summary>
+        private void RestartAutoMerge()
+        {
+            StopAllCoroutines();
+            StartCoroutine(MergeAutomatically());
+        }
+        
         /// <summary>
         /// Merge items from a field with parametrized cooldown
         /// </summary>
@@ -57,6 +68,12 @@ namespace Sources.SlotsHolderBase.Extensions.AutoMerge
                     }
                 }
             }
+        }
+
+        private void OnDisable()
+        {
+            _slotsHolder.SlotsMerged -= RestartAutoMerge;
+            StopAllCoroutines();
         }
     }
 }

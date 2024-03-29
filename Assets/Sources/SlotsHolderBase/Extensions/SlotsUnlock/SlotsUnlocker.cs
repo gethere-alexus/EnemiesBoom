@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Sources.SlotsHolderBase.Extensions.SlotsUnlock
 {
     /// <summary>
-    /// 
+    /// Unlocks slots if item on the grid is reached certain level
     /// </summary>
     public class SlotsUnlocker : MonoBehaviour
     {
@@ -19,12 +19,16 @@ namespace Sources.SlotsHolderBase.Extensions.SlotsUnlock
             _unlockingLevel = config.StartUnlockingLevel;
             _unlockingStep = config.UnlockStep;
             _unlockingSlotsPerStep = config.UnlockSlotsPerStep;
-            
+
+            foreach (var slot in slotsHolder.Grid)
+            {
+                slot.StoredItemUpdated += OnStoredItemUpdated;
+            }
+
             _slotsHolder = slotsHolder;
-            _slotsHolder.StorageInformationUpdated += OnStorageInformationUpdated;
         }
 
-        private void OnStorageInformationUpdated() => 
+        private void OnStoredItemUpdated() => 
             UnlockSlots();
 
         private void UnlockSlots()
@@ -47,6 +51,14 @@ namespace Sources.SlotsHolderBase.Extensions.SlotsUnlock
             }
 
             _unlockingLevel += _unlockingStep;
+        }
+
+        private void OnDisable()
+        {
+            foreach (var slot in _slotsHolder.Grid)
+            {
+                slot.StoredItemUpdated -= OnStoredItemUpdated;
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoUse
         {
             _anvil = anvil;
             _usingCooldown = autoUseConfig.UsingCooldown;
-            _anvil.AnvilUsed += RestartAutoCreation;
+            _anvil.ItemCrafted += RestartAutoCreation;
 
             StartCoroutine(CreateItemsAutomatically());
         }
@@ -48,7 +48,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoUse
 
         private void OnDisable()
         {
-            _anvil.AnvilUsed -= RestartAutoCreation;
+            _anvil.ItemCrafted -= RestartAutoCreation;
             StopAllCoroutines();
         }
     }

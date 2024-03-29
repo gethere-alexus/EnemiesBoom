@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AnvilConfig
   m_EditorClassIdentifier: 
   MaxAnvilCharges: 5
-  CraftingItemLevel: 2
+  CraftingItemLevel: 1

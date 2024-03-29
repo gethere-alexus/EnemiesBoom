@@ -1,5 +1,4 @@
-﻿using Infrastructure.Configurations;
-using Infrastructure.Configurations.Anvil;
+﻿using Infrastructure.Configurations.Anvil;
 using Sources.SlotsHolderBase;
 using TMPro;
 using UnityEngine;
@@ -18,7 +17,7 @@ namespace Sources.AnvilBase
         {
             _anvilInstance = new Anvil(slotsHolder, anvilConfig);
             _anvilButton.onClick.AddListener(_anvilInstance.CraftItem);
-            _anvilInstance.AnvilUsed += UpdateView;
+            _anvilInstance.ChargesUpdated += UpdateView;
             
             UpdateView();
         }
@@ -28,7 +27,7 @@ namespace Sources.AnvilBase
 
         private void OnDisable()
         {
-            _anvilInstance.AnvilUsed -= UpdateView;
+            _anvilInstance.ChargesUpdated -= UpdateView;
             _anvilButton.onClick.RemoveAllListeners();
         }
 

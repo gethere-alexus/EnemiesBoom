@@ -1,5 +1,4 @@
-﻿using Infrastructure.Configurations;
-using Infrastructure.Configurations.SlotsField;
+﻿using Infrastructure.Configurations.SlotsField;
 using Infrastructure.Services.AssetsProvider;
 using Sources.SlotBase;
 using UnityEngine;
@@ -43,8 +42,6 @@ namespace Sources.SlotsHolderBase
                 
                 grid[i] = slot;
             }
-             
-            _slotsHolderInstance.OnGridBuild();
         }
 
         /// <summary>

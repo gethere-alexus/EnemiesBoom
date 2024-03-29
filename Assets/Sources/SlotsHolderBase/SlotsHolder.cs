@@ -13,10 +13,9 @@ namespace Sources.SlotsHolderBase
     {
         private readonly int _initialSlots;
         private readonly Slot[] _grid;
-        
-        private int _unlockedSlots;
 
-        public event Action StorageInformationUpdated;
+        private int _unlockedSlots;
+        public event Action SlotsMerged;
 
         public SlotsHolder(SlotsFieldConfiguration config)
         {
@@ -32,7 +31,7 @@ namespace Sources.SlotsHolderBase
         public void PlaceItem(Item itemToPlace, out bool isOperationSucceeded)
         {
             Slot storage = GetEmptySlot();
-            
+
             isOperationSucceeded = false;
             if (storage != null)
             {
@@ -44,7 +43,7 @@ namespace Sources.SlotsHolderBase
         /// <summary>
         /// Unlocks first locked slot in the grid.
         /// </summary>
-        public void UnlockSlot() => 
+        public void UnlockSlot() =>
             _grid.First(slot => slot.IsLocked)?.Unlock();
 
         /// <summary>
@@ -53,20 +52,29 @@ namespace Sources.SlotsHolderBase
         public void TryMergeSlotsItems(Slot firstSlot, Slot secondSlot = null)
         {
             secondSlot ??= GetSlotWithItemLevel(firstSlot.StoringItem.Level, firstSlot);
-            
+
             bool isTheSameItems = firstSlot == secondSlot;
             bool doesContainItems = firstSlot.StoringItem != null && secondSlot?.StoringItem != null;
             bool isTheSameLevel = firstSlot.StoringItem?.Level == secondSlot?.StoringItem?.Level;
 
             bool isAbleToMerge = !isTheSameItems && doesContainItems && isTheSameLevel;
-            
+
             if (isAbleToMerge)
             {
-                firstSlot.StoringItem.Upgrade();
-                secondSlot.RemoveStoringItem();
+                MergeSlots(firstSlot, secondSlot);
+                SlotsMerged?.Invoke();
             }
         }
-        
+
+        /// <summary>
+        /// Upgrades slot a, removes item from slot b.
+        /// </summary>
+        private void MergeSlots(Slot a, Slot b)
+        {
+            a.StoringItem?.Upgrade();
+            b?.RemoveStoringItem();
+        }
+
         /// <summary>
         /// Iterates through all unlocked slots, returning maximum level of stored item
         /// </summary>
@@ -74,7 +82,7 @@ namespace Sources.SlotsHolderBase
         public int MaxStoredItemLevel()
         {
             int maxLevel = 0;
-            
+
             if (_grid != null)
             {
                 foreach (var slot in _grid.Where(slot => !slot.IsLocked && !slot.IsEmpty))
@@ -87,13 +95,6 @@ namespace Sources.SlotsHolderBase
             return maxLevel;
         }
         
-        public void OnGridBuild()
-        {
-            foreach (var slot in _grid)
-            {
-                slot.ItemInformationUpdated += () => StorageInformationUpdated?.Invoke();
-            }
-        }
 
         /// <summary>
         /// Iterate through all unlocked slots and searching for slot which has item with level
@@ -111,6 +112,7 @@ namespace Sources.SlotsHolderBase
                         return slot;
                 }
             }
+
             return null;
         }
 
@@ -128,6 +130,7 @@ namespace Sources.SlotsHolderBase
                         return slot;
                 }
             }
+
             return null;
         }
 

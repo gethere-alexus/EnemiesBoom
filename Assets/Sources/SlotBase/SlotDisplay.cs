@@ -26,8 +26,10 @@ namespace Sources.SlotBase
             _assetProvider = assetProvider;
             _slotsHolder = slotsHolder;
             
-            _slotInstance = new Slot(slotsHolder);
-            _slotInstance.SlotInformationUpdated += UpdateView;
+            _slotInstance = new Slot();
+            
+            _slotInstance.SlotUpdated += UpdateView;
+            _slotInstance.StoredItemUpdated += UpdateView;
         }
 
         /// <summary>
@@ -71,7 +73,8 @@ namespace Sources.SlotBase
 
         private void OnDisable()
         {
-            _slotInstance.SlotInformationUpdated -= UpdateView;
+            _slotInstance.SlotUpdated -= UpdateView;
+            _slotInstance.StoredItemUpdated -= UpdateView;
         }
 
         private bool IsItemDisplayed => transform.childCount != 0;

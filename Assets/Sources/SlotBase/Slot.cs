@@ -1,7 +1,5 @@
 ﻿using System;
 using Sources.ItemBase;
-using Sources.SlotsHolderBase;
-using UnityEngine;
 
 namespace Sources.SlotBase
 {
@@ -11,15 +9,10 @@ namespace Sources.SlotBase
     /// </summary>
     public class Slot
     {
-        private readonly SlotsHolder _slotsHolder;
-
         private Item _storingItem;
         private bool _isLocked;
-        public event Action SlotInformationUpdated;
-        public event Action ItemInformationUpdated;
-
-        public Slot(SlotsHolder slotsHolder) => 
-            _slotsHolder = slotsHolder;
+        public event Action SlotUpdated;
+        public event Action StoredItemUpdated;
 
         /// <summary>
         /// Puts an item in the slot with operation results.
@@ -50,7 +43,7 @@ namespace Sources.SlotBase
         public void RemoveStoringItem()
         {
             _storingItem = null;
-            SlotInformationUpdated?.Invoke();
+            SlotUpdated?.Invoke();
         }
 
         /// <summary>
@@ -59,7 +52,7 @@ namespace Sources.SlotBase
         public void Unlock()
         {
             _isLocked = false;
-            SlotInformationUpdated?.Invoke();
+            SlotUpdated?.Invoke();
         }
 
         /// <summary>
@@ -68,9 +61,10 @@ namespace Sources.SlotBase
         public void Lock()
         {
             _isLocked = true;
-            SlotInformationUpdated?.Invoke();
+            SlotUpdated?.Invoke();
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Stores item if slot is unlocked and it is empty or itemLevels are the same.
         /// </summary>
@@ -91,11 +85,10 @@ namespace Sources.SlotBase
                     isSucceeded = true;
                 }
             }
+            
             if (isSucceeded)
-            {
-                ItemInformationUpdated?.Invoke();
-                SlotInformationUpdated?.Invoke();
-            }
+                StoredItemUpdated?.Invoke();
+            
             return isSucceeded;
         }
 
