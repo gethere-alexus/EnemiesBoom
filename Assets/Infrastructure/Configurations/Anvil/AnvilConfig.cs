@@ -2,10 +2,13 @@
 
 namespace Infrastructure.Configurations.Anvil
 {
-    [CreateAssetMenu(menuName = ("Configurations/AnvilConfig"))]
+    /// <summary>
+    /// Configuration for anvil.
+    /// </summary>
+    [CreateAssetMenu(menuName = ("Configurations/Anvil/AnvilConfig"))]
     public class AnvilConfig : ScriptableObject , IConfiguration
     {
         public int MaxAnvilCharges;
-        public int CraftingArrowLevel;
+        public int CraftingItemLevel;
     }
 }

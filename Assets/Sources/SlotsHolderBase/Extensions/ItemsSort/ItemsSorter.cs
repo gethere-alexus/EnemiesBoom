@@ -1,47 +1,53 @@
-﻿using Sources.SlotBase;
+﻿using Sources.ItemBase;
+using Sources.SlotBase;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Sources.SlotsHolderBase.Extensions.SlotsSort
+namespace Sources.SlotsHolderBase.Extensions.ItemsSort
 {
     /// <summary>
-    /// Sorts the grid
+    /// Sorts the grid with certain 
     /// </summary>
-    public class SlotsSorter : MonoBehaviour
+    public class ItemsSorter : MonoBehaviour
     {
         [SerializeField] private Button _sortButton;
+        public delegate bool Comparer(Item a, Item b);
 
+        private Comparer _sortingStyle;
         private SlotsHolder _slotsHolder;
 
-        public void Construct(SlotsHolder slotsHolder)
+        public void Construct(SlotsHolder slotsHolder, Comparer sortingStyle)
         {
+            _sortingStyle = sortingStyle;
             _slotsHolder = slotsHolder;
+        }
+
+        private void SortSlots()
+        {
+            Slot[] grid = _slotsHolder.Grid;
+            Sort(grid, _sortingStyle);
         }
 
         /// <summary>
         /// Sorts grid using Bubble sort algorithms, from the max level to the lowest one
         /// Algorithm : https://www.geeksforgeeks.org/bubble-sort/
         /// </summary>
-        private void SortSlots()
+        private static void Sort(Slot[] grid, Comparer comparer)
         {
-            Slot[] grid = _slotsHolder.Grid;
             for (int i = 0; i < grid.Length - 1; i++)
             {
                 bool isSwapped = false;
                 for (int j = 0; j < grid.Length - i - 1; j++)
                 {
-                    bool isItemAbsent = grid[j].StoringItem == null;
-                    bool isNextLevelSmaller = grid[j].StoringItem?.Level < grid[j + 1].StoringItem?.Level;
+                    Slot firstSlot = grid[j], secondSlot = grid[j + 1];
 
-                    if (isItemAbsent || isNextLevelSmaller)
+                    bool isItemAbsent = firstSlot.StoringItem == null;
+                    if (isItemAbsent || comparer(firstSlot.StoringItem, secondSlot.StoringItem))
                     {
                         var temp = grid[j].StoringItem;
-                        
-                        grid[j].RemoveStoringItem();
-                        grid[j].PutItem(grid[j + 1].StoringItem);
-                        
-                        grid[j + 1].RemoveStoringItem();
-                        grid[j + 1].PutItem(temp);
+
+                        firstSlot.ReplaceItem(grid[j + 1].StoringItem);
+                        secondSlot.ReplaceItem(temp);
 
                         isSwapped = true;
                     }

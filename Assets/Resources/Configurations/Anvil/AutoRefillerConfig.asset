@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AutoRefillerConfig
   m_EditorClassIdentifier: 
   RefillCoolDown: 10
-  AmountChargesToAdd: 50
+  AmountChargesToAdd: 1

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SlotsConfig
   m_EditorClassIdentifier: 
   InitialSlots: 40
-  UnlockedSlots: 20
+  UnlockedSlots: 11

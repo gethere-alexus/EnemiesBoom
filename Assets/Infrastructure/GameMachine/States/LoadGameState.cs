@@ -36,8 +36,8 @@ namespace Infrastructure.GameMachine.States
             _loadingCurtain.ShowCurtain();
             
             _uiFactory.CreateUIRoot();
-            _uiFactory.CreateSlotsUI();
-            _uiFactory.CreateSlotsControlUI();
+            _uiFactory.CreateSlots();
+            _uiFactory.CreateSlotsControl();
             
             _gameStateMachine.Enter<GameLoopState>();
         }

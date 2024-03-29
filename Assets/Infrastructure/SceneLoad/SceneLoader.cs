@@ -7,19 +7,24 @@ using UnityEngine.SceneManagement;
 namespace Infrastructure.SceneLoad
 {
     /// <summary>
-    /// Switching the scene
+    /// Switches the scenes
     /// </summary>
     public class SceneLoader
     {
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly LoadingCurtain _curtain;
-
+        
         public SceneLoader(ICoroutineRunner coroutineRunner, LoadingCurtain curtain)
         {
             _coroutineRunner = coroutineRunner;
             _curtain = curtain;
         }
 
+        /// <summary>
+        /// Loads a new scene, using async operation
+        /// </summary>
+        /// <param name="sceneIndex">Build scene index</param>
+        /// <param name="sceneLoaded">OnLoaded action</param>
         public void Load(int sceneIndex, Action sceneLoaded = null) =>
             _coroutineRunner.StartCoroutine(LoadScene(sceneIndex, sceneLoaded));
 

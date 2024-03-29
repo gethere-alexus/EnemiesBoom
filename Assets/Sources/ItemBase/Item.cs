@@ -2,27 +2,33 @@
 
 namespace Sources.ItemBase
 {
+    /// <summary>
+    /// An item, can be stored in slots
+    /// </summary>
     public class Item
     {
+        private const int MinItemLevel = 1;
         private int _level;
         public event Action LevelIncreased;
 
-        public Item(int arrowLevel)
+        public Item(int itemLevel)
         {
-            _level = arrowLevel;
+            if (itemLevel <= 0)
+                itemLevel = MinItemLevel;
+
+            _level = itemLevel;
         }
 
-        public void TryMerge(Item itemToPlace, out bool isSucceeded)
-        {
-            isSucceeded = false;
-            if (itemToPlace.Level == Level)
-            {
-                isSucceeded = true;
-                IncreaseItemLevel();
-            }
-        }
+        /// <summary>
+        /// Upgrades an item
+        /// </summary>
+        public void Upgrade() =>
+            IncreaseLevel();
 
-        private void IncreaseItemLevel()
+        /// <summary>
+        /// Increases item level by one
+        /// </summary>
+        private void IncreaseLevel()
         {
             _level++;
             LevelIncreased?.Invoke();

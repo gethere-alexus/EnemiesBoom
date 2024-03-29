@@ -1,10 +1,9 @@
-﻿using Infrastructure.Configurations;
-using Infrastructure.Configurations.Anvil;
+﻿using Infrastructure.Configurations.Anvil;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Sources.AnvilChargesRefillerBase
+namespace Sources.AnvilBase.AnvilExtensions.ChargesRefiller
 {
     public class AnvilChargesRefillDisplay : MonoBehaviour
     {

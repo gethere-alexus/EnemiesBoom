@@ -1,5 +1,7 @@
 ﻿using System;
 using Sources.ItemBase;
+using Sources.SlotsHolderBase;
+using UnityEngine;
 
 namespace Sources.SlotBase
 {
@@ -9,34 +11,70 @@ namespace Sources.SlotBase
     /// </summary>
     public class Slot
     {
-        private Item _storingItem;
-        private bool _isLocked; 
-        public event Action SlotConditionUpdated;
+        private readonly SlotsHolder _slotsHolder;
 
+        private Item _storingItem;
+        private bool _isLocked;
+        public event Action SlotInformationUpdated;
+        public event Action ItemInformationUpdated;
+
+        public Slot(SlotsHolder slotsHolder) => 
+            _slotsHolder = slotsHolder;
+
+        /// <summary>
+        /// Puts an item in the slot with operation results.
+        /// </summary>
+        /// <param name="isSucceeded"> Is placing operation succeeded</param>
         public void PutItem(Item itemToPlace, out bool isSucceeded) =>
             isSucceeded = TryStoreItem(itemToPlace);
 
+        /// <summary>
+        /// Puts an item in the slot without operation result
+        /// </summary>
         public void PutItem(Item itemToPlace) =>
             TryStoreItem(itemToPlace);
 
+        /// <summary>
+        /// Replaces storing item, completely removing the old one.
+        /// </summary>
+        /// <param name="newItem">Replacing item</param>
+        public void ReplaceItem(Item newItem)
+        {
+            RemoveStoringItem();
+            PutItem(newItem);
+        }
+        
+        /// <summary>
+        /// If a slot stores an item - removes it.
+        /// </summary>
         public void RemoveStoringItem()
         {
             _storingItem = null;
-            SlotConditionUpdated?.Invoke();
+            SlotInformationUpdated?.Invoke();
         }
 
+        /// <summary>
+        /// Unlocks slot, allowing it to store items.
+        /// </summary>
         public void Unlock()
         {
             _isLocked = false;
-            SlotConditionUpdated?.Invoke();
+            SlotInformationUpdated?.Invoke();
         }
 
+        /// <summary>
+        /// Locks slot, preventing it from storing items.
+        /// </summary>
         public void Lock()
         {
             _isLocked = true;
-            SlotConditionUpdated?.Invoke();
+            SlotInformationUpdated?.Invoke();
         }
 
+        /// <summary>
+        /// Stores item if slot is unlocked and it is empty or itemLevels are the same.
+        /// </summary>
+        /// <returns>Operation result</returns>
         private bool TryStoreItem(Item itemToPlace)
         {
             bool isSucceeded = false;
@@ -47,22 +85,22 @@ namespace Sources.SlotBase
                     _storingItem = itemToPlace;
                     isSucceeded = true;
                 }
-                else
+                else if (itemToPlace.Level == _storingItem.Level)
                 {
-                    _storingItem.TryMerge(itemToPlace, out isSucceeded);
+                    _storingItem.Upgrade();
+                    isSucceeded = true;
                 }
             }
-            
-            if(isSucceeded)
-                SlotConditionUpdated?.Invoke();
-            
+            if (isSucceeded)
+            {
+                ItemInformationUpdated?.Invoke();
+                SlotInformationUpdated?.Invoke();
+            }
             return isSucceeded;
         }
 
         public Item StoringItem => _storingItem;
-
         public bool IsLocked => _isLocked;
-
         public bool IsEmpty => _storingItem == null;
     }
 }

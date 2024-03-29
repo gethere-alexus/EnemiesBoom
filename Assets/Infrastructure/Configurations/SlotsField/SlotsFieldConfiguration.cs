@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-namespace Infrastructure.Configurations
+namespace Infrastructure.Configurations.SlotsField
 {
-    [CreateAssetMenu(menuName = ("Configurations/SlotsHolderConfig"))]
+    /// <summary>
+    /// Configuration for grid initializing.
+    /// </summary>
+    [CreateAssetMenu(menuName = ("Configurations/Slots/SlotsHolderConfig"))]
     public class SlotsFieldConfiguration : ScriptableObject, IConfiguration
     {
-        public int InitialSlots = 40;
-        public int UnlockedSlots = 20;
+        [Tooltip("Created amount of slots")] public int InitialSlots = 40;
+        [Tooltip("Initially unlocked slots")] public int UnlockedSlots = 20;
 
         private void OnValidate()
         {

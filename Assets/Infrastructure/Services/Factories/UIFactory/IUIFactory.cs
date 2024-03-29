@@ -10,11 +10,11 @@
         /// <summary>
         /// Creates the slots where the arrows are being stored.
         /// </summary>
-        void CreateSlotsUI();
+        void CreateSlots();
 
         /// <summary>
         /// Creates operating buttons for slots.
         /// </summary>
-        void CreateSlotsControlUI();
+        void CreateSlotsControl();
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using Infrastructure.Configurations;
 using Infrastructure.Configurations.Anvil;
-using Sources.AnvilBase;
 
-namespace Sources.AnvilChargesRefillerBase
+namespace Sources.AnvilBase.AnvilExtensions.ChargesRefiller
 {
     /// <summary>
     /// Refills the anvil

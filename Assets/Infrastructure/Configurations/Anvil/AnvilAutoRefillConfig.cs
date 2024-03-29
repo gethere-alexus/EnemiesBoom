@@ -2,7 +2,10 @@
 
 namespace Infrastructure.Configurations.Anvil
 {
-    [CreateAssetMenu(menuName = ("Configurations/AnvilAutoRefillConfig"))]
+    /// <summary>
+    /// Configuration for anvil auto-refilling extension.
+    /// </summary>
+    [CreateAssetMenu(menuName = ("Configurations/Anvil/AnvilAutoRefillConfig"))]
     public class AnvilAutoRefillConfig : ScriptableObject, IConfiguration
     {
         [Tooltip("Cooldown for auto refilling in secs")] public float RefillCoolDown;

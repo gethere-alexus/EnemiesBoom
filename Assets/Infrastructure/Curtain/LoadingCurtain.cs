@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace Infrastructure.Curtain
 {
+    /// <summary>
+    /// Controls showing/fading of the loading curtain.
+    /// </summary>
     [RequireComponent(typeof(CanvasGroup))]
     public class LoadingCurtain : MonoBehaviour
     {

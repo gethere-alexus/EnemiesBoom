@@ -32,7 +32,6 @@ namespace Infrastructure.Services.ConfigLoad
         public TConfig LoadConfiguration<TConfig>(string path) where TConfig : ScriptableObject, IConfiguration
         {
             string searchingPath = Path.Combine(ConfigsPath, path);
-            Debug.Log(searchingPath);
             TConfig[] results = _prefabLoader.LoadAllPrefabs<TConfig>(searchingPath);
             LogErrors(results);
             

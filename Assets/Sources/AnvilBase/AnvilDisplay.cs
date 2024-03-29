@@ -11,15 +11,13 @@ namespace Sources.AnvilBase
     {
         [SerializeField] private Button _anvilButton;
         [SerializeField] private TMP_Text _chargesInformation;
-        
-        private SlotsHolder _slotsHolder;
+
         private Anvil _anvilInstance;
 
         public void Construct(SlotsHolder slotsHolder, AnvilConfig anvilConfig)
         {
-            _slotsHolder = slotsHolder;
             _anvilInstance = new Anvil(slotsHolder, anvilConfig);
-            _anvilButton.onClick.AddListener(_anvilInstance.CraftArrow);
+            _anvilButton.onClick.AddListener(_anvilInstance.CraftItem);
             _anvilInstance.AnvilUsed += UpdateView;
             
             UpdateView();

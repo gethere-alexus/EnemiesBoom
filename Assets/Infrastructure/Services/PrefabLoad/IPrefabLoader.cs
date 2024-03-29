@@ -2,6 +2,9 @@
 
 namespace Infrastructure.Services.PrefabLoad
 {
+    /// <summary>
+    /// Service is loading prefabs from resources.
+    /// </summary>
     public interface IPrefabLoader
     {
         Object LoadPrefab(string path);

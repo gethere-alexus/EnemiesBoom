@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Infrastructure.Services.ConfigLoad
 {
+    /// <summary>
+    /// Service is loading configs from a special directory in Resources.
+    /// </summary>
     public interface IConfigLoader
     {
         /// <summary>

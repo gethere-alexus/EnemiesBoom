@@ -2,8 +2,12 @@
 using Infrastructure.Configurations.Anvil;
 using UnityEngine;
 
-namespace Sources.AnvilBase.AnvilExtensions
+namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
 {
+    /// <summary>
+    /// Automatically refills anvil's charges if it is not full.
+    /// Parametrized by AnvilAutoRefillConfig.
+    /// </summary>
     public class AnvilAutoRefiller : MonoBehaviour
     {
         private Anvil _anvil;
@@ -28,7 +32,6 @@ namespace Sources.AnvilBase.AnvilExtensions
                 
                 if(!_anvil.IsCompletelyCharged)
                     _anvil.AddCharge(_amountChargesToAdd);
-                Debug.Log("AutoRefilled");
             }
         }
 

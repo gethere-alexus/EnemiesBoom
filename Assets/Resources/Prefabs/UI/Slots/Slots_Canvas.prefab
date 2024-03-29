@@ -110,9 +110,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7623947924508615014}
   - component: {fileID: 8393020053981285508}
-  - component: {fileID: 6494453683873191812}
   - component: {fileID: 6828952067155002377}
   - component: {fileID: 8864832337178118966}
+  - component: {fileID: 792753342274727784}
+  - component: {fileID: 6657784730737937836}
   m_Layer: 5
   m_Name: Slots_Canvas
   m_TagString: Untagged
@@ -165,29 +166,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &6494453683873191812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919525925677725432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!114 &6828952067155002377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +197,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slotStorage: {fileID: 8877814625095456}
   _itemDraggingParent: {fileID: 2238427565057147882}
+--- !u!114 &792753342274727784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919525925677725432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba46f8789b9c4cac9b55d1668e90e0db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6657784730737937836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919525925677725432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5a369c92be4ca0b080675558766b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2014660133337528186
 GameObject:
   m_ObjectHideFlags: 0
