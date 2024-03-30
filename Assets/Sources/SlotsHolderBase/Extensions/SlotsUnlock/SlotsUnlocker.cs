@@ -47,7 +47,6 @@ namespace Sources.SlotsHolderBase.Extensions.SlotsUnlock
             for (int i = 0; i < _unlockingSlotsPerStep; i++)
             {
                 _slotsHolder.UnlockSlot();
-                Debug.Log("Unlocked");
             }
 
             _unlockingLevel += _unlockingStep;

@@ -44,7 +44,7 @@ namespace Sources.SlotsHolderBase
         /// Unlocks first locked slot in the grid.
         /// </summary>
         public void UnlockSlot() =>
-            _grid.First(slot => slot.IsLocked)?.Unlock();
+            _grid.FirstOrDefault(slot => slot.IsLocked)?.Unlock();
 
         /// <summary>
         /// Merges an item from two slots, returns upgraded to the first slot.
@@ -94,7 +94,7 @@ namespace Sources.SlotsHolderBase
 
             return maxLevel;
         }
-        
+
 
         /// <summary>
         /// Iterate through all unlocked slots and searching for slot which has item with level

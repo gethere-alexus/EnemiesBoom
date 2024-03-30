@@ -1,10 +1,10 @@
-﻿using Infrastructure.Configurations;
-using Infrastructure.Configurations.Anvil;
+﻿using Infrastructure.Configurations.Anvil;
 using Infrastructure.Configurations.SlotsField;
+using Infrastructure.ProgressData.AnvilData;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
+using Infrastructure.Services.ProgressProvider;
 using Sources.AnvilBase;
-using Sources.AnvilBase.AnvilExtensions;
 using Sources.AnvilBase.AnvilExtensions.AutoRefiller;
 using Sources.AnvilBase.AnvilExtensions.AutoUse;
 using Sources.AnvilBase.AnvilExtensions.ChargesRefiller;
@@ -25,6 +25,7 @@ namespace Infrastructure.Services.Factories.UIFactory
         private const string SlotsConfigsPath = "SlotsField";
 
         private readonly IAssetProvider _assetProvider;
+        private readonly IProgressProvider _progressProvider;
         private readonly IConfigLoader _configLoader;
 
         private Canvas _uiRoot;
@@ -32,9 +33,10 @@ namespace Infrastructure.Services.Factories.UIFactory
         
         private SlotsHolderDisplay _slotsHolder;
         private AnvilDisplay _anvilDisplay;
-        public UIFactory(IAssetProvider assetProvider, IConfigLoader configLoader)
+        public UIFactory(IAssetProvider assetProvider, IProgressProvider progressProvider, IConfigLoader configLoader)
         {
             _assetProvider = assetProvider;
+            _progressProvider = progressProvider;
             _configLoader = configLoader;
         }
         public void CreateUIRoot() =>
@@ -139,14 +141,23 @@ namespace Infrastructure.Services.Factories.UIFactory
         }
 
         /// <summary>
-        /// Instantiates and constructs anvil.
+        /// Instantiates and constructs anvil from save, if no saves - load config
         /// </summary>
         private void InstantiateAnvil()
         {
             _anvilDisplay = _slotsControl.GetComponentInChildren<AnvilDisplay>();
 
-            AnvilConfig anvilConfig = _configLoader.LoadConfiguration<AnvilConfig>(AnvilConfigsPath);
-            _anvilDisplay.Construct(_slotsHolder.SlotsHolderInstance, anvilConfig);
+            AnvilProgress progress = _progressProvider.LoadProgress<AnvilProgress>();
+            
+            if (progress != null)
+            {
+                _anvilDisplay.Construct(_slotsHolder.SlotsHolderInstance, _progressProvider, progress);
+            }
+            else
+            {
+                AnvilConfig anvilConfig = _configLoader.LoadConfiguration<AnvilConfig>(AnvilConfigsPath);
+                _anvilDisplay.Construct(_slotsHolder.SlotsHolderInstance, _progressProvider, anvilConfig);
+            }
         }
     }
 }

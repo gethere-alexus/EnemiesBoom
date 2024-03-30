@@ -1,5 +1,8 @@
 ﻿using System;
 using Infrastructure.Configurations.Anvil;
+using Infrastructure.ProgressData;
+using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.Services.ProgressProvider;
 using Sources.ItemBase;
 using Sources.SlotsHolderBase;
 
@@ -9,9 +12,10 @@ namespace Sources.AnvilBase
     /// Creates and places the items on a grid.
     /// Parametrized by AnvilConfig.
     /// </summary>
-    public class Anvil 
+    public class Anvil : IProgressWriter
     {
         private readonly SlotsHolder _slotsHolder;
+        private readonly IProgressProvider _progressProvider;
 
         private int _maxCharges;
         private int _chargesLeft;
@@ -20,12 +24,30 @@ namespace Sources.AnvilBase
         public event Action ItemCrafted;
         public event Action ChargesUpdated;
 
-        public Anvil(SlotsHolder slotsHolder, AnvilConfig anvilConfig)
+        /// <summary>
+        /// Constructs if save file is not found
+        /// </summary>
+        public Anvil(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilConfig anvilConfig)
         {
             _slotsHolder = slotsHolder;
+            _progressProvider = progressProvider;
+
             _maxCharges = anvilConfig.MaxAnvilCharges;
-            _craftingItemLevel = anvilConfig.CraftingItemLevel;
             _chargesLeft = _maxCharges;
+            _craftingItemLevel = anvilConfig.CraftingItemLevel;
+        }
+
+        /// <summary>
+        /// Constructs with information from save file
+        /// </summary>
+        public Anvil(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilProgress anvilProgress)
+        {
+            _slotsHolder = slotsHolder;
+            _progressProvider = progressProvider;
+
+            _maxCharges = anvilProgress.MaxCharges;
+            _chargesLeft = anvilProgress.ChargesLeft;
+            _craftingItemLevel = anvilProgress.CraftingItemLevel;
         }
 
         /// <summary>
@@ -49,7 +71,7 @@ namespace Sources.AnvilBase
             if (_chargesLeft > 0)
             {
                 _slotsHolder.PlaceItem(new Item(_craftingItemLevel), out bool isSucceeded);
-                
+
                 if (isSucceeded)
                 {
                     SpendCharge();
@@ -57,12 +79,34 @@ namespace Sources.AnvilBase
                 }
             }
         }
-        
+
         /// <param name="amount">amount of charges to add</param>
         public void AddCharge(int amount)
         {
-            _chargesLeft += amount; 
+            _chargesLeft += amount;
+            SaveProgress();
             ChargesUpdated?.Invoke();
+        }
+
+        public void SaveProgress()
+        {
+            AnvilProgress toSave = new AnvilProgress()
+            {
+                ChargesLeft = _chargesLeft,
+                CraftingItemLevel = _craftingItemLevel,
+                MaxCharges = _maxCharges,
+            };
+                
+            _progressProvider.SaveProgress(toSave);
+        }
+
+        public void LoadProgress()
+        {
+            AnvilProgress loadedProgress = _progressProvider.LoadProgress<AnvilProgress>();
+
+            _maxCharges = loadedProgress.MaxCharges;
+            _chargesLeft = loadedProgress.ChargesLeft;
+            _craftingItemLevel = loadedProgress.CraftingItemLevel;
         }
 
         /// <summary>
@@ -71,12 +115,16 @@ namespace Sources.AnvilBase
         private void SpendCharge()
         {
             _chargesLeft--;
+            SaveProgress();
             ChargesUpdated?.Invoke();
         }
 
         public bool IsFullOfCharges => _chargesLeft >= _maxCharges;
+
         public bool IsCompletelyCharged => _chargesLeft >= _maxCharges;
+
         public int ChargesLeft => _chargesLeft;
+
         public int MaxCharges => _maxCharges;
     }
 }

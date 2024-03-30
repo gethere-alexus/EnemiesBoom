@@ -4,6 +4,7 @@ using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.UIFactory;
 using Infrastructure.Services.PrefabLoad;
+using Infrastructure.Services.ProgressProvider;
 using Zenject;
 
 namespace Infrastructure.GameMachine.States
@@ -39,13 +40,15 @@ namespace Infrastructure.GameMachine.States
             // services instantiating
             IPrefabLoader prefabLoader = new PrefabLoader();
             IAssetProvider assetProvider = new AssetProvider(prefabLoader);
+            IProgressProvider progressProvider = new ProgressProvider();
             IConfigLoader configLoader = new ConfigLoader(prefabLoader);
-            IUIFactory uiFactory = new UIFactory(assetProvider, configLoader);
+            IUIFactory uiFactory = new UIFactory(assetProvider, progressProvider, configLoader);
 
             // services are being registered to container
             _diContainer.Bind<IPrefabLoader>().FromInstance(prefabLoader).AsSingle().NonLazy();
             _diContainer.Bind<IConfigLoader>().FromInstance(configLoader).AsSingle().NonLazy();
             _diContainer.Bind<IAssetProvider>().FromInstance(assetProvider).AsSingle().NonLazy();
+            _diContainer.Bind<IProgressProvider>().FromInstance(progressProvider).AsSingle().NonLazy();
             _diContainer.Bind<IUIFactory>().FromInstance(uiFactory).AsSingle().NonLazy();
         }
 
