@@ -5,28 +5,30 @@ using UnityEngine;
 
 namespace Infrastructure.Extensions.EditorExtensions
 {
+#if UNITY_EDITOR
     /// <summary>
     /// Editor extension for comfortable working with save files
     /// </summary>
     public static class ProgressManagement
     {
         private const string Saves = "Saves";
-
-        [MenuItem("Progress Management/Clean Progress")]public static void CleanProgress()
+        [MenuItem("Progress Management/Clean Progress")]
+        public static void CleanProgress()
         {
             string savesPath = Path.Combine(Application.persistentDataPath, Saves);
 
             foreach (var path in Directory.GetFiles(savesPath))
             {
-                    File.Delete(path);
+                File.Delete(path);
             }
-            
         }
-        
-        [MenuItem("Progress Management/Show Progress")]public static void OpenSave()
+
+        [MenuItem("Progress Management/Show Progress")]
+        public static void OpenSave()
         {
             string savesPath = Path.Combine(Application.persistentDataPath, Saves);
             Process.Start("explorer.exe", savesPath.Replace("/", "\\"));
         }
     }
+#endif
 }
