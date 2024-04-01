@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Configurations.Anvil;
-using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.ProgressData.Anvil;
 using Infrastructure.Services.ProgressProvider;
 using Sources.SlotsHolderBase;
 using TMPro;
@@ -21,9 +21,9 @@ namespace Sources.AnvilBase
             AssignListeners();
         }
 
-        public void Construct(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilProgress progress)
+        public void Construct(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilData data)
         {
-            _anvilInstance = new Anvil(slotsHolder, progressProvider, progress);
+            _anvilInstance = new Anvil(slotsHolder, progressProvider, data);
             AssignListeners();
         }
 

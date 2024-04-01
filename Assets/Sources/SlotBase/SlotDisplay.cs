@@ -20,17 +20,33 @@ namespace Sources.SlotBase
 
         private Slot _slotInstance;
 
-        public void Construct(IAssetProvider assetProvider, SlotsHolder slotsHolder, Transform itemDraggingParent)
+        public void Construct(IAssetProvider assetProvider, SlotsHolder slotsHolder, Transform itemDraggingParent, bool isSlotLocked)
         {
             _itemDraggingParent = itemDraggingParent;
             _assetProvider = assetProvider;
             _slotsHolder = slotsHolder;
             
-            _slotInstance = new Slot();
+            _slotInstance = new Slot(slotsHolder, isSlotLocked);
             
             _slotInstance.SlotUpdated += UpdateView;
             _slotInstance.StoredItemUpdated += UpdateView;
+            
+            UpdateView();
         }
+        public void Construct(IAssetProvider assetProvider, SlotsHolder slotsHolder, Transform itemDraggingParent, Slot slotReference)
+        {
+            _itemDraggingParent = itemDraggingParent;
+            _assetProvider = assetProvider;
+            _slotsHolder = slotsHolder;
+
+            _slotInstance = slotReference;
+            
+            _slotInstance.SlotUpdated += UpdateView;
+            _slotInstance.StoredItemUpdated += UpdateView;
+            
+            UpdateView();
+        }
+        
 
         /// <summary>
         /// Once a slot is changing its condition, view will be updated afterwards

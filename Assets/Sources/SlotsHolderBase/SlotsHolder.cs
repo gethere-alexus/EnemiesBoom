@@ -1,28 +1,45 @@
 ﻿using System;
 using System.Linq;
 using Infrastructure.Configurations.SlotsField;
+using Infrastructure.DataExtensions;
+using Infrastructure.ProgressData;
+using Infrastructure.ProgressData.Field;
+using Infrastructure.Services.ProgressProvider;
 using Sources.ItemBase;
 using Sources.SlotBase;
+using Unity.VisualScripting;
 
 namespace Sources.SlotsHolderBase
 {
     /// <summary>
     /// Holds all the slots from firstSlot game grid
     /// </summary>
-    public class SlotsHolder
+    public class SlotsHolder : IProgressWriter
     {
-        private readonly int _initialSlots;
+        private readonly IProgressProvider _progressProvider;
+
         private readonly Slot[] _grid;
 
-        private int _unlockedSlots;
         public event Action SlotsMerged;
 
-        public SlotsHolder(SlotsFieldConfiguration config)
+        /// <summary>
+        /// Build grid from config file
+        /// </summary>
+        public SlotsHolder(IProgressProvider progressProvider, SlotsFieldConfiguration config)
         {
-            _initialSlots = config.InitialSlots;
-            _unlockedSlots = config.UnlockedSlots;
+            _progressProvider = progressProvider;
 
-            _grid = new Slot[_initialSlots];
+            _grid = new Slot[config.InitialSlots];
+        }
+
+        /// <summary>
+        /// Build grid from save file
+        /// </summary>
+        public SlotsHolder(IProgressProvider progressProvider, FieldData fieldData)
+        {
+            _progressProvider = progressProvider;
+            
+            _grid = fieldData.FromSerializable(this);
         }
 
         /// <summary>
@@ -134,8 +151,24 @@ namespace Sources.SlotsHolderBase
             return null;
         }
 
-        public int InitialSlots => _initialSlots;
-        public int UnlockedSlots => _unlockedSlots;
+        public void LoadProgress()
+        {
+            FieldData data = _progressProvider.LoadProgress<FieldData>();
+            Slot[] grid = data.FromSerializable(this);
+        }
+
+        public void SaveProgress()
+        {
+            FieldData toSave = _grid.ToSerializable();
+            
+            _progressProvider.SaveProgress(toSave);
+        }
+
+        public int InitialSlots => 
+            _grid.Length;
+
+        public int UnlockedSlots => 
+            _grid.Where(slot => !slot.IsLocked).ToArray().Length;
 
         public Slot[] Grid => _grid;
     }

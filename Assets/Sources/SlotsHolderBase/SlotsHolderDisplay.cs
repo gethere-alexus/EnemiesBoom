@@ -1,5 +1,8 @@
 ﻿using Infrastructure.Configurations.SlotsField;
+using Infrastructure.DataExtensions;
+using Infrastructure.ProgressData.Field;
 using Infrastructure.Services.AssetsProvider;
+using Infrastructure.Services.ProgressProvider;
 using Sources.SlotBase;
 using UnityEngine;
 
@@ -10,44 +13,76 @@ namespace Sources.SlotsHolderBase
     /// </summary>
     public class SlotsHolderDisplay : MonoBehaviour
     {
-        [SerializeField, Tooltip("Where all the slots will be stored")] private Transform _slotStorage;
-        [SerializeField, Tooltip("Transform for an item when it is being dragged")] private Transform _itemDraggingParent;
-        
+        [SerializeField, Tooltip("Where all the slots will be stored")]
+        private Transform _slotStorage;
+
+        [SerializeField, Tooltip("Transform for an item when it is being dragged")]
+        private Transform _itemDraggingParent;
+
         private SlotsHolder _slotsHolderInstance;
-        
-        public void Construct(IAssetProvider assetProvider, SlotsFieldConfiguration slotsFieldConfig)
+
+        public void Construct(IAssetProvider assetProvider, IProgressProvider progressProvider,
+            SlotsFieldConfiguration slotsFieldConfig)
         {
-            _slotsHolderInstance = new SlotsHolder(slotsFieldConfig);
-            InstantiateGrid(assetProvider, _slotsHolderInstance.Grid, _slotsHolderInstance.UnlockedSlots);
+            _slotsHolderInstance = new SlotsHolder(progressProvider, slotsFieldConfig);
+            InstantiateGridAsNew(assetProvider, _slotsHolderInstance.Grid, slotsFieldConfig.UnlockedSlots);
         }
+
+        public void Construct(IAssetProvider assetProvider, IProgressProvider progressProvider,
+            FieldData data)
+        {
+            _slotsHolderInstance = new SlotsHolder(progressProvider, data);
+            InstantiateGridAsReferenced(assetProvider, _slotsHolderInstance.Grid, data.FromSerializable(_slotsHolderInstance));
+        }
+
         
+        /// <summary>
+        /// Instantiate a grid creating empty slots
+        /// </summary>
+        /// <param name="assetProvider"></param>
         /// <param name="grid">drawing grid</param>
-        /// <param name="unlockedSlots">amount of initially unlocked slots</param>
-        private void InstantiateGrid(IAssetProvider assetProvider, Slot[] grid, int unlockedSlots)
+        /// <param name="slotsToUnlock">Amount of unlocking slots</param>
+        private void InstantiateGridAsNew(IAssetProvider assetProvider, Slot[] grid, int slotsToUnlock)
         {
             ClearStorage();
-            
-            int alreadyUnlockedSlots = 0;
+
+            int unlockedSlots = 0;
             for (int i = 0; i < grid.Length; i++)
             {
+                bool isSlotLocked = unlockedSlots >= slotsToUnlock;
+                if (!isSlotLocked)
+                    unlockedSlots++;
+                
                 SlotDisplay slotDisplay = assetProvider.Instantiate<SlotDisplay>(AssetPaths.SlotTemplate, _slotStorage);
-                slotDisplay.Construct(assetProvider,_slotsHolderInstance, _itemDraggingParent);
+                slotDisplay.Construct(assetProvider, _slotsHolderInstance, _itemDraggingParent, isSlotLocked);
                 
-                Slot slot = slotDisplay.SlotInstance;
-                // Locking slots
-                if (alreadyUnlockedSlots <= unlockedSlots)
-                    alreadyUnlockedSlots++;
-                else
-                    slot.Lock();
+                grid[i] = slotDisplay.SlotInstance;
+            }
+        }
+
+        /// <summary>
+        /// Instantiates a grid from a grid refernce
+        /// </summary>
+        /// <param name="assetProvider">Asset Provider Service</param>
+        /// <param name="grid">Where to instantiate</param>
+        /// <param name="gridReference">Instantiating reference</param>
+        private void InstantiateGridAsReferenced(IAssetProvider assetProvider, Slot[] grid, Slot[] gridReference)
+        {
+            ClearStorage();
+
+            for (int i = 0; i < gridReference.Length; i++)
+            {
+                SlotDisplay slotDisplay = assetProvider.Instantiate<SlotDisplay>(AssetPaths.SlotTemplate, _slotStorage);
+                slotDisplay.Construct(assetProvider, _slotsHolderInstance, _itemDraggingParent, gridReference[i]);
                 
-                grid[i] = slot;
+                grid[i] = slotDisplay.SlotInstance;
             }
         }
 
         /// <summary>
         /// Clears grid storage if there is some game objects.
         /// </summary>
-        private void ClearStorage() 
+        private void ClearStorage()
         {
             // Clears the slots storage if there is any existing slots
             if (_slotStorage.childCount != 0)

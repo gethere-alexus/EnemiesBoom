@@ -1,6 +1,6 @@
-namespace Infrastructure.ProgressData.AnvilData
+namespace Infrastructure.ProgressData.Anvil
 {
-    public class AnvilProgress : IProgressData
+    public class AnvilData : IProgressData
     {
         public int MaxCharges, ChargesLeft;
         public int CraftingItemLevel;

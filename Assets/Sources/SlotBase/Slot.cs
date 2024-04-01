@@ -1,5 +1,6 @@
 ﻿using System;
 using Sources.ItemBase;
+using Sources.SlotsHolderBase;
 
 namespace Sources.SlotBase
 {
@@ -9,10 +10,25 @@ namespace Sources.SlotBase
     /// </summary>
     public class Slot
     {
+        private readonly SlotsHolder _slotHolder;
+        
         private Item _storingItem;
         private bool _isLocked;
         public event Action SlotUpdated;
         public event Action StoredItemUpdated;
+
+        public Slot(SlotsHolder slotHolder, bool isLocked)
+        {
+            _slotHolder = slotHolder;
+            _isLocked = isLocked;
+        }
+
+        public Slot(SlotsHolder slotHolder, Item storingItem)
+        {
+            _slotHolder = slotHolder;
+            _storingItem = storingItem;
+            _isLocked = false;
+        }
 
         /// <summary>
         /// Puts an item in the slot with operation results.
@@ -43,7 +59,7 @@ namespace Sources.SlotBase
         public void RemoveStoringItem()
         {
             _storingItem = null;
-            SlotUpdated?.Invoke();
+            OnSlotUpdated();
         }
 
         /// <summary>
@@ -52,7 +68,7 @@ namespace Sources.SlotBase
         public void Unlock()
         {
             _isLocked = false;
-            SlotUpdated?.Invoke();
+            OnSlotUpdated();
         }
 
         /// <summary>
@@ -61,7 +77,7 @@ namespace Sources.SlotBase
         public void Lock()
         {
             _isLocked = true;
-            SlotUpdated?.Invoke();
+            OnSlotUpdated();
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -87,9 +103,21 @@ namespace Sources.SlotBase
             }
             
             if (isSucceeded)
-                StoredItemUpdated?.Invoke();
+                OnStoringItemUpdated();
             
             return isSucceeded;
+        }
+
+        private void OnSlotUpdated()
+        {
+            _slotHolder.SaveProgress();
+            SlotUpdated?.Invoke();
+        }
+
+        private void OnStoringItemUpdated()
+        {
+            _slotHolder.SaveProgress();
+            StoredItemUpdated?.Invoke();
         }
 
         public Item StoringItem => _storingItem;

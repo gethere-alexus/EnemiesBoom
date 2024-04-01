@@ -1,7 +1,7 @@
 ﻿using System;
 using Infrastructure.Configurations.Anvil;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.ProgressData.Anvil;
 using Infrastructure.Services.ProgressProvider;
 using Sources.ItemBase;
 using Sources.SlotsHolderBase;
@@ -40,14 +40,14 @@ namespace Sources.AnvilBase
         /// <summary>
         /// Constructs with information from save file
         /// </summary>
-        public Anvil(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilProgress anvilProgress)
+        public Anvil(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilData anvilData)
         {
             _slotsHolder = slotsHolder;
             _progressProvider = progressProvider;
 
-            _maxCharges = anvilProgress.MaxCharges;
-            _chargesLeft = anvilProgress.ChargesLeft;
-            _craftingItemLevel = anvilProgress.CraftingItemLevel;
+            _maxCharges = anvilData.MaxCharges;
+            _chargesLeft = anvilData.ChargesLeft;
+            _craftingItemLevel = anvilData.CraftingItemLevel;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Sources.AnvilBase
 
         public void SaveProgress()
         {
-            AnvilProgress toSave = new AnvilProgress()
+            AnvilData toSave = new AnvilData()
             {
                 ChargesLeft = _chargesLeft,
                 CraftingItemLevel = _craftingItemLevel,
@@ -102,11 +102,11 @@ namespace Sources.AnvilBase
 
         public void LoadProgress()
         {
-            AnvilProgress loadedProgress = _progressProvider.LoadProgress<AnvilProgress>();
+            AnvilData loadedData = _progressProvider.LoadProgress<AnvilData>();
 
-            _maxCharges = loadedProgress.MaxCharges;
-            _chargesLeft = loadedProgress.ChargesLeft;
-            _craftingItemLevel = loadedProgress.CraftingItemLevel;
+            _maxCharges = loadedData.MaxCharges;
+            _chargesLeft = loadedData.ChargesLeft;
+            _craftingItemLevel = loadedData.CraftingItemLevel;
         }
 
         /// <summary>
