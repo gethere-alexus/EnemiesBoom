@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Configurations.SlotsField;
-using Infrastructure.DataExtensions;
+using Infrastructure.Extensions.DataExtensions;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ProgressProvider;
@@ -21,6 +21,9 @@ namespace Sources.SlotsHolderBase
 
         private SlotsHolder _slotsHolderInstance;
 
+        /// <summary>
+        /// Constructor is called to build a grid from config
+        /// </summary>
         public void Construct(IAssetProvider assetProvider, IProgressProvider progressProvider,
             SlotsFieldConfiguration slotsFieldConfig)
         {
@@ -28,6 +31,9 @@ namespace Sources.SlotsHolderBase
             InstantiateGridAsNew(assetProvider, _slotsHolderInstance.Grid, slotsFieldConfig.UnlockedSlots);
         }
 
+        /// <summary>
+        /// Constructor is called to build a grid from save.
+        /// </summary>
         public void Construct(IAssetProvider assetProvider, IProgressProvider progressProvider,
             FieldData data)
         {

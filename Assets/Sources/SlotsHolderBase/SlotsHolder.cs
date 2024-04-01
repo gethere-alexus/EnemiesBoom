@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Infrastructure.Configurations.SlotsField;
-using Infrastructure.DataExtensions;
+using Infrastructure.Extensions.DataExtensions;
 using Infrastructure.ProgressData;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.Services.ProgressProvider;
 using Sources.ItemBase;
 using Sources.SlotBase;
-using Unity.VisualScripting;
 
 namespace Sources.SlotsHolderBase
 {

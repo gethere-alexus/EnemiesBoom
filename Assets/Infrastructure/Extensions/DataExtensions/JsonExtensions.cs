@@ -4,12 +4,17 @@ using Infrastructure.ProgressData.Slot;
 using Sources.ItemBase;
 using Sources.SlotBase;
 using Sources.SlotsHolderBase;
-using Unity.VisualScripting;
 
-namespace Infrastructure.DataExtensions
+namespace Infrastructure.Extensions.DataExtensions
 {
+    /// <summary>
+    /// Serializes data back and forth.
+    /// </summary>
     public static class JsonExtensions
     {
+        /// <summary>
+        /// Converts Slot to JSON convertable format
+        /// </summary>
         public static SlotData ToSerializable(this Slot slot)
         {
             SlotData toReturn = new SlotData
@@ -21,6 +26,9 @@ namespace Infrastructure.DataExtensions
             return toReturn;
         }
 
+        /// <summary>
+        /// Converts Slots array to JSON convertable format
+        /// </summary>
         public static FieldData ToSerializable(this Slot[] grid)
         {
             SlotData[] serializableField = new SlotData[grid.Length];
@@ -38,6 +46,9 @@ namespace Infrastructure.DataExtensions
             return toReturn;
         }
 
+        /// <summary>
+        /// Converts Item to JSON convertable format
+        /// </summary>
         public static ItemData ToSerializable(this Item item)
         {
             ItemData toReturn = new ItemData()
@@ -48,6 +59,9 @@ namespace Infrastructure.DataExtensions
             return toReturn;
         }
 
+        /// <summary>
+        /// Converts Slot from JSON convertable format.
+        /// </summary>
         public static Slot FromSerializable(this SlotData slot, SlotsHolder slotsHolder)
         {
             Slot toReturn;
@@ -60,9 +74,15 @@ namespace Infrastructure.DataExtensions
             return toReturn;
         }
 
+        /// <summary>
+        /// Converts Item from JSON convertable format.
+        /// </summary>
         public static Item FromSerializable(this ItemData item) => 
             new Item(item.Level);
 
+        /// <summary>
+        /// Converts Grid data from JSON convertable format.
+        /// </summary>
         public static Slot[] FromSerializable(this FieldData serializableField, SlotsHolder slotsHolder)
         {
             Slot[] toReturn = new Slot[serializableField.Grid.Length];

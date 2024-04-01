@@ -148,9 +148,18 @@ namespace Infrastructure.Services.Factories.UIFactory
         private void InstantiateAnvilRefiller()
         {
             AnvilChargesRefillDisplay refillDisplay = _slotsControl.GetComponentInChildren<AnvilChargesRefillDisplay>();
-            AnvilRefillConfig refillConfig = _configLoader.LoadConfiguration<AnvilRefillConfig>(AnvilConfigsPath);
+            AnvilRefillData save = _progressProvider.LoadProgress<AnvilRefillData>();
 
-            refillDisplay.Construct(_anvilDisplay.AnvilInstance, refillConfig);
+            if (save != null)
+            {
+                refillDisplay.Construct(_anvilDisplay.AnvilInstance,_progressProvider, save);
+            }
+            else
+            {
+                AnvilRefillConfig refillConfig = _configLoader.LoadConfiguration<AnvilRefillConfig>(AnvilConfigsPath);
+                refillDisplay.Construct(_anvilDisplay.AnvilInstance, _progressProvider, refillConfig);
+            }
+        
         }
 
         /// <summary>

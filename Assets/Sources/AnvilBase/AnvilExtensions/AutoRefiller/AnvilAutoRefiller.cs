@@ -13,8 +13,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
         private Anvil _anvil;
         private int _amountChargesToAdd;
         private float _refillCoolDown;
-
-
+        
         public void Construct(Anvil anvil, AnvilAutoRefillConfig autoRefillerConfig)
         {
             _anvil = anvil;
@@ -24,7 +23,6 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
             
             StartCoroutine(StartAutoRefilling());
         }
-
         private void RestartAutoRefilling()
         {
             StopAllCoroutines();
