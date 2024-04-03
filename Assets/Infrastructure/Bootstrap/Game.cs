@@ -13,7 +13,7 @@ namespace Infrastructure.Bootstrap
         public Game(ICoroutineRunner coroutineRunner, DiContainer container, LoadingCurtain loadingCurtain)
         {
             SceneLoader = new SceneLoader(coroutineRunner, loadingCurtain);
-            GameStateMachine = new GameStateMachine(SceneLoader, container, loadingCurtain);
+            GameStateMachine = new GameStateMachine(SceneLoader, container, coroutineRunner,loadingCurtain);
         }
     }
 }

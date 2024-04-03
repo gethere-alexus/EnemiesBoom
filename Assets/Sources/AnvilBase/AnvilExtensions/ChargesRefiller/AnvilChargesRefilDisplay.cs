@@ -1,7 +1,4 @@
-﻿using Infrastructure.Configurations.Anvil;
-using Infrastructure.ProgressData.Anvil;
-using Infrastructure.Services.ProgressProvider;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,35 +10,20 @@ namespace Sources.AnvilBase.AnvilExtensions.ChargesRefiller
         [SerializeField] private TMP_Text _refillInformation;
 
         private AnvilChargesRefill _chargesRefillInstance;
-
-        /// <summary>
-        /// Constructs from config
-        /// </summary>
-        public void Construct(Anvil anvil, IProgressProvider progressProvider, AnvilRefillConfig refillConfig)
+        
+        public void Construct(Anvil anvil)
         {
-            _chargesRefillInstance = new AnvilChargesRefill(anvil, progressProvider, refillConfig);
+            _chargesRefillInstance = new AnvilChargesRefill(anvil);
             UpdateDisplay();
             
-            _chargesRefillInstance.RefillChargeSpent += UpdateDisplay;
-            _refillButton.onClick.AddListener(_chargesRefillInstance.RefillAnvil);
-        }
-
-        /// <summary>
-        /// Constructs from save
-        /// </summary>
-        public void Construct(Anvil anvil, IProgressProvider progressProvider, AnvilRefillData save)
-        {
-            _chargesRefillInstance = new AnvilChargesRefill(anvil, progressProvider, save);
-            UpdateDisplay();
-            
-            _chargesRefillInstance.RefillChargeSpent += UpdateDisplay;
+            _chargesRefillInstance.RefillChargesUpdated += UpdateDisplay;
             _refillButton.onClick.AddListener(_chargesRefillInstance.RefillAnvil);
         }
 
         private void OnDisable()
         {
             _refillButton.onClick.RemoveAllListeners();
-            _chargesRefillInstance.RefillChargeSpent -= UpdateDisplay;
+            _chargesRefillInstance.RefillChargesUpdated -= UpdateDisplay;
         }
 
         private void UpdateDisplay()

@@ -1,7 +1,4 @@
-﻿using Infrastructure.Configurations.Anvil;
-using Infrastructure.ProgressData.Anvil;
-using Infrastructure.Services.ProgressProvider;
-using Sources.SlotsHolderBase;
+﻿using Sources.GameFieldBase;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +12,9 @@ namespace Sources.AnvilBase
 
         private Anvil _anvilInstance;
 
-        public void Construct(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilConfig anvilConfig)
+        public void Construct(GameField gameField)
         {
-            _anvilInstance = new Anvil(slotsHolder, progressProvider, anvilConfig);
-            AssignListeners();
-        }
-
-        public void Construct(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilData data)
-        {
-            _anvilInstance = new Anvil(slotsHolder, progressProvider, data);
+            _anvilInstance = new Anvil(gameField);
             AssignListeners();
         }
 

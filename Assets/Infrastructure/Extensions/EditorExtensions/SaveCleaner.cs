@@ -11,22 +11,18 @@ namespace Infrastructure.Extensions.EditorExtensions
     /// </summary>
     public static class ProgressManagement
     {
-        private const string Saves = "Saves";
+        private const string SaveName = "GameProgress.json";
         [MenuItem("Progress Management/Clean Progress")]
         public static void CleanProgress()
         {
-            string savesPath = Path.Combine(Application.persistentDataPath, Saves);
-
-            foreach (var path in Directory.GetFiles(savesPath))
-            {
-                File.Delete(path);
-            }
+            string savesPath = Path.Combine(Application.persistentDataPath, SaveName);
+            File.Delete(savesPath);
         }
 
         [MenuItem("Progress Management/Show Progress")]
         public static void OpenSave()
         {
-            string savesPath = Path.Combine(Application.persistentDataPath, Saves);
+            string savesPath = Path.Combine(Application.persistentDataPath, SaveName);
             Process.Start("explorer.exe", savesPath.Replace("/", "\\"));
         }
     }

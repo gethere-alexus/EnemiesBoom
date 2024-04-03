@@ -1,10 +1,11 @@
 ﻿using Infrastructure.Curtain;
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.AssetsProvider;
-using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.AutoProcessesControll;
+using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.PrefabLoad;
-using Infrastructure.Services.ProgressProvider;
+using Infrastructure.Services.ProgressLoad;
 using Zenject;
 
 namespace Infrastructure.GameMachine.States
@@ -41,22 +42,24 @@ namespace Infrastructure.GameMachine.States
             IPrefabLoader prefabLoader = new PrefabLoader();
             IAssetProvider assetProvider = new AssetProvider(prefabLoader);
             IProgressProvider progressProvider = new ProgressProvider();
-            IConfigLoader configLoader = new ConfigLoader(prefabLoader);
-            IUIFactory uiFactory = new UIFactory(assetProvider, progressProvider, configLoader);
+            IAutoProcessesController autoProcessesController = new AutoProcessesController();
+            IUIFactory uiFactory = new UIFactory(assetProvider);
+            IGameFieldFactory gameFieldFactory = new GameFieldFactory(assetProvider, autoProcessesController, uiFactory, progressProvider);
 
             // services are being registered to container
             _diContainer.Bind<IPrefabLoader>().FromInstance(prefabLoader).AsSingle().NonLazy();
-            _diContainer.Bind<IConfigLoader>().FromInstance(configLoader).AsSingle().NonLazy();
             _diContainer.Bind<IAssetProvider>().FromInstance(assetProvider).AsSingle().NonLazy();
             _diContainer.Bind<IProgressProvider>().FromInstance(progressProvider).AsSingle().NonLazy();
             _diContainer.Bind<IUIFactory>().FromInstance(uiFactory).AsSingle().NonLazy();
+            _diContainer.Bind<IGameFieldFactory>().FromInstance(gameFieldFactory).AsSingle().NonLazy();
+            _diContainer.Bind<IAutoProcessesController>().FromInstance(autoProcessesController).AsSingle().NonLazy();
         }
 
         public void Enter() => 
             _sceneLoader.Load(sceneIndex: BootstrapSceneIndex, OnSceneLoaded); // once bootstrapped, goes to LoadGameState
 
         private void OnSceneLoaded() => 
-            _gameStateMachine.Enter<LoadGameState>();
+            _gameStateMachine.Enter<LoadGameComponentsState>();
 
         public void Exit()
         {

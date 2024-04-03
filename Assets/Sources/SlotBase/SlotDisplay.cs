@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Services.AssetsProvider;
+using Sources.GameFieldBase;
 using Sources.ItemBase;
-using Sources.SlotsHolderBase;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,31 +15,18 @@ namespace Sources.SlotBase
         [SerializeField, Tooltip("SlotInstance's background")] private Image _frame;
 
         private IAssetProvider _assetProvider;
-        private SlotsHolder _slotsHolder;
+        private GameField _gameField;
         private Transform _itemDraggingParent;
 
         private Slot _slotInstance;
 
-        public void Construct(IAssetProvider assetProvider, SlotsHolder slotsHolder, Transform itemDraggingParent, bool isSlotLocked)
+        public void Construct(IAssetProvider assetProvider, GameField gameField, Transform itemDraggingParent)
         {
             _itemDraggingParent = itemDraggingParent;
             _assetProvider = assetProvider;
-            _slotsHolder = slotsHolder;
+            _gameField = gameField;
             
-            _slotInstance = new Slot(slotsHolder, isSlotLocked);
-            
-            _slotInstance.SlotUpdated += UpdateView;
-            _slotInstance.StoredItemUpdated += UpdateView;
-            
-            UpdateView();
-        }
-        public void Construct(IAssetProvider assetProvider, SlotsHolder slotsHolder, Transform itemDraggingParent, Slot slotReference)
-        {
-            _itemDraggingParent = itemDraggingParent;
-            _assetProvider = assetProvider;
-            _slotsHolder = slotsHolder;
-
-            _slotInstance = slotReference;
+            _slotInstance = new Slot(gameField);
             
             _slotInstance.SlotUpdated += UpdateView;
             _slotInstance.StoredItemUpdated += UpdateView;
@@ -47,7 +34,6 @@ namespace Sources.SlotBase
             UpdateView();
         }
         
-
         /// <summary>
         /// Once a slot is changing its condition, view will be updated afterwards
         /// </summary>
@@ -83,7 +69,7 @@ namespace Sources.SlotBase
             if (!_slotInstance.IsEmpty)
             {
                 ItemDisplay itemDisplay = _assetProvider.Instantiate<ItemDisplay>(AssetPaths.Item, transform);
-                itemDisplay.Construct(_slotInstance.StoringItem ,_slotsHolder,this, _itemDraggingParent);
+                itemDisplay.Construct(_slotInstance.StoringItem ,_gameField,this, _itemDraggingParent);
             }
         }
 

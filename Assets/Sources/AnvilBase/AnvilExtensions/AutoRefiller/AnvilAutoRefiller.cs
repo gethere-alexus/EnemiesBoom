@@ -1,5 +1,8 @@
 ﻿using System.Collections;
-using Infrastructure.Configurations.Anvil;
+using Infrastructure.ProgressData;
+using Infrastructure.Services.AutoProcessesControll.Connection;
+using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.ProgressLoad.Connection;
 using UnityEngine;
 
 namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
@@ -8,33 +11,53 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
     /// Automatically refills anvil's charges if it is not full.
     /// Parametrized by AnvilAutoRefillConfig.
     /// </summary>
-    public class AnvilAutoRefiller : MonoBehaviour
+    public class AnvilAutoRefiller : MonoBehaviour, IProgressWriter, IAutoProcessController
     {
         private Anvil _anvil;
         private int _amountChargesToAdd;
         private float _refillCoolDown;
-        
-        public void Construct(Anvil anvil, AnvilAutoRefillConfig autoRefillerConfig)
+
+        public void Construct(Anvil anvil)
         {
             _anvil = anvil;
-            _refillCoolDown = autoRefillerConfig.RefillCoolDown;
-            _amountChargesToAdd = autoRefillerConfig.AmountChargesToAdd;
-            anvil.ItemCrafted += RestartAutoRefilling;
-            
+            anvil.ItemCrafted += RestartProcess;
+        }
+
+        public void StartProcess()
+        {
             StartCoroutine(StartAutoRefilling());
         }
-        private void RestartAutoRefilling()
+
+        public void RestartProcess()
         {
             StopAllCoroutines();
             StartCoroutine(StartAutoRefilling());
         }
+
+        public void StopProcess()
+        {
+            StopAllCoroutines();
+        }
+        
+        public void LoadProgress(GameProgress progress)
+        {
+            _amountChargesToAdd = progress.AnvilExtensions.AnvilAutoRefiller.AmountChargesToAdd;
+            _refillCoolDown = progress.AnvilExtensions.AnvilAutoRefiller.RefillCoolDown;
+        }
+
+        public void SaveProgress(GameProgress progress)
+        {
+            progress.AnvilExtensions.AnvilAutoRefiller.AmountChargesToAdd = _amountChargesToAdd;
+            progress.AnvilExtensions.AnvilAutoRefiller.RefillCoolDown = _refillCoolDown;
+        }
+
         private IEnumerator StartAutoRefilling()
         {
             while (true)
             {
                 yield return new WaitForSeconds(_refillCoolDown);
-                
-                if(!_anvil.IsCompletelyCharged)
+
+                if (!_anvil.IsCompletelyCharged)
                     _anvil.AddCharge(_amountChargesToAdd);
             }
         }
@@ -42,7 +65,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
         private void OnDisable()
         {
             StopAllCoroutines();
-            _anvil.ItemCrafted -= RestartAutoRefilling;
+            _anvil.ItemCrafted -= RestartProcess;
         }
     }
 }

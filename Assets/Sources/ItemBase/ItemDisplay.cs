@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Sources.GameFieldBase;
 using Sources.SlotBase;
-using Sources.SlotsHolderBase;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,15 +15,15 @@ namespace Sources.ItemBase
         [SerializeField] private TMP_Text _levelText;
         private const int ClicksToMerge = 2; // double click
 
-        private SlotsHolder _slotsHolder;
+        private GameField _gameField;
         private SlotDisplay _storingSlot;
         private Transform _draggingParent;
 
         private Item _itemInstance;
 
-        public void Construct(Item displayingItem,SlotsHolder slotsHolder, SlotDisplay storedAt, Transform draggingParent)
+        public void Construct(Item displayingItem,GameField gameField, SlotDisplay storedAt, Transform draggingParent)
         {
-            _slotsHolder = slotsHolder;
+            _gameField = gameField;
             _storingSlot = storedAt;
             _draggingParent = draggingParent;
             _itemInstance = displayingItem;
@@ -66,7 +66,7 @@ namespace Sources.ItemBase
         private void OnDoubleClicked(PointerEventData data)
         {
             if(TryGetSlotDisplay(data, out SlotDisplay display))
-                _slotsHolder.TryMergeSlotsItems(_storingSlot.SlotInstance);
+                _gameField.TryMergeSlotsItems(_storingSlot.SlotInstance);
         }
 
         /// <summary>

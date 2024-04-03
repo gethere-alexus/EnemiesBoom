@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Infrastructure.Curtain;
 using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.AutoProcessesControll;
+using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.ProgressLoad;
 using Zenject;
 
 namespace Infrastructure.GameMachine
@@ -16,13 +18,16 @@ namespace Infrastructure.GameMachine
         private readonly Dictionary<Type, IState> _states; 
         private IState _activeState;
 
-        public GameStateMachine(SceneLoader sceneLoader, DiContainer diContainer, LoadingCurtain loadingCurtain)
+        public GameStateMachine(SceneLoader sceneLoader, DiContainer diContainer, ICoroutineRunner coroutineRunner,
+            LoadingCurtain loadingCurtain)
         {
             _states = new Dictionary<Type, IState>()
             {
                 [typeof(BootstrapState)] = new BootstrapState(sceneLoader, this, diContainer, loadingCurtain),
-                [typeof(LoadGameState)] = new LoadGameState(sceneLoader,this, loadingCurtain, diContainer.Resolve<IUIFactory>()),
-                [typeof(GameLoopState)] = new GameLoopState(this),
+                [typeof(LoadGameComponentsState)] = new LoadGameComponentsState(sceneLoader,this, loadingCurtain, diContainer.Resolve<IGameFieldFactory>()),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, diContainer),
+                [typeof(GameLoopState)] = new GameLoopState(diContainer.Resolve<IProgressProvider>(),
+                    diContainer.Resolve<IAutoProcessesController>(), coroutineRunner),
             };
         }
 

@@ -1,6 +1,6 @@
 ﻿using System;
+using Sources.GameFieldBase;
 using Sources.ItemBase;
-using Sources.SlotsHolderBase;
 
 namespace Sources.SlotBase
 {
@@ -10,24 +10,17 @@ namespace Sources.SlotBase
     /// </summary>
     public class Slot
     {
-        private readonly SlotsHolder _slotHolder;
+        private readonly GameField _slotHolder;
         
         private Item _storingItem;
         private bool _isLocked;
         public event Action SlotUpdated;
         public event Action StoredItemUpdated;
 
-        public Slot(SlotsHolder slotHolder, bool isLocked)
+        public Slot(GameField slotHolder)
         {
             _slotHolder = slotHolder;
-            _isLocked = isLocked;
-        }
-
-        public Slot(SlotsHolder slotHolder, Item storingItem)
-        {
-            _slotHolder = slotHolder;
-            _storingItem = storingItem;
-            _isLocked = false;
+            _isLocked = true;
         }
 
         /// <summary>
@@ -110,13 +103,11 @@ namespace Sources.SlotBase
 
         private void OnSlotUpdated()
         {
-            _slotHolder.SaveProgress();
             SlotUpdated?.Invoke();
         }
 
         private void OnStoringItemUpdated()
         {
-            _slotHolder.SaveProgress();
             StoredItemUpdated?.Invoke();
         }
 

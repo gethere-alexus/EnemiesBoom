@@ -1,8 +1,8 @@
 ﻿using System;
-using Infrastructure.Configurations.Anvil;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.Anvil;
-using Infrastructure.Services.ProgressProvider;
+using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.ProgressLoad.Connection;
 
 namespace Sources.AnvilBase.AnvilExtensions.ChargesRefiller
 {
@@ -14,30 +14,11 @@ namespace Sources.AnvilBase.AnvilExtensions.ChargesRefiller
         private readonly Anvil _anvil;
         private readonly IProgressProvider _progressProvider;
         private int _charges;
-        
-        public event Action RefillChargeSpent;
-        
-        /// <summary>
-        /// Loads data from config
-        /// </summary>
-        public AnvilChargesRefill(Anvil anvil, IProgressProvider progressProvider, AnvilRefillConfig anvilRefillConfig, Action onConstructed = null)
-        {
-            _anvil = anvil;
-            _progressProvider = progressProvider;
-            _charges = anvilRefillConfig.RefillCharges;
-            onConstructed?.Invoke();
-        }
 
-        /// <summary>
-        /// Loads data from save 
-        /// </summary>
-        public AnvilChargesRefill(Anvil anvil, IProgressProvider progressProvider, AnvilRefillData data, Action onConstructed = null)
-        {
+        public event Action RefillChargesUpdated;
+
+        public AnvilChargesRefill(Anvil anvil) =>
             _anvil = anvil;
-            _progressProvider = progressProvider;
-            _charges = data.ChargesLeft;
-            onConstructed?.Invoke();
-        }
 
         /// <summary>
         /// If anvil is not full - refills it.
@@ -49,30 +30,28 @@ namespace Sources.AnvilBase.AnvilExtensions.ChargesRefiller
                 _anvil.RefillCharges(out bool isOperationSucceeded);
                 if (isOperationSucceeded)
                     SpendRefillingCharge();
-                SaveProgress();
             }
         }
 
-        public void LoadProgress()
+        public AnvilRefillData SaveProgress() => new()
         {
-            AnvilRefillData save = _progressProvider.LoadProgress<AnvilRefillData>();
-            _charges = save.ChargesLeft;
-        }
+            Charges = _charges,
+        };
 
-        public void SaveProgress()
+        public void LoadProgress(GameProgress progress)
         {
-            AnvilRefillData toSave = new AnvilRefillData()
-            {
-                ChargesLeft = _charges,
-            };
-            
-            _progressProvider.SaveProgress(toSave);
+            _charges = progress.AnvilExtensions.AnvilRefill.Charges;
+            RefillChargesUpdated?.Invoke();
         }
+        
+
+        public void SaveProgress(GameProgress progress) => 
+            progress.AnvilExtensions.AnvilRefill.Charges = _charges;
 
         private void SpendRefillingCharge()
         {
             _charges--;
-            RefillChargeSpent?.Invoke();
+            RefillChargesUpdated?.Invoke();
         }
 
         public bool IsRefillable => _charges > 0 && !_anvil.IsFullOfCharges;

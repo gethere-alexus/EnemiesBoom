@@ -1,21 +1,18 @@
 ﻿using System;
-using Infrastructure.Configurations.Anvil;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.Anvil;
-using Infrastructure.Services.ProgressProvider;
+using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.ProgressLoad.Connection;
+using Sources.GameFieldBase;
 using Sources.ItemBase;
-using Sources.SlotsHolderBase;
 
 namespace Sources.AnvilBase
 {
     /// <summary>
     /// Creates and places the items on a grid.
-    /// Parametrized by AnvilConfig.
     /// </summary>
     public class Anvil : IProgressWriter
     {
-        private readonly SlotsHolder _slotsHolder;
-        private readonly IProgressProvider _progressProvider;
+        private readonly GameField _gameField;
 
         private int _maxCharges;
         private int _chargesLeft;
@@ -23,32 +20,9 @@ namespace Sources.AnvilBase
         private int _craftingItemLevel;
         public event Action ItemCrafted;
         public event Action ChargesUpdated;
-
-        /// <summary>
-        /// Constructs if save file is not found
-        /// </summary>
-        public Anvil(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilConfig anvilConfig)
-        {
-            _slotsHolder = slotsHolder;
-            _progressProvider = progressProvider;
-
-            _maxCharges = anvilConfig.MaxAnvilCharges;
-            _chargesLeft = _maxCharges;
-            _craftingItemLevel = anvilConfig.CraftingItemLevel;
-        }
-
-        /// <summary>
-        /// Constructs with information from save file
-        /// </summary>
-        public Anvil(SlotsHolder slotsHolder, IProgressProvider progressProvider, AnvilData anvilData)
-        {
-            _slotsHolder = slotsHolder;
-            _progressProvider = progressProvider;
-
-            _maxCharges = anvilData.MaxCharges;
-            _chargesLeft = anvilData.ChargesLeft;
-            _craftingItemLevel = anvilData.CraftingItemLevel;
-        }
+        
+        public Anvil(GameField gameField) => 
+            _gameField = gameField;
 
         /// <summary>
         /// Adds max-charges to already existing amount of charges, if it is not full
@@ -70,7 +44,7 @@ namespace Sources.AnvilBase
         {
             if (_chargesLeft > 0)
             {
-                _slotsHolder.PlaceItem(new Item(_craftingItemLevel), out bool isSucceeded);
+                _gameField.PlaceItem(new Item(_craftingItemLevel), out bool isSucceeded);
 
                 if (isSucceeded)
                 {
@@ -80,33 +54,27 @@ namespace Sources.AnvilBase
             }
         }
 
-        /// <param name="amount">amount of charges to add</param>
         public void AddCharge(int amount)
         {
             _chargesLeft += amount;
-            SaveProgress();
             ChargesUpdated?.Invoke();
         }
 
-        public void SaveProgress()
+        public void LoadProgress(GameProgress progress)
         {
-            AnvilData toSave = new AnvilData()
-            {
-                ChargesLeft = _chargesLeft,
-                CraftingItemLevel = _craftingItemLevel,
-                MaxCharges = _maxCharges,
-            };
-                
-            _progressProvider.SaveProgress(toSave);
+            _maxCharges = progress.Anvil.MaxCharges;
+            _chargesLeft = progress.Anvil.ChargesLeft;
+            _craftingItemLevel = progress.Anvil.CraftingItemLevel;
+            
+            ChargesUpdated?.Invoke();
         }
 
-        public void LoadProgress()
-        {
-            AnvilData loadedData = _progressProvider.LoadProgress<AnvilData>();
 
-            _maxCharges = loadedData.MaxCharges;
-            _chargesLeft = loadedData.ChargesLeft;
-            _craftingItemLevel = loadedData.CraftingItemLevel;
+        public void SaveProgress(GameProgress progress)
+        {
+            progress.Anvil.MaxCharges = _maxCharges;
+            progress.Anvil.ChargesLeft = _chargesLeft;
+            progress.Anvil.CraftingItemLevel = _craftingItemLevel;
         }
 
         /// <summary>
@@ -115,7 +83,6 @@ namespace Sources.AnvilBase
         private void SpendCharge()
         {
             _chargesLeft--;
-            SaveProgress();
             ChargesUpdated?.Invoke();
         }
 

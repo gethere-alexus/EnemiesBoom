@@ -1,9 +1,9 @@
 using Infrastructure.ProgressData.Field;
+using Infrastructure.ProgressData.Field.Slot;
 using Infrastructure.ProgressData.Item;
-using Infrastructure.ProgressData.Slot;
+using Sources.GameFieldBase;
 using Sources.ItemBase;
 using Sources.SlotBase;
-using Sources.SlotsHolderBase;
 
 namespace Infrastructure.Extensions.DataExtensions
 {
@@ -29,7 +29,7 @@ namespace Infrastructure.Extensions.DataExtensions
         /// <summary>
         /// Converts Slots array to JSON convertable format
         /// </summary>
-        public static FieldData ToSerializable(this Slot[] grid)
+        public static GameFieldData ToSerializable(this Slot[] grid)
         {
             SlotData[] serializableField = new SlotData[grid.Length];
 
@@ -38,7 +38,7 @@ namespace Infrastructure.Extensions.DataExtensions
                 serializableField[i] = grid[i].ToSerializable();
             }
 
-            FieldData toReturn = new FieldData()
+            GameFieldData toReturn = new GameFieldData()
             {
                 Grid = serializableField,
             };
@@ -62,14 +62,21 @@ namespace Infrastructure.Extensions.DataExtensions
         /// <summary>
         /// Converts Slot from JSON convertable format.
         /// </summary>
-        public static Slot FromSerializable(this SlotData slot, SlotsHolder slotsHolder)
+        public static Slot FromSerializable(this SlotData slot, GameField gameField)
         {
             Slot toReturn;
-            
+
             if (!slot.IsLocked && slot.StoringItem.Level != 0)
-                toReturn = new Slot(slotsHolder, slot.StoringItem.FromSerializable());
+            {
+                toReturn = new Slot(gameField);
+                toReturn.PutItem(slot.StoringItem.FromSerializable());
+            }
             else
-                toReturn = new Slot(slotsHolder,slot.IsLocked);
+            {
+                toReturn = new Slot(gameField);
+                if (!slot.IsLocked)
+                    toReturn.Unlock();
+            }
 
             return toReturn;
         }
@@ -83,13 +90,13 @@ namespace Infrastructure.Extensions.DataExtensions
         /// <summary>
         /// Converts Grid data from JSON convertable format.
         /// </summary>
-        public static Slot[] FromSerializable(this FieldData serializableField, SlotsHolder slotsHolder)
+        public static Slot[] FromSerializable(this GameFieldData serializableGameField, GameField gameField)
         {
-            Slot[] toReturn = new Slot[serializableField.Grid.Length];
+            Slot[] toReturn = new Slot[serializableGameField.Grid.Length];
 
             for (int i = 0; i < toReturn.Length; i++)
             {
-                toReturn[i] = serializableField.Grid[i].FromSerializable(slotsHolder);
+                toReturn[i] = serializableGameField.Grid[i].FromSerializable(gameField);
             }
 
             return toReturn;

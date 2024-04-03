@@ -1,5 +1,8 @@
 ﻿using System.Collections;
-using Infrastructure.Configurations.Anvil;
+using Infrastructure.ProgressData;
+using Infrastructure.Services.AutoProcessesControll.Connection;
+using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.ProgressLoad.Connection;
 using UnityEngine;
 
 namespace Sources.AnvilBase.AnvilExtensions.AutoUse
@@ -8,30 +11,36 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoUse
     /// Automatically uses the anvil, creating the items
     /// Parametrized by AnvilAutoUseConfig.
     /// </summary>
-    public class AnvilAutoUse : MonoBehaviour
+    public class AnvilAutoUse : MonoBehaviour, IAutoProcessController, IProgressWriter
     {
-        private float _usingCooldown;
         private Anvil _anvil;
         
-        /// <param name="anvil">Applying anvil</param>
-        /// <param name="autoUseConfig">configuration</param>
-        public void Construct(Anvil anvil, AnvilAutoUseConfig autoUseConfig)
+        private float _usingCooldown;
+
+        public void Construct(Anvil anvil)
         {
             _anvil = anvil;
-            _usingCooldown = autoUseConfig.UsingCooldown;
-            _anvil.ItemCrafted += RestartAutoCreation;
-
-            StartCoroutine(CreateItemsAutomatically());
+            _anvil.ItemCrafted += RestartProcess;
+            
         }
 
-        /// <summary>
-        /// Restarts auto-creation coroutine
-        /// </summary>
-        private void RestartAutoCreation()
+        public void StartProcess() =>
+            StartCoroutine(CreateItemsAutomatically());
+
+        public void RestartProcess()
         {
             StopAllCoroutines();
             StartCoroutine(CreateItemsAutomatically());
         }
+
+        public void StopProcess() =>
+            StopAllCoroutines();
+
+        public void LoadProgress(GameProgress progress) => 
+            _usingCooldown = progress.AnvilExtensions.AnvilAutoUse.UsingCoolDown;
+
+        public void SaveProgress(GameProgress progress) => 
+            progress.AnvilExtensions.AnvilAutoUse.UsingCoolDown = _usingCooldown;
 
 
         /// <summary>
@@ -48,7 +57,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoUse
 
         private void OnDisable()
         {
-            _anvil.ItemCrafted -= RestartAutoCreation;
+            _anvil.ItemCrafted -= RestartProcess;
             StopAllCoroutines();
         }
     }
