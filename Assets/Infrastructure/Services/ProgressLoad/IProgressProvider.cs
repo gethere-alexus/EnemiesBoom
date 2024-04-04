@@ -21,6 +21,8 @@ namespace Infrastructure.Services.ProgressLoad
         /// <param name="reader"></param>
         void RegisterObserver(IProgressReader reader);
 
+        void ClearObservers();
+
         /// <summary>
         /// List of progress readers
         /// </summary>

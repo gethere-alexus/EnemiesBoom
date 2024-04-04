@@ -14,6 +14,7 @@ namespace Infrastructure.GameMachine.States
 
         private readonly GameStateMachine _gameStateMachine;
 
+
         public LoadProgressState(GameStateMachine gameStateMachine, DiContainer diContainer)
         {
             _gameStateMachine = gameStateMachine;
@@ -23,7 +24,7 @@ namespace Infrastructure.GameMachine.States
         public void Enter()
         {
             GameProgress progress = _progressProvider.GameProgress;
-            
+                    
             foreach (var reader in _progressProvider.ProgressReaders)
             {
                 reader.LoadProgress(progress);
@@ -31,6 +32,7 @@ namespace Infrastructure.GameMachine.States
             
             _gameStateMachine.Enter<GameLoopState>();
         }
+        
 
         public void Exit()
         {

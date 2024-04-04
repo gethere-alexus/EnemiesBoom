@@ -4,6 +4,7 @@ using Infrastructure.Curtain;
 using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.AutoProcessesControll;
+using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
 using Infrastructure.Services.ProgressLoad;
 using Zenject;
@@ -23,11 +24,13 @@ namespace Infrastructure.GameMachine
         {
             _states = new Dictionary<Type, IState>()
             {
-                [typeof(BootstrapState)] = new BootstrapState(sceneLoader, this, diContainer, loadingCurtain),
-                [typeof(LoadGameComponentsState)] = new LoadGameComponentsState(sceneLoader,this, loadingCurtain, diContainer.Resolve<IGameFieldFactory>()),
+                [typeof(BootstrapState)] = new BootstrapState(this, diContainer, sceneLoader,coroutineRunner),
+                [typeof(LoadGameState)] = new LoadGameState(this, diContainer.Resolve<IGameFieldFactory>(), sceneLoader, 
+                    diContainer.Resolve<IConnectionChecker>(), loadingCurtain),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, diContainer),
                 [typeof(GameLoopState)] = new GameLoopState(diContainer.Resolve<IProgressProvider>(),
                     diContainer.Resolve<IAutoProcessesController>(), coroutineRunner),
+                [typeof(GameStoppedState)] = new GameStoppedState(sceneLoader),
             };
         }
 

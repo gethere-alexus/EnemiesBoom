@@ -41,7 +41,11 @@ namespace Infrastructure.GameMachine.States
         public void Exit()
         {
             _coroutineRunner.StopCoroutine(StartAutoSaving());
-           _autoProcessesController.StopAllProcesses();
+            _autoProcessesController.StopAllProcesses();
+            _progressProvider.SaveProgress();
+            
+            _progressProvider.ClearObservers();
+            _autoProcessesController.ClearControllers();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services.AssetsProvider;
+﻿using Infrastructure.Paths;
+using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControll;
 using Infrastructure.Services.Factories.AnvilFactory;
 using Infrastructure.Services.Factories.UI;
@@ -66,6 +67,7 @@ namespace Infrastructure.Services.Factories.Field
         private void ConstructSlotsUnlocker()
         {
             _slotsUnlocker = _gameFieldDisplay.GetComponentInChildren<SlotsUnlocker>();
+            _slotsUnlocker.Construct(_gameFieldDisplay.GameFieldInstance);
         }
 
         /// <summary>

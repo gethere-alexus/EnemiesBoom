@@ -17,7 +17,7 @@ namespace Sources.GameFieldBase
 
         private readonly Slot[] _grid;
         
-        public event Action SlotsMerged;
+        public event Action SlotsMerged, StoredItemUpdated;
         
         public GameField(IProgressProvider progressProvider)
         {
@@ -134,6 +134,9 @@ namespace Sources.GameFieldBase
             return null;
         }
 
+
+        public void OnStoredItemUpdated() => 
+            StoredItemUpdated?.Invoke();
 
         public void SaveProgress(GameProgress progress) => 
             progress.GameField = _grid.ToSerializable();

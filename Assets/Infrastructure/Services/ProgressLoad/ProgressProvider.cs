@@ -12,10 +12,13 @@ namespace Infrastructure.Services.ProgressLoad
     public class ProgressProvider : IProgressProvider
     {
         public List<IProgressReader> ProgressReaders { get; } = new List<IProgressReader>();
+
         public List<IProgressWriter> ProgressWriters { get; } = new List<IProgressWriter>();
 
         private GameProgress _gameProgress;
+
         private const string SaveName = "GameProgress.json";
+
         private readonly string _savePath;
 
         public ProgressProvider()
@@ -42,6 +45,12 @@ namespace Infrastructure.Services.ProgressLoad
 
             if (reader is IProgressWriter writer)
                 ProgressWriters.Add(writer);
+        }
+
+        public void ClearObservers()
+        {
+            ProgressReaders.Clear();
+            ProgressWriters.Clear();
         }
 
         private GameProgress LoadProgress()

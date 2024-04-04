@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Curtain;
 using Infrastructure.GameMachine;
+using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
 using Zenject;
 

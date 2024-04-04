@@ -40,10 +40,7 @@ namespace Sources.ItemBase
 
         public void OnEndDrag(PointerEventData eventData) =>
            OnItemDragReleased(eventData);
-
-        /// <summary>
-        /// To track double clicking
-        /// </summary>
+        
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.clickCount == ClicksToMerge)

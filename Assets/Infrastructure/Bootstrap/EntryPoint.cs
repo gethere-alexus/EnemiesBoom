@@ -23,5 +23,7 @@ namespace Infrastructure.Bootstrap
             
             DontDestroyOnLoad(this);
         }
+
+        public Game GameInstance => _gameInstance;
     }
 }

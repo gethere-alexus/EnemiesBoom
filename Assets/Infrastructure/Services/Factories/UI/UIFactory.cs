@@ -1,3 +1,4 @@
+using Infrastructure.Paths;
 using Infrastructure.Services.AssetsProvider;
 using UnityEngine;
 
@@ -20,6 +21,6 @@ namespace Infrastructure.Services.Factories.UI
         
 
         public Canvas UIRoot => 
-            _uiRoot ?? CreateUIRoot();
+            _uiRoot == null ? CreateUIRoot() : _uiRoot;
     }
 }

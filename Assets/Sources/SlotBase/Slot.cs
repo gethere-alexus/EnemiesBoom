@@ -108,6 +108,7 @@ namespace Sources.SlotBase
 
         private void OnStoringItemUpdated()
         {
+            _slotHolder.OnStoredItemUpdated();
             StoredItemUpdated?.Invoke();
         }
 

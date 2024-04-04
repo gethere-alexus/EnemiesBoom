@@ -15,16 +15,13 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
 
         public void Construct(GameField gameField)
         {
+            _gameField = gameField;
+            
             _unlockingLevel = 5;
             _unlockingStep = 1;
             _unlockingSlotsPerStep = 2;
 
-            foreach (var slot in gameField.Grid)
-            {
-                slot.StoredItemUpdated += OnStoredItemUpdated;
-            }
-
-            _gameField = gameField;
+            _gameField.StoredItemUpdated += OnStoredItemUpdated;
         }
 
         private void OnStoredItemUpdated() => 
@@ -51,12 +48,7 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
             _unlockingLevel += _unlockingStep;
         }
 
-        private void OnDisable()
-        {
-            foreach (var slot in _gameField.Grid)
-            {
-                slot.StoredItemUpdated -= OnStoredItemUpdated;
-            }
-        }
+        private void OnDisable() => 
+            _gameField.StoredItemUpdated -= OnStoredItemUpdated;
     }
 }

@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 4fb50c0e9d3676f409628cce5b886e94
+  - enabled: 1
+    path: Assets/Scenes/GameStop.unity
+    guid: df2985beb76f74b439bb8401b57029c4
   m_configObjects: {}

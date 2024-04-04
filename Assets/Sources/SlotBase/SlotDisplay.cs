@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services.AssetsProvider;
+﻿using Infrastructure.Paths;
+using Infrastructure.Services.AssetsProvider;
 using Sources.GameFieldBase;
 using Sources.ItemBase;
 using UnityEngine;
