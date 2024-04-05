@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Infrastructure.Curtain;
 using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
-using Infrastructure.Services.AutoProcessesControll;
+using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
 using Infrastructure.Services.ProgressLoad;

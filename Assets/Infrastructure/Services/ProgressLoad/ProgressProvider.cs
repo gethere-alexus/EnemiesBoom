@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
+using Google.Apis.Json;
 using Infrastructure.ProgressData;
 using Infrastructure.ProgressData.AnvilData;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.ProgressData.Field.Slot;
 using Infrastructure.Services.ProgressLoad.Connection;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Infrastructure.Services.ProgressLoad
@@ -34,8 +36,8 @@ namespace Infrastructure.Services.ProgressLoad
             {
                 progressWriter.SaveProgress(_gameProgress);
             }
-            
-            string json = JsonUtility.ToJson(_gameProgress);
+
+            string json = JsonConvert.SerializeObject(_gameProgress);
             File.WriteAllText(_savePath, json);
         }
 
@@ -58,7 +60,7 @@ namespace Infrastructure.Services.ProgressLoad
             if (File.Exists(_savePath))
             {
                 string json = File.ReadAllText(_savePath);
-                GameProgress toReturn = JsonUtility.FromJson<GameProgress>(json);
+                GameProgress toReturn = JsonConvert.DeserializeObject<GameProgress>(json);
                 return toReturn;
             }
             else

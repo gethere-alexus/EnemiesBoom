@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Infrastructure.Services.AutoProcessesControll.Connection;
+using Infrastructure.Services.AutoProcessesControl.Connection;
 
-namespace Infrastructure.Services.AutoProcessesControll
+namespace Infrastructure.Services.AutoProcessesControl
 {
     public class AutoProcessesController : IAutoProcessesController
     {

@@ -5,7 +5,7 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
     /// <summary>
     /// Unlocks slots if item on the grid is reached certain level
     /// </summary>
-    public class SlotsUnlocker : MonoBehaviour
+    public class SlotsUnlocker : MonoBehaviour, IConfigReader
     {
         private GameField _gameField;
         
@@ -50,5 +50,10 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
 
         private void OnDisable() => 
             _gameField.StoredItemUpdated -= OnStoredItemUpdated;
+
+        public void LoadConfiguration()
+        {
+            
+        }
     }
 }

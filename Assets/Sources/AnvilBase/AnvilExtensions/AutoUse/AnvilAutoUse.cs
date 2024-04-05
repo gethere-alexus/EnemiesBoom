@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Infrastructure.ProgressData;
-using Infrastructure.Services.AutoProcessesControll.Connection;
+using Infrastructure.Services.AutoProcessesControl.Connection;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
 using UnityEngine;

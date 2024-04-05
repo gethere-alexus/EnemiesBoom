@@ -1,4 +1,4 @@
-namespace Infrastructure.Services.AutoProcessesControll.Connection
+namespace Infrastructure.Services.AutoProcessesControl.Connection
 {
     public interface IAutoProcessController
     {

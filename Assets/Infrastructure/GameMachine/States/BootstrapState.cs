@@ -1,6 +1,7 @@
 ﻿using Infrastructure.SceneLoad;
 using Infrastructure.Services.AssetsProvider;
-using Infrastructure.Services.AutoProcessesControll;
+using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
 using Infrastructure.Services.Factories.UI;
@@ -20,10 +21,11 @@ namespace Infrastructure.GameMachine.States
         private readonly GameStateMachine _gameStateMachine;
         private readonly DiContainer _diContainer;
         private readonly ICoroutineRunner _coroutineRunner;
-
+        
         private const int BootstrapSceneIndex = 0;
 
-        public BootstrapState(GameStateMachine gameStateMachine, DiContainer diContainer, SceneLoader sceneLoader,ICoroutineRunner coroutineRunner)
+        public BootstrapState(GameStateMachine gameStateMachine, DiContainer diContainer, SceneLoader sceneLoader,
+            ICoroutineRunner coroutineRunner)
         {
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
@@ -40,6 +42,7 @@ namespace Infrastructure.GameMachine.States
         {
             // services instantiating
             IPrefabLoader prefabLoader = new PrefabLoader();
+            IConfigLoader configLoader = new ConfigLoader(prefabLoader);
             IAssetProvider assetProvider = new AssetProvider(prefabLoader);
             IWindowsProvider windowsProvider = new WindowsProvider(prefabLoader);
             IConnectionChecker connectionChecker = new ConnectionChecker(_gameStateMachine,windowsProvider,_coroutineRunner);
@@ -51,6 +54,7 @@ namespace Infrastructure.GameMachine.States
             // services are being registered to container
             _diContainer.Bind<IConnectionChecker>().FromInstance(connectionChecker).AsSingle().NonLazy();
             _diContainer.Bind<IPrefabLoader>().FromInstance(prefabLoader).AsSingle().NonLazy();
+            _diContainer.Bind<IConfigLoader>().FromInstance(configLoader).AsSingle().NonLazy();
             _diContainer.Bind<IAssetProvider>().FromInstance(assetProvider).AsSingle().NonLazy();
             _diContainer.Bind<IWindowsProvider>().FromInstance(windowsProvider).AsCached().NonLazy();
             _diContainer.Bind<IProgressProvider>().FromInstance(progressProvider).AsSingle().NonLazy();

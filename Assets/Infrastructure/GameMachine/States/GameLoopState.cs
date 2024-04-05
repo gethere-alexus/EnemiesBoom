@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Infrastructure.SceneLoad;
-using Infrastructure.Services.AutoProcessesControll;
+using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ProgressLoad;
 using UnityEngine;
 
