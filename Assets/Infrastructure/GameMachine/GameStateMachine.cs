@@ -7,6 +7,7 @@ using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.Factories.HeroesStorage;
 using Infrastructure.Services.ProgressLoad;
 using Zenject;
 
@@ -27,7 +28,7 @@ namespace Infrastructure.GameMachine
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, diContainer, sceneLoader,coroutineRunner),
                 [typeof(LoadGameState)] = new LoadGameState(this, diContainer.Resolve<IGameFieldFactory>(), sceneLoader, 
-                    diContainer.Resolve<IConnectionChecker>(), loadingCurtain),
+                    diContainer.Resolve<IConnectionChecker>(), loadingCurtain, diContainer.Resolve<IHeroesStorageFactory>()),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, diContainer.Resolve<IProgressProvider>(), diContainer.Resolve<IConfigLoader>()),
                 [typeof(GameLoopState)] = new GameLoopState(diContainer.Resolve<IProgressProvider>(),
                     diContainer.Resolve<IAutoProcessesController>(), coroutineRunner, diContainer.Resolve<IConfigLoader>()),

@@ -1,6 +1,7 @@
+using Infrastructure.Services.WindowProvider;
 using UnityEngine;
 
-namespace Infrastructure.Services.WindowProvider
+namespace Sources.Windows
 {
     public abstract class WindowBase : MonoBehaviour
     {

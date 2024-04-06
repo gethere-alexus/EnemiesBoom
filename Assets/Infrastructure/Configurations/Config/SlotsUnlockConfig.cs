@@ -1,6 +1,6 @@
 using System;
 
-namespace Infrastructure.Configurations
+namespace Infrastructure.Configurations.Config
 {
     [Serializable]
     public class SlotsUnlockConfig 

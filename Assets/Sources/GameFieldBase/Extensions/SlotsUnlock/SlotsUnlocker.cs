@@ -1,4 +1,5 @@
-﻿using Infrastructure.Configurations.Config;
+﻿using System;
+using Infrastructure.Configurations.Config;
 using Infrastructure.Services.ConfigLoad;
 using UnityEngine;
 
@@ -10,10 +11,12 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
     public class SlotsUnlocker : MonoBehaviour, IConfigReader
     {
         private GameField _gameField;
-        
+
         private int _unlockingLevel;
         private int _unlockingStep;
         private int _unlockingSlotsPerStep;
+        public event Action ConfigLoaded;
+
 
         public void Construct(GameField gameField)
         {
@@ -53,9 +56,10 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
 
         public void LoadConfiguration(ConfigContent configContainer)
         {
-            _unlockingLevel = configContainer.SlotsUnlockConfig.StartUnlockingLevel;
-            _unlockingStep = configContainer.SlotsUnlockConfig.UnlockStep;
-            _unlockingSlotsPerStep = configContainer.SlotsUnlockConfig.UnlockSlotsPerStep;
+            _unlockingLevel = configContainer.SlotsUnlock.StartUnlockingLevel;
+            _unlockingStep = configContainer.SlotsUnlock.UnlockStep;
+            _unlockingSlotsPerStep = configContainer.SlotsUnlock.UnlockSlotsPerStep;
+            ConfigLoaded?.Invoke();
         }
     }
 }

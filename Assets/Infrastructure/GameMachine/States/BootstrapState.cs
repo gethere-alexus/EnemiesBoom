@@ -4,6 +4,7 @@ using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.Factories.HeroesStorage;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.ProgressLoad;
@@ -50,6 +51,7 @@ namespace Infrastructure.GameMachine.States
             IAutoProcessesController autoProcessesController = new AutoProcessesController();
             IUIFactory uiFactory = new UIFactory(assetProvider);
             IGameFieldFactory gameFieldFactory = new GameFieldFactory(assetProvider, autoProcessesController, uiFactory, progressProvider, configLoader);
+            IHeroesStorageFactory heroesStorageFactory = new HeroesStorageFactory(uiFactory,assetProvider, configLoader);
 
             // services are being registered to container
             _diContainer.Bind<IConnectionChecker>().FromInstance(connectionChecker).AsSingle().NonLazy();
@@ -61,6 +63,7 @@ namespace Infrastructure.GameMachine.States
             _diContainer.Bind<IUIFactory>().FromInstance(uiFactory).AsSingle().NonLazy();
             _diContainer.Bind<IGameFieldFactory>().FromInstance(gameFieldFactory).AsSingle().NonLazy();
             _diContainer.Bind<IAutoProcessesController>().FromInstance(autoProcessesController).AsSingle().NonLazy();
+            _diContainer.Bind<IHeroesStorageFactory>().FromInstance(heroesStorageFactory).AsSingle().NonLazy();
         }
 
         public void Enter()

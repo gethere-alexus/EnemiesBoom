@@ -2,6 +2,7 @@
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.Factories.HeroesStorage;
 using Infrastructure.Services.WindowProvider;
 
 namespace Infrastructure.GameMachine.States
@@ -18,14 +19,15 @@ namespace Infrastructure.GameMachine.States
         private readonly IConnectionChecker _connectionChecker;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
+        private readonly IHeroesStorageFactory _heroesStorageFactory;
 
         public LoadGameState(GameStateMachine gameStateMachine, IGameFieldFactory gameFieldFactory,
-            SceneLoader sceneLoader,
-            IConnectionChecker connectionChecker, LoadingCurtain loadingCurtain)
+            SceneLoader sceneLoader, IConnectionChecker connectionChecker, LoadingCurtain loadingCurtain, IHeroesStorageFactory heroesStorageFactory)
         {
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
             _loadingCurtain = loadingCurtain;
+            _heroesStorageFactory = heroesStorageFactory;
             _gameFieldFactory = gameFieldFactory;
             _connectionChecker = connectionChecker;
         }
@@ -52,6 +54,12 @@ namespace Infrastructure.GameMachine.States
         }
 
         private void CreateGameComponents()
+        {
+            CreateGameField();
+            _heroesStorageFactory.CreateActiveHeroesStorage();
+        }
+
+        private void CreateGameField()
         {
             _gameFieldFactory.CreateField();
             _gameFieldFactory.CreateFieldControl();

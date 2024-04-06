@@ -16,12 +16,36 @@ MonoBehaviour:
   documentId: 1mbjvTjFjZ12JCrWIimBjXHc0_YV0k5WEw55Y3mj7QA4
   selectedTogglesIds:
   - SlotsUnlockConfig
+  - Heroes
+  - ActiveHeroesHolder
+  - SlotsUnlock
   foldoutSerializationGUI: 0
   serializationOutputPath: ../../Configs
   serializationFileName: Configs.v0.1
   serializationFormat: 0
   ConfigContent:
-    SlotsUnlockConfig:
+    Heroes:
+    - ID: 0
+      Name: Bunny
+      Damage: 10
+      ReloadSpeed: 2
+      Price: 500
+      IsInitial: 1
+    - ID: 1
+      Name: Tiger
+      Damage: 50
+      ReloadSpeed: 4
+      Price: 1500
+      IsInitial: 0
+    - ID: 3
+      Name: Wolf
+      Damage: 100
+      ReloadSpeed: 4.5
+      Price: 5000
+      IsInitial: 0
+    ActiveHeroesHolder:
+      HeroesHolders: 5
+    SlotsUnlock:
       StartUnlockingLevel: 5
       UnlockStep: 1
       UnlockSlotsPerStep: 1

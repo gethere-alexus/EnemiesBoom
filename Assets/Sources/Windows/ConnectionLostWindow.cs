@@ -1,6 +1,4 @@
-using Infrastructure.Bootstrap;
-
-namespace Infrastructure.Services.WindowProvider
+namespace Sources.Windows
 {
     public class ConnectionLostWindow : WindowBase
     {
