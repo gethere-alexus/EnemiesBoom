@@ -1,38 +1,32 @@
-using System.IO;
+using System.Collections.Generic;
+using Infrastructure.Configurations.Config;
 using Infrastructure.Services.PrefabLoad;
-using UnityEngine;
+using Sources.GameFieldBase.Extensions.SlotsUnlock;
 
 namespace Infrastructure.Services.ConfigLoad
 {
     public class ConfigLoader : IConfigLoader
     {
-        private const string ConfigsPath = "Configurations/";
-        private readonly IPrefabLoader _prefabLoader;
+        private const string ConfigsPath = "Database/ConfigContainer";
 
-        public ConfigLoader(IPrefabLoader prefabLoader)
+        private readonly List<IConfigReader> _configReaders = new List<IConfigReader>();
+        private readonly ConfigContent _configContent;
+
+        public ConfigLoader(IPrefabLoader prefabLoader) => 
+            _configContent = prefabLoader.LoadPrefab<ConfigContainer>(ConfigsPath).ConfigContent;
+
+        public void LoadConfigs()
         {
-            _prefabLoader = prefabLoader;
+            foreach (var configReader in _configReaders)
+            {
+                configReader.LoadConfiguration(_configContent);
+            }
         }
 
-        public TConfig LoadConfiguration<TConfig>() where TConfig : ScriptableObject, IConfiguration
-        {
-            TConfig[] results = _prefabLoader.LoadAllPrefabs<TConfig>(ConfigsPath);
+        public void RegisterLoader(IConfigReader configLoader) => 
+            _configReaders.Add(configLoader);
 
-            if (results.Length == 0)
-                return null;
-
-            return results[0];
-        }
-
-        public TConfig LoadConfiguration<TConfig>(string path) where TConfig : ScriptableObject, IConfiguration
-        {
-            string searchingPath = Path.Combine(ConfigsPath, path);
-            TConfig[] results = _prefabLoader.LoadAllPrefabs<TConfig>(searchingPath);
-
-            if (results.Length == 0)
-                return null;
-
-            return results[0];
-        }
+        public void ClearLoaders() => 
+            _configReaders.Clear();
     }
 }

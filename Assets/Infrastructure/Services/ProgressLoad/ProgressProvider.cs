@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
-using Google.Apis.Json;
+using Infrastructure.Configurations.InitialProgress;
 using Infrastructure.ProgressData;
 using Infrastructure.ProgressData.AnvilData;
 using Infrastructure.ProgressData.Field;
-using Infrastructure.ProgressData.Field.Slot;
 using Infrastructure.Services.ProgressLoad.Connection;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Infrastructure.Services.ProgressLoad
@@ -37,7 +35,7 @@ namespace Infrastructure.Services.ProgressLoad
                 progressWriter.SaveProgress(_gameProgress);
             }
 
-            string json = JsonConvert.SerializeObject(_gameProgress);
+            string json = JsonUtility.ToJson(_gameProgress);
             File.WriteAllText(_savePath, json);
         }
 
@@ -57,68 +55,45 @@ namespace Infrastructure.Services.ProgressLoad
 
         private GameProgress LoadProgress()
         {
+            GameProgress toReturn;
             if (File.Exists(_savePath))
             {
                 string json = File.ReadAllText(_savePath);
-                GameProgress toReturn = JsonConvert.DeserializeObject<GameProgress>(json);
-                return toReturn;
+                toReturn = JsonUtility.FromJson<GameProgress>(json);
             }
             else
             {
-                return GetBaseProgress();
+                toReturn = GetInitialProgress();
             }
+
+            return toReturn;
         }
 
-        private GameProgress GetBaseProgress()
+        private GameProgress GetInitialProgress()
         {
-            SlotData[] baseGrid = new SlotData[40];
-            int toUnlock = 11;
-            for (int i = 0; i < baseGrid.Length; i++)
+            InitialProgressContent progressContent =
+                Resources.Load<InitialProgressContainer>("DataBase/ProgressContainer").InitProgressContent;
+            
+            GameProgress progress = new GameProgress()
             {
-                baseGrid[i] = new SlotData()
-                {
-                    IsLocked = i > toUnlock,
-                };
-            }   
-
-            GameProgress baseProgress = new GameProgress()
-            {
+                Anvil = progressContent.Anvil,
                 GameField = new GameFieldData()
                 {
-                    Grid = baseGrid,
-                },
-                FieldExtensions = new FieldExtensionsData()
-                {
-                    SlotsAutoMerger = new SlotsAutoMergerData()
-                    {
-                        UsageCoolDown = 25.0f,
-                    },
-                },
-                Anvil = new AnvilData()
-                {
-                    MaxCharges = 10,
-                    ChargesLeft = 10,
-                    CraftingItemLevel = 1,
+                    Grid = progressContent.InitialFieldData.ToArray(),
                 },
                 AnvilExtensions = new AnvilExtensionsData()
                 {
-                    AnvilAutoRefiller = new AnvilAutoRefillerData()
-                    {
-                        AmountChargesToAdd = 1,
-                        RefillCoolDown = 10.0f,
-                    },
-                    AnvilAutoUse = new AnvilAutoUseData()
-                    {
-                        UsingCoolDown = 15.0f,
-                    },
-                    AnvilRefill = new AnvilRefillData()
-                    {
-                        Charges = 10,
-                    },
+                    AnvilAutoRefiller  = progressContent.AutoRefiller,
+                    AnvilAutoUse = progressContent.AnvilAutoUsing,
+                    AnvilRefill = progressContent.AnvilRefilling
+                },
+                FieldExtensions = new FieldExtensionsData()
+                {
+                    SlotsAutoMerger  = progressContent.AutoMerger,
                 },
             };
 
-            return baseProgress;
+            return progress;
         }
 
         public GameProgress GameProgress => _gameProgress;

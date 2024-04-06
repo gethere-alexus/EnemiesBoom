@@ -49,7 +49,7 @@ namespace Infrastructure.GameMachine.States
             IProgressProvider progressProvider = new ProgressProvider();
             IAutoProcessesController autoProcessesController = new AutoProcessesController();
             IUIFactory uiFactory = new UIFactory(assetProvider);
-            IGameFieldFactory gameFieldFactory = new GameFieldFactory(assetProvider, autoProcessesController, uiFactory, progressProvider);
+            IGameFieldFactory gameFieldFactory = new GameFieldFactory(assetProvider, autoProcessesController, uiFactory, progressProvider, configLoader);
 
             // services are being registered to container
             _diContainer.Bind<IConnectionChecker>().FromInstance(connectionChecker).AsSingle().NonLazy();

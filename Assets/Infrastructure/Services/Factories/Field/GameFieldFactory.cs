@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Paths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.AnvilFactory;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.ProgressLoad;
@@ -19,17 +20,19 @@ namespace Infrastructure.Services.Factories.Field
         private readonly IAutoProcessesController _autoProcessesController;
         private readonly IUIFactory _uiFactory;
         private readonly IProgressProvider _progressProvider;
-        
+        private readonly IConfigLoader _configLoader;
+
         private Transform _slotsControl;
         private GameFieldDisplay _gameFieldDisplay;
         private SlotsUnlocker _slotsUnlocker;
 
-        public GameFieldFactory(IAssetProvider assetProvider, IAutoProcessesController autoProcessesController, IUIFactory uiFactory, IProgressProvider progressProvider)
+        public GameFieldFactory(IAssetProvider assetProvider, IAutoProcessesController autoProcessesController, IUIFactory uiFactory, IProgressProvider progressProvider, IConfigLoader configLoader)
         {
             _assetProvider = assetProvider;
             _autoProcessesController = autoProcessesController;
             _uiFactory = uiFactory;
             _progressProvider = progressProvider;
+            _configLoader = configLoader;
         }
         
         public void CreateField()
@@ -68,6 +71,8 @@ namespace Infrastructure.Services.Factories.Field
         {
             _slotsUnlocker = _gameFieldDisplay.GetComponentInChildren<SlotsUnlocker>();
             _slotsUnlocker.Construct(_gameFieldDisplay.GameFieldInstance);
+            
+            _configLoader.RegisterLoader(_slotsUnlocker);
         }
 
         /// <summary>

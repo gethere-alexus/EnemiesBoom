@@ -1,7 +1,9 @@
-namespace Sources.GameFieldBase.Extensions.SlotsUnlock
+using Infrastructure.Configurations.Config;
+
+namespace Infrastructure.Services.ConfigLoad
 {
     public interface IConfigReader
     {
-        void LoadConfiguration();
+        void LoadConfiguration(ConfigContent configContainer);
     }
 }

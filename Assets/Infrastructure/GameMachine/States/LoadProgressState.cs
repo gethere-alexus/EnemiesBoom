@@ -1,8 +1,8 @@
 using Infrastructure.ProgressData;
 using Infrastructure.Services.AssetsProvider;
+using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.Field;
 using Infrastructure.Services.ProgressLoad;
-using Zenject;
 
 namespace Infrastructure.GameMachine.States
 {
@@ -13,26 +13,36 @@ namespace Infrastructure.GameMachine.States
         private readonly IGameFieldFactory _gameFieldFactory;
 
         private readonly GameStateMachine _gameStateMachine;
+        private readonly IConfigLoader _configLoader;
 
 
-        public LoadProgressState(GameStateMachine gameStateMachine, DiContainer diContainer)
+        public LoadProgressState(GameStateMachine gameStateMachine, IProgressProvider progressProvider, IConfigLoader configLoader)
         {
             _gameStateMachine = gameStateMachine;
-            _progressProvider = diContainer.Resolve<IProgressProvider>();
+            _progressProvider = progressProvider;
+            _configLoader = configLoader;
         }
 
         public void Enter()
         {
+            LoadConfiguration();
+            LoadProgress();
+            _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        private void LoadConfiguration() => 
+            _configLoader.LoadConfigs();
+
+        private void LoadProgress()
+        {
             GameProgress progress = _progressProvider.GameProgress;
-                    
+
             foreach (var reader in _progressProvider.ProgressReaders)
             {
                 reader.LoadProgress(progress);
             }
-            
-            _gameStateMachine.Enter<GameLoopState>();
         }
-        
+
 
         public void Exit()
         {

@@ -4,6 +4,7 @@ using Infrastructure.Curtain;
 using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.Field;
 using Infrastructure.Services.ProgressLoad;
@@ -27,9 +28,9 @@ namespace Infrastructure.GameMachine
                 [typeof(BootstrapState)] = new BootstrapState(this, diContainer, sceneLoader,coroutineRunner),
                 [typeof(LoadGameState)] = new LoadGameState(this, diContainer.Resolve<IGameFieldFactory>(), sceneLoader, 
                     diContainer.Resolve<IConnectionChecker>(), loadingCurtain),
-                [typeof(LoadProgressState)] = new LoadProgressState(this, diContainer),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, diContainer.Resolve<IProgressProvider>(), diContainer.Resolve<IConfigLoader>()),
                 [typeof(GameLoopState)] = new GameLoopState(diContainer.Resolve<IProgressProvider>(),
-                    diContainer.Resolve<IAutoProcessesController>(), coroutineRunner),
+                    diContainer.Resolve<IAutoProcessesController>(), coroutineRunner, diContainer.Resolve<IConfigLoader>()),
                 [typeof(GameStoppedState)] = new GameStoppedState(sceneLoader),
             };
         }

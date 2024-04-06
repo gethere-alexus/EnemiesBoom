@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Infrastructure.Configurations.Config;
+using Infrastructure.Services.ConfigLoad;
+using UnityEngine;
 
 namespace Sources.GameFieldBase.Extensions.SlotsUnlock
 {
@@ -16,11 +18,9 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
         public void Construct(GameField gameField)
         {
             _gameField = gameField;
-            
             _unlockingLevel = 5;
             _unlockingStep = 1;
-            _unlockingSlotsPerStep = 2;
-
+            _unlockingSlotsPerStep = 1;
             _gameField.StoredItemUpdated += OnStoredItemUpdated;
         }
 
@@ -51,9 +51,11 @@ namespace Sources.GameFieldBase.Extensions.SlotsUnlock
         private void OnDisable() => 
             _gameField.StoredItemUpdated -= OnStoredItemUpdated;
 
-        public void LoadConfiguration()
+        public void LoadConfiguration(ConfigContent configContainer)
         {
-            
+            _unlockingLevel = configContainer.SlotsUnlockConfig.StartUnlockingLevel;
+            _unlockingStep = configContainer.SlotsUnlockConfig.UnlockStep;
+            _unlockingSlotsPerStep = configContainer.SlotsUnlockConfig.UnlockSlotsPerStep;
         }
     }
 }
