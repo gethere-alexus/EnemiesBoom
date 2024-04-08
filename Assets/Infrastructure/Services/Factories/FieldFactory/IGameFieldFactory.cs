@@ -1,9 +1,9 @@
-﻿namespace Infrastructure.Services.Factories.Field
+﻿namespace Infrastructure.Services.Factories.FieldFactory
 {
     /// <summary>
     /// Creates game field, its control and extensions
     /// </summary>
-    public interface IGameFieldFactory
+    public interface IGameFieldFactory : IService
     {
         
         /// <summary>

@@ -1,6 +1,6 @@
 namespace Infrastructure.Services.WindowProvider
 {
-    public interface IWindowsProvider
+    public interface IWindowsProvider : IService
     {
         
         void OpenWindow(WindowType window);

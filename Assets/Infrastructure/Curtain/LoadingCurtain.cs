@@ -39,10 +39,8 @@ namespace Infrastructure.Curtain
             StartCoroutine(HideSmoothly(_timeToHideCurtain));
         }
 
-        private void Awake()
-        {
+        private void Awake() => 
             DontDestroyOnLoad(this);
-        }
 
         private IEnumerator HideSmoothly(float timeToHide)
         {

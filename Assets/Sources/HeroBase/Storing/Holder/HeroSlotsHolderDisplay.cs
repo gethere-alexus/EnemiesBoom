@@ -1,3 +1,4 @@
+using Infrastructure.AssetsPaths;
 using Infrastructure.Services.AssetsProvider;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace Sources.HeroBase.Storing.Holder
             for (int i = 0; i < _heroSlotsHolderInstance.HeroSlots.Length; i++)
             {
                 var slotDisplay = _assetProvider.Instantiate<HeroSlotDisplay>
-                    ("Prefabs/UI/HeroSlot/HeroSlot", _heroesHolder);
+                    (HeroPaths.HeroSlot, _heroesHolder);
                 
                 slotDisplay.Construct(_heroSlotsHolderInstance.HeroSlots[i]);
             }

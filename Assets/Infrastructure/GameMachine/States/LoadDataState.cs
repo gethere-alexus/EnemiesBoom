@@ -1,12 +1,12 @@
 using Infrastructure.ProgressData;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.Factories.FieldFactory;
 using Infrastructure.Services.ProgressLoad;
 
 namespace Infrastructure.GameMachine.States
 {
-    public class LoadProgressState : IState
+    public class LoadDataState : IState
     {
         private readonly IProgressProvider _progressProvider;
         private readonly IAssetProvider _assetProvider;
@@ -16,7 +16,7 @@ namespace Infrastructure.GameMachine.States
         private readonly IConfigLoader _configLoader;
 
 
-        public LoadProgressState(GameStateMachine gameStateMachine, IProgressProvider progressProvider, IConfigLoader configLoader)
+        public LoadDataState(GameStateMachine gameStateMachine, IProgressProvider progressProvider, IConfigLoader configLoader)
         {
             _gameStateMachine = gameStateMachine;
             _progressProvider = progressProvider;

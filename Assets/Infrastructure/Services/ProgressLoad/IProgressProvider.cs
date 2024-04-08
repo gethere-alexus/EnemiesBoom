@@ -7,7 +7,7 @@ namespace Infrastructure.Services.ProgressLoad
     /// <summary>
     /// Provides saved progress 
     /// </summary>
-    public interface IProgressProvider
+    public interface IProgressProvider : IService
     {
         
         /// <summary>

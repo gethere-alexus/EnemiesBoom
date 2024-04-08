@@ -44,7 +44,7 @@ MonoBehaviour:
       Price: 5000
       IsInitial: 0
     ActiveHeroesHolder:
-      HeroesHolders: 5
+      HeroesHolders: 6
     SlotsUnlock:
       StartUnlockingLevel: 5
       UnlockStep: 1

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
-using Infrastructure.Paths;
+using Infrastructure.AssetsPaths;
+using Infrastructure.Services.AssetsProvider;
+using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.PrefabLoad;
 using Sources.Windows;
 using UnityEngine;
@@ -8,14 +10,18 @@ namespace Infrastructure.Services.WindowProvider
 {
     public class WindowsProvider : IWindowsProvider
     {
+        private readonly IUIFactory _uifactory;
+     
         private readonly Dictionary<WindowType, WindowBase> _windows;
-        private readonly Dictionary<WindowType, WindowBase> _openedWindows = new Dictionary<WindowType, WindowBase>();
+        private readonly Dictionary<WindowType, WindowBase> _openedWindows = new();
         
-        public WindowsProvider(IPrefabLoader prefabLoader)
+        public WindowsProvider(IUIFactory uifactory,IPrefabLoader prefabLoader)
         {
+            _uifactory = uifactory;
             _windows = new Dictionary<WindowType, WindowBase>()
             {
                 { WindowType.ConnectionLostWindow, prefabLoader.LoadPrefab<ConnectionLostWindow>(WindowPaths.ConnectionLost)},
+                { WindowType.HeroesInventory , prefabLoader.LoadPrefab<HeroesInventoryWindow>(WindowPaths.HeroesInventory)},
             };
         }
 
@@ -23,7 +29,7 @@ namespace Infrastructure.Services.WindowProvider
         {
             CloseWindow(window);
             
-            var windowInstance = Object.Instantiate(_windows[window]);
+            var windowInstance = Object.Instantiate(_windows[window], _uifactory.UIRoot.transform);
             _openedWindows.Add(window, windowInstance);
         }
 
@@ -31,7 +37,11 @@ namespace Infrastructure.Services.WindowProvider
         {
             if (_openedWindows.ContainsKey(window))
             {
-                _openedWindows[window].Close();
+                WindowBase toClose = _openedWindows[window];
+                
+                if (toClose != null)
+                    _openedWindows[window].Close();
+                
                 _openedWindows.Remove(window);
             }
         }

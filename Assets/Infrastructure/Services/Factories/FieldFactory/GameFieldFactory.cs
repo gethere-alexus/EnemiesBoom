@@ -1,4 +1,4 @@
-﻿using Infrastructure.Paths;
+﻿using Infrastructure.AssetsPaths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
@@ -11,7 +11,7 @@ using Sources.GameFieldBase.Extensions.ItemsSort;
 using Sources.GameFieldBase.Extensions.SlotsUnlock;
 using UnityEngine;
 
-namespace Infrastructure.Services.Factories.Field
+namespace Infrastructure.Services.Factories.FieldFactory
 {
     public class GameFieldFactory : IGameFieldFactory
     {
@@ -37,7 +37,7 @@ namespace Infrastructure.Services.Factories.Field
         
         public void CreateField()
         {
-            _gameFieldDisplay = _assetProvider.Instantiate<GameFieldDisplay>(AssetPaths.SlotsHolderUI, _uiFactory.UIRoot.transform);
+            _gameFieldDisplay = _assetProvider.Instantiate<GameFieldDisplay>(SlotPaths.SlotsHolderUI, _uiFactory.UIRoot.transform);
             _gameFieldDisplay.Construct(_assetProvider, _progressProvider);
             
             _progressProvider.RegisterObserver(_gameFieldDisplay.GameFieldInstance);
@@ -55,7 +55,7 @@ namespace Infrastructure.Services.Factories.Field
             if (_gameFieldDisplay == null)
                 CreateField();
 
-            _slotsControl = _assetProvider.Instantiate(AssetPaths.SlotsControlUI, _gameFieldDisplay.transform).transform;
+            _slotsControl = _assetProvider.Instantiate(SlotPaths.SlotsControlUI, _gameFieldDisplay.transform).transform;
             CreateAnvil();
         }
 

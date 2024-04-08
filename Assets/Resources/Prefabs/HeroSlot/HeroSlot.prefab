@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6725494582791005178}
   - component: {fileID: -3312105063018112083}
+  - component: {fileID: -3700204504205614918}
   m_Layer: 5
   m_Name: HeroSlot
   m_TagString: Untagged
@@ -49,6 +50,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c146d3548245c8ad78da8e62f8e0d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3700204504205614918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87533605049387708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 100
+  m_PreferredHeight: 100
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1525568342101456581
 GameObject:
   m_ObjectHideFlags: 0

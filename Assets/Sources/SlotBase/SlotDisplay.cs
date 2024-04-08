@@ -1,4 +1,4 @@
-﻿using Infrastructure.Paths;
+﻿using Infrastructure.AssetsPaths;
 using Infrastructure.Services.AssetsProvider;
 using Sources.GameFieldBase;
 using Sources.ItemBase;
@@ -69,7 +69,7 @@ namespace Sources.SlotBase
             
             if (!_slotInstance.IsEmpty)
             {
-                ItemDisplay itemDisplay = _assetProvider.Instantiate<ItemDisplay>(AssetPaths.Item, transform);
+                ItemDisplay itemDisplay = _assetProvider.Instantiate<ItemDisplay>(ItemPaths.Item, transform);
                 itemDisplay.Construct(_slotInstance.StoringItem ,_gameField,this, _itemDraggingParent);
             }
         }

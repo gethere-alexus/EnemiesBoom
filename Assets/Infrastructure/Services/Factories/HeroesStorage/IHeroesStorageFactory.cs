@@ -1,6 +1,6 @@
 namespace Infrastructure.Services.Factories.HeroesStorage
 {
-    public interface IHeroesStorageFactory
+    public interface IHeroesStorageFactory : IService
     {
         void CreateActiveHeroesStorage();
     }

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Paths;
+﻿using Infrastructure.AssetsPaths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ProgressLoad;
 using Sources.SlotBase;
@@ -31,7 +31,7 @@ namespace Sources.GameFieldBase
             ClearStorage();
             for (int i = 0; i < gridSlots; i++)
             {
-                SlotDisplay slotDisplay = assetProvider.Instantiate<SlotDisplay>(AssetPaths.SlotTemplate, _slotStorage);
+                SlotDisplay slotDisplay = assetProvider.Instantiate<SlotDisplay>(SlotPaths.SlotTemplate, _slotStorage);
                 slotDisplay.Construct(assetProvider, _gameFieldInstance, _itemDraggingParent);
                 
                 _gameFieldInstance.Grid[i] = slotDisplay.SlotInstance;

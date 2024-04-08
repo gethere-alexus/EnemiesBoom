@@ -1,3 +1,4 @@
+using Infrastructure.AssetsPaths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.UI;
@@ -7,7 +8,6 @@ namespace Infrastructure.Services.Factories.HeroesStorage
 {
     public class HeroesStorageFactory : IHeroesStorageFactory
     {
-        private const string HeroesStoragePath = "Prefabs/UI/HeroSlot/ActiveHeroes_Canvas";
         
         private readonly IUIFactory _uiFactory;
         private readonly IAssetProvider _assetProvider;
@@ -24,7 +24,7 @@ namespace Infrastructure.Services.Factories.HeroesStorage
 
         public void CreateActiveHeroesStorage()
         {
-            _heroSlotsHolderDisplay = _assetProvider.Instantiate<HeroSlotsHolderDisplay>(HeroesStoragePath, _uiFactory.UIRoot.transform);
+            _heroSlotsHolderDisplay = _assetProvider.Instantiate<HeroSlotsHolderDisplay>(HeroPaths.HeroesStoragePath, _uiFactory.UIRoot.transform);
             _heroSlotsHolderDisplay.Construct(_assetProvider);
             
             _configLoader.RegisterLoader(_heroSlotsHolderDisplay.HeroSlotsHolderInstance);

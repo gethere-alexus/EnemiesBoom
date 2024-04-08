@@ -1,9 +1,10 @@
-﻿using Infrastructure.SceneLoad;
+﻿using Infrastructure.Extensions;
+using Infrastructure.SceneLoad;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ConnectionCheck;
-using Infrastructure.Services.Factories.Field;
+using Infrastructure.Services.Factories.FieldFactory;
 using Infrastructure.Services.Factories.HeroesStorage;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.PrefabLoad;
@@ -16,13 +17,11 @@ namespace Infrastructure.GameMachine.States
     /// <summary>
     /// State where the services are being registered
     /// </summary>
-    public class BootstrapState : IState 
+    public class BootstrapState : IState
     {
         private readonly SceneLoader _sceneLoader;
         private readonly GameStateMachine _gameStateMachine;
-        private readonly DiContainer _diContainer;
-        private readonly ICoroutineRunner _coroutineRunner;
-        
+
         private const int BootstrapSceneIndex = 0;
 
         public BootstrapState(GameStateMachine gameStateMachine, DiContainer diContainer, SceneLoader sceneLoader,
@@ -30,54 +29,55 @@ namespace Infrastructure.GameMachine.States
         {
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
-            _diContainer = diContainer;
-            _coroutineRunner = coroutineRunner;
-
-            RegisterServices();
-        }
-
-        /// <summary>
-        /// Composition Root. All the services are being registered to project context here.
-        /// </summary>
-        private void RegisterServices()
-        {
-            // services instantiating
-            IPrefabLoader prefabLoader = new PrefabLoader();
-            IConfigLoader configLoader = new ConfigLoader(prefabLoader);
-            IAssetProvider assetProvider = new AssetProvider(prefabLoader);
-            IWindowsProvider windowsProvider = new WindowsProvider(prefabLoader);
-            IConnectionChecker connectionChecker = new ConnectionChecker(_gameStateMachine,windowsProvider,_coroutineRunner);
-            IProgressProvider progressProvider = new ProgressProvider();
-            IAutoProcessesController autoProcessesController = new AutoProcessesController();
-            IUIFactory uiFactory = new UIFactory(assetProvider);
-            IGameFieldFactory gameFieldFactory = new GameFieldFactory(assetProvider, autoProcessesController, uiFactory, progressProvider, configLoader);
-            IHeroesStorageFactory heroesStorageFactory = new HeroesStorageFactory(uiFactory,assetProvider, configLoader);
-
-            // services are being registered to container
-            _diContainer.Bind<IConnectionChecker>().FromInstance(connectionChecker).AsSingle().NonLazy();
-            _diContainer.Bind<IPrefabLoader>().FromInstance(prefabLoader).AsSingle().NonLazy();
-            _diContainer.Bind<IConfigLoader>().FromInstance(configLoader).AsSingle().NonLazy();
-            _diContainer.Bind<IAssetProvider>().FromInstance(assetProvider).AsSingle().NonLazy();
-            _diContainer.Bind<IWindowsProvider>().FromInstance(windowsProvider).AsCached().NonLazy();
-            _diContainer.Bind<IProgressProvider>().FromInstance(progressProvider).AsSingle().NonLazy();
-            _diContainer.Bind<IUIFactory>().FromInstance(uiFactory).AsSingle().NonLazy();
-            _diContainer.Bind<IGameFieldFactory>().FromInstance(gameFieldFactory).AsSingle().NonLazy();
-            _diContainer.Bind<IAutoProcessesController>().FromInstance(autoProcessesController).AsSingle().NonLazy();
-            _diContainer.Bind<IHeroesStorageFactory>().FromInstance(heroesStorageFactory).AsSingle().NonLazy();
+            RegisterServices(diContainer, coroutineRunner);
         }
 
         public void Enter()
         {
-            _sceneLoader.Load(sceneIndex: BootstrapSceneIndex, OnSceneLoaded); 
+            _sceneLoader.Load(sceneIndex: BootstrapSceneIndex, OnSceneLoaded);
         }
-        
-
-        private void OnSceneLoaded() =>
-            _gameStateMachine.Enter<LoadGameState>();
 
         public void Exit()
         {
             
         }
+
+        /// <summary>
+        /// Composition Root. All the services are being registered to project context here.
+        /// </summary>
+        private void RegisterServices(DiContainer container, ICoroutineRunner coroutineRunner)
+        {
+            IPrefabLoader prefabLoader = 
+                new PrefabLoader().RegisterService<IPrefabLoader>(container);
+            
+            IConfigLoader configLoader = 
+                new ConfigLoader(prefabLoader).RegisterService<IConfigLoader>(container);
+            
+            IAssetProvider assetProvider = 
+                new AssetProvider(prefabLoader).RegisterService<IAssetProvider>(container);
+            
+            IUIFactory uiFactory = 
+                new UIFactory(container, assetProvider).RegisterService<IUIFactory>(container);
+            
+            IWindowsProvider windowsProvider =
+                new WindowsProvider(uiFactory, prefabLoader).RegisterService<IWindowsProvider>(container);
+            
+            IConnectionChecker connectionChecker =
+                new ConnectionChecker(_gameStateMachine, windowsProvider, coroutineRunner).RegisterService<IConnectionChecker>(container);
+            
+            IProgressProvider progressProvider = 
+                new ProgressProvider().RegisterService<IProgressProvider>(container);
+            
+            IAutoProcessesController autoProcessesController =
+                new AutoProcessesController().RegisterService<IAutoProcessesController>(container);
+            
+            IGameFieldFactory gameFieldFactory =
+                new GameFieldFactory(assetProvider, autoProcessesController, uiFactory, progressProvider, configLoader).RegisterService<IGameFieldFactory>(container);
+            
+            IHeroesStorageFactory heroesStorageFactory =
+                new HeroesStorageFactory(uiFactory, assetProvider, configLoader).RegisterService<IHeroesStorageFactory>(container);
+        }
+        private void OnSceneLoaded() =>
+            _gameStateMachine.Enter<LoadGameState>();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Services.AssetsProvider
 {
-    public interface IAssetProvider
+    public interface IAssetProvider : IService
     {
         /// <summary>
         /// Instantiating the object by its type.

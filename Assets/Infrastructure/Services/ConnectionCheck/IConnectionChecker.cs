@@ -5,7 +5,7 @@ namespace Infrastructure.Services.ConnectionCheck
     /// <summary>
     /// Checks if player has internet connection
     /// </summary>
-    public interface IConnectionChecker
+    public interface IConnectionChecker : IService
     {
         ConnectionStatus NetworkStatus { get; }
         bool IsNetworkConnected { get; }

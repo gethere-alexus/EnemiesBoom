@@ -1,8 +1,6 @@
-using Sources.GameFieldBase.Extensions.SlotsUnlock;
-
 namespace Infrastructure.Services.ConfigLoad
 {
-    public interface IConfigLoader
+    public interface IConfigLoader : IService
     {
         void LoadConfigs();
         void RegisterLoader(IConfigReader configLoader);

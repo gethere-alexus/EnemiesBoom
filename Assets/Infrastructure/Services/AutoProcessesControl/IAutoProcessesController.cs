@@ -6,7 +6,7 @@ namespace Infrastructure.Services.AutoProcessesControl
     /// <summary>
     /// Controller for all auto-processes
     /// </summary>
-    public interface IAutoProcessesController
+    public interface IAutoProcessesController : IService
     {
         void StartAllProcesses();
         void RestartAllProcesses();
