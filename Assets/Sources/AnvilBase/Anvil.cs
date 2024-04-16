@@ -2,8 +2,7 @@
 using Infrastructure.ProgressData;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
-using Sources.GameFieldBase;
-using Sources.ItemBase;
+using Sources.Item.ItemFieldBase;
 
 namespace Sources.AnvilBase
 {
@@ -12,7 +11,7 @@ namespace Sources.AnvilBase
     /// </summary>
     public class Anvil : IProgressWriter
     {
-        private readonly GameField _gameField;
+        private readonly ItemField _itemField;
 
         private int _maxCharges;
         private int _chargesLeft;
@@ -21,8 +20,8 @@ namespace Sources.AnvilBase
         public event Action ItemCrafted;
         public event Action ChargesUpdated;
         
-        public Anvil(GameField gameField) => 
-            _gameField = gameField;
+        public Anvil(ItemField itemField) => 
+            _itemField = itemField;
 
         /// <summary>
         /// Adds max-charges to already existing amount of charges, if it is not full
@@ -44,7 +43,7 @@ namespace Sources.AnvilBase
         {
             if (_chargesLeft > 0)
             {
-                _gameField.PlaceItem(new Item(_craftingItemLevel), out bool isSucceeded);
+                _itemField.PlaceItem(new Item.ItemBase.Item(_craftingItemLevel), out bool isSucceeded);
 
                 if (isSucceeded)
                 {

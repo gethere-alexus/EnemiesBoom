@@ -3,8 +3,7 @@ using Infrastructure.SceneLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.FieldFactory;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.UI;
-using Infrastructure.Services.WindowProvider;
+using Infrastructure.Services.Factories.UIFactory;
 
 namespace Infrastructure.GameMachine.States
 {
@@ -16,23 +15,22 @@ namespace Infrastructure.GameMachine.States
         private const int GameSceneIndex = 1;
 
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IGameFieldFactory _gameFieldFactory;
+        private readonly IHeroesStorageFactory _heroesStorageFactory;
+        private readonly IItemFieldFactory _itemFieldFactory;
         private readonly IConnectionChecker _connectionChecker;
+        private readonly IUIMenuFactory _uiMenuFactory;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
-        private readonly IHeroesStorageFactory _heroesStorageFactory;
-        private readonly IUIFactory _uiFactory;
 
-        public LoadGameState(GameStateMachine gameStateMachine, IGameFieldFactory gameFieldFactory, SceneLoader sceneLoader, 
-            IConnectionChecker connectionChecker, LoadingCurtain loadingCurtain, IHeroesStorageFactory heroesStorageFactory, IUIFactory uiFactory)
+        public LoadGameState(GameStateMachine gameStateMachine, IItemFieldFactory itemFieldFactory, IHeroesStorageFactory heroesStorageFactory
+            , IUIMenuFactory uiMenuFactory, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
         {
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
             _loadingCurtain = loadingCurtain;
             _heroesStorageFactory = heroesStorageFactory;
-            _uiFactory = uiFactory;
-            _gameFieldFactory = gameFieldFactory;
-            _connectionChecker = connectionChecker;
+            _uiMenuFactory = uiMenuFactory;
+            _itemFieldFactory = itemFieldFactory;
         }
 
         public void Enter() =>
@@ -45,34 +43,20 @@ namespace Infrastructure.GameMachine.States
         {
             _loadingCurtain.ShowCurtain();
             
-            if (_connectionChecker.IsNetworkConnected)
-            {
-                CreateGameComponents();
-                _gameStateMachine.Enter<LoadDataState>();
-            }
-            else
-            {
-                _gameStateMachine.Enter<GameStoppedState>();
-            }
+            _uiMenuFactory.CreateBottomMenu();
+            CreateGameComponents();
+            
+            _gameStateMachine.Enter<LoadDataState>();
         }
 
         private void CreateGameComponents()
         {
-            _uiFactory.CreateBottomMenu();
-            CreateGameField();
-            _heroesStorageFactory.CreateActiveHeroesStorage();
+            _itemFieldFactory.CreateItemField();
+            _heroesStorageFactory.CreateHeroesField();
         }
-
-        private void CreateGameField()
-        {
-            _gameFieldFactory.CreateField();
-            _gameFieldFactory.CreateFieldControl();
-            _gameFieldFactory.CreateFieldExtensions();
-        }
-
+        
         public void Exit()
         {
-            _loadingCurtain.HideCurtain();
         }
     }
 }

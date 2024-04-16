@@ -1,3 +1,4 @@
+using Infrastructure.Curtain;
 using Infrastructure.ProgressData;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
@@ -6,21 +7,27 @@ using Infrastructure.Services.ProgressLoad;
 
 namespace Infrastructure.GameMachine.States
 {
+    /// <summary>
+    /// State is loading data for instantiated components
+    /// </summary>
     public class LoadDataState : IState
     {
         private readonly IProgressProvider _progressProvider;
         private readonly IAssetProvider _assetProvider;
-        private readonly IGameFieldFactory _gameFieldFactory;
+        private readonly IItemFieldFactory _itemFieldFactory;
 
         private readonly GameStateMachine _gameStateMachine;
         private readonly IConfigLoader _configLoader;
+        private readonly LoadingCurtain _loadingCurtain;
 
 
-        public LoadDataState(GameStateMachine gameStateMachine, IProgressProvider progressProvider, IConfigLoader configLoader)
+        public LoadDataState(GameStateMachine gameStateMachine, IProgressProvider progressProvider, 
+            IConfigLoader configLoader, LoadingCurtain loadingCurtain)
         {
             _gameStateMachine = gameStateMachine;
             _progressProvider = progressProvider;
             _configLoader = configLoader;
+            _loadingCurtain = loadingCurtain;
         }
 
         public void Enter()
@@ -46,7 +53,7 @@ namespace Infrastructure.GameMachine.States
 
         public void Exit()
         {
-            _progressProvider.SaveProgress();
+            _loadingCurtain.HideCurtain();
         }
     }
 }

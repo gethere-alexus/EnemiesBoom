@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using Infrastructure.Configurations.InitialProgress;
+using Infrastructure.PrefabPaths;
 using Infrastructure.ProgressData;
 using Infrastructure.ProgressData.AnvilData;
 using Infrastructure.ProgressData.Field;
+using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
 using UnityEngine;
 
@@ -11,8 +13,9 @@ namespace Infrastructure.Services.ProgressLoad
 {
     public class ProgressProvider : IProgressProvider
     {
+        private readonly IPrefabLoader _prefabLoader;
+        
         public List<IProgressReader> ProgressReaders { get; } = new List<IProgressReader>();
-
         public List<IProgressWriter> ProgressWriters { get; } = new List<IProgressWriter>();
 
         private GameProgress _gameProgress;
@@ -21,8 +24,10 @@ namespace Infrastructure.Services.ProgressLoad
 
         private readonly string _savePath;
 
-        public ProgressProvider()
+        public ProgressProvider(IPrefabLoader prefabLoader)
         {
+            _prefabLoader = prefabLoader;
+            
             _savePath = Path.Combine(Application.persistentDataPath, SaveName);
             _gameProgress = LoadProgress();
         }
@@ -35,7 +40,7 @@ namespace Infrastructure.Services.ProgressLoad
                 progressWriter.SaveProgress(_gameProgress);
             }
 
-            string json = JsonUtility.ToJson(_gameProgress);
+            string json = JsonUtility.ToJson(_gameProgress, true);
             File.WriteAllText(_savePath, json);
         }
 
@@ -71,31 +76,10 @@ namespace Infrastructure.Services.ProgressLoad
 
         private GameProgress GetInitialProgress()
         {
-            InitialProgressContent progressContent =
-                Resources.Load<InitialProgressContainer>("DataBase/ProgressContainer").InitProgressContent;
-            
-            GameProgress progress = new GameProgress()
-            {
-                Anvil = progressContent.Anvil,
-                GameField = new GameFieldData()
-                {
-                    Grid = progressContent.InitialFieldData.ToArray(),
-                },
-                AnvilExtensions = new AnvilExtensionsData()
-                {
-                    AnvilAutoRefiller  = progressContent.AutoRefiller,
-                    AnvilAutoUse = progressContent.AnvilAutoUsing,
-                    AnvilRefill = progressContent.AnvilRefilling
-                },
-                FieldExtensions = new FieldExtensionsData()
-                {
-                    SlotsAutoMerger  = progressContent.AutoMerger,
-                },
-            };
-
-            return progress;
+            GameProgress toReturn = _prefabLoader.LoadPrefab<InitialProgressContainer>(PersistentDataPaths.InitialProgress)
+                .InitProgressContent.GetInitialProgress();
+            return toReturn;
         }
-
         public GameProgress GameProgress => _gameProgress;
     }
 }

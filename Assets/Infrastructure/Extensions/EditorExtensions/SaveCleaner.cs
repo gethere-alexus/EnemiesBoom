@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -22,8 +21,7 @@ namespace Infrastructure.Extensions.EditorExtensions
         [MenuItem("Progress Management/Show Progress")]
         public static void OpenSave()
         {
-            string savesPath = Path.Combine(Application.persistentDataPath, SaveName);
-            Process.Start("explorer.exe", savesPath.Replace("/", "\\"));
+            EditorUtility.RevealInFinder(Application.persistentDataPath);
         }
     }
 #endif

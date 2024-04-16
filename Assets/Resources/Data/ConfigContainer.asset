@@ -1,0 +1,220 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c8e6a715ba4968bbd2c969cd33f978, type: 3}
+  m_Name: ConfigContainer
+  m_EditorClassIdentifier: 
+  foldoutImportGUI: 1
+  documentId: 1mbjvTjFjZ12JCrWIimBjXHc0_YV0k5WEw55Y3mj7QA4
+  selectedTogglesIds:
+  - SlotsUnlockConfig
+  - Heroes
+  - ActiveHeroesHolder
+  - SlotsUnlock
+  - ActiveHeroesSlots
+  foldoutSerializationGUI: 0
+  serializationOutputPath: ../../Configs
+  serializationFileName: Configs.v0.1
+  serializationFormat: 0
+  ConfigContent:
+    Heroes:
+    - ID: 0
+      Name: Bunny
+      Damage: 25
+      ReloadSpeed: 2.5
+      Price: 500
+      IsInitial: 1
+    - ID: 1
+      Name: Tiger
+      Damage: 50
+      ReloadSpeed: 5
+      Price: 1000
+      IsInitial: 1
+    - ID: 2
+      Name: Wolf
+      Damage: 75
+      ReloadSpeed: 7.5
+      Price: 1500
+      IsInitial: 1
+    - ID: 3
+      Name: Blade
+      Damage: 100
+      ReloadSpeed: 10
+      Price: 2000
+      IsInitial: 0
+    - ID: 4
+      Name: Bull
+      Damage: 125
+      ReloadSpeed: 12.5
+      Price: 2500
+      IsInitial: 0
+    - ID: 5
+      Name: Crow
+      Damage: 150
+      ReloadSpeed: 15
+      Price: 3000
+      IsInitial: 0
+    - ID: 6
+      Name: Giraffe
+      Damage: 175
+      ReloadSpeed: 17.5
+      Price: 3500
+      IsInitial: 0
+    - ID: 7
+      Name: Elephant
+      Damage: 200
+      ReloadSpeed: 20
+      Price: 4000
+      IsInitial: 0
+    - ID: 8
+      Name: Golem
+      Damage: 225
+      ReloadSpeed: 22.5
+      Price: 4500
+      IsInitial: 0
+    - ID: 9
+      Name: FiftyCent
+      Damage: 250
+      ReloadSpeed: 25
+      Price: 5000
+      IsInitial: 0
+    - ID: 10
+      Name: Forge
+      Damage: 275
+      ReloadSpeed: 27.5
+      Price: 5500
+      IsInitial: 0
+    - ID: 11
+      Name: Lolly
+      Damage: 300
+      ReloadSpeed: 30
+      Price: 6000
+      IsInitial: 0
+    - ID: 12
+      Name: Spike
+      Damage: 325
+      ReloadSpeed: 32.5
+      Price: 6500
+      IsInitial: 0
+    - ID: 13
+      Name: Cactus
+      Damage: 350
+      ReloadSpeed: 35
+      Price: 7000
+      IsInitial: 0
+    - ID: 14
+      Name: Crow
+      Damage: 375
+      ReloadSpeed: 37.5
+      Price: 7500
+      IsInitial: 0
+    - ID: 15
+      Name: Person
+      Damage: 400
+      ReloadSpeed: 40
+      Price: 8000
+      IsInitial: 0
+    - ID: 16
+      Name: Zone
+      Damage: 425
+      ReloadSpeed: 42.5
+      Price: 8500
+      IsInitial: 0
+    - ID: 17
+      Name: Luck
+      Damage: 450
+      ReloadSpeed: 45
+      Price: 9000
+      IsInitial: 0
+    - ID: 18
+      Name: Yellow
+      Damage: 475
+      ReloadSpeed: 47.5
+      Price: 9500
+      IsInitial: 0
+    - ID: 19
+      Name: Bear
+      Damage: 500
+      ReloadSpeed: 50
+      Price: 10000
+      IsInitial: 0
+    - ID: 20
+      Name: Turtle
+      Damage: 525
+      ReloadSpeed: 52.5
+      Price: 10500
+      IsInitial: 0
+    - ID: 21
+      Name: Beard
+      Damage: 550
+      ReloadSpeed: 55
+      Price: 11000
+      IsInitial: 0
+    - ID: 22
+      Name: Eye
+      Damage: 575
+      ReloadSpeed: 57.5
+      Price: 11500
+      IsInitial: 0
+    - ID: 23
+      Name: Steve
+      Damage: 600
+      ReloadSpeed: 60
+      Price: 12000
+      IsInitial: 0
+    - ID: 24
+      Name: Alex
+      Damage: 625
+      ReloadSpeed: 62.5
+      Price: 12500
+      IsInitial: 0
+    - ID: 25
+      Name: Dragon
+      Damage: 650
+      ReloadSpeed: 65
+      Price: 13000
+      IsInitial: 0
+    - ID: 26
+      Name: Skeleton
+      Damage: 675
+      ReloadSpeed: 67.5
+      Price: 13500
+      IsInitial: 0
+    - ID: 27
+      Name: Enderman
+      Damage: 700
+      ReloadSpeed: 70
+      Price: 14000
+      IsInitial: 0
+    - ID: 28
+      Name: Operator
+      Damage: 725
+      ReloadSpeed: 72.5
+      Price: 14500
+      IsInitial: 0
+    - ID: 29
+      Name: Castle
+      Damage: 750
+      ReloadSpeed: 75
+      Price: 15000
+      IsInitial: 0
+    - ID: 30
+      Name: Tonny
+      Damage: 775
+      ReloadSpeed: 77.5
+      Price: 15500
+      IsInitial: 0
+    ActiveHeroesSlots:
+      AvailableAmountOfSlots: 10
+    SlotsUnlock:
+      StartUnlockingLevel: 5
+      UnlockStep: 1
+      UnlockSlotsPerStep: 1

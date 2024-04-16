@@ -1,19 +1,18 @@
 using System.Collections.Generic;
 using Infrastructure.Configurations.Config;
+using Infrastructure.PrefabPaths;
 using Infrastructure.Services.PrefabLoad;
-using Sources.GameFieldBase.Extensions.SlotsUnlock;
 
 namespace Infrastructure.Services.ConfigLoad
 {
     public class ConfigLoader : IConfigLoader
     {
-        private const string ConfigsPath = "Database/ConfigContainer";
-
         private readonly List<IConfigReader> _configReaders = new List<IConfigReader>();
         private readonly ConfigContent _configContent;
 
+        
         public ConfigLoader(IPrefabLoader prefabLoader) => 
-            _configContent = prefabLoader.LoadPrefab<ConfigContainer>(ConfigsPath).ConfigContent;
+            _configContent = prefabLoader.LoadPrefab<ConfigContainer>(PersistentDataPaths.GameConfig).ConfigContent;
 
         public void LoadConfigs()
         {

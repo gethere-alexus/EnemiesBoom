@@ -6,30 +6,31 @@ using Infrastructure.SceneLoad;
 using Infrastructure.Services.WindowProvider;
 using UnityEngine;
 using UnityEngine.Networking;
+using Zenject;
 
 namespace Infrastructure.Services.ConnectionCheck
 {
     public class ConnectionChecker : IConnectionChecker
     {
-        private readonly GameStateMachine _gameStateMachine;
         private readonly IWindowsProvider _windowsProvider;
         private readonly ICoroutineRunner _coroutineRunner;
 
         private const string EchoSite = "https://dns.google/";
-        
+
         private const float ConnectionAttemptDelay = 2.5f;
 
         private ConnectionStatus _connectionStatus = ConnectionStatus.Connected;
-        
+
         public event Action ConnectionLost, ConnectionRenewed;
-        
-        public ConnectionChecker(GameStateMachine gameStateMachine, IWindowsProvider windowsProvider,ICoroutineRunner coroutineRunner)
+
+        [Inject]
+        public ConnectionChecker(IWindowsProvider windowsProvider, ICoroutineRunner coroutineRunner)
         {
-            _gameStateMachine = gameStateMachine;
             _windowsProvider = windowsProvider;
-            
+
             coroutineRunner.StartCoroutine(CheckConnectionPassively());
         }
+
         private IEnumerator CheckConnectionPassively()
         {
             while (true)
@@ -57,11 +58,10 @@ namespace Infrastructure.Services.ConnectionCheck
         {
             if (_connectionStatus != ConnectionStatus.Connected)
             {
-                _gameStateMachine.Enter<LoadGameState>();
                 _windowsProvider.CloseWindow(WindowType.ConnectionLostWindow);
                 ConnectionRenewed?.Invoke();
             }
-            
+
             _connectionStatus = ConnectionStatus.Connected;
         }
 
@@ -69,18 +69,17 @@ namespace Infrastructure.Services.ConnectionCheck
         {
             if (_connectionStatus == ConnectionStatus.Connected)
             {
-                _gameStateMachine.Enter<GameStoppedState>();
                 _windowsProvider.OpenWindow(WindowType.ConnectionLostWindow);
                 ConnectionLost?.Invoke();
             }
-            
+
             _connectionStatus = ConnectionStatus.Disconnected;
         }
 
         private ConnectionStatus CheckNetworkConnection()
         {
             ConnectionStatus toReturn = ConnectionStatus.Disconnected;
-            
+
             UnityWebRequest request = new UnityWebRequest(EchoSite);
             UnityWebRequestAsyncOperation result = request.SendWebRequest();
 
@@ -101,9 +100,9 @@ namespace Infrastructure.Services.ConnectionCheck
             return toReturn;
         }
 
-        public bool IsNetworkConnected => 
+        public bool IsNetworkConnected =>
             CheckNetworkConnection() == ConnectionStatus.Connected;
-        
+
         public ConnectionStatus NetworkStatus => CheckNetworkConnection();
     }
 }

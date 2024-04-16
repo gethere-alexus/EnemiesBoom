@@ -1,36 +1,40 @@
 using System.Collections.Generic;
-using Infrastructure.AssetsPaths;
-using Infrastructure.Services.AssetsProvider;
-using Infrastructure.Services.Factories.UI;
-using Infrastructure.Services.PrefabLoad;
+using Infrastructure.Services.Factories.WindowFactory;
 using Sources.Windows;
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure.Services.WindowProvider
 {
     public class WindowsProvider : IWindowsProvider
     {
-        private readonly IUIFactory _uifactory;
-     
-        private readonly Dictionary<WindowType, WindowBase> _windows;
-        private readonly Dictionary<WindowType, WindowBase> _openedWindows = new();
         
-        public WindowsProvider(IUIFactory uifactory,IPrefabLoader prefabLoader)
-        {
-            _uifactory = uifactory;
-            _windows = new Dictionary<WindowType, WindowBase>()
-            {
-                { WindowType.ConnectionLostWindow, prefabLoader.LoadPrefab<ConnectionLostWindow>(WindowPaths.ConnectionLost)},
-                { WindowType.HeroesInventory , prefabLoader.LoadPrefab<HeroesInventoryWindow>(WindowPaths.HeroesInventory)},
-            };
-        }
+        private readonly Dictionary<WindowType, WindowBase> _openedWindows = new();
+        private readonly IWindowsFactory _windowsFactory;
+        private int _windowSortOrder = 5;
+
+        [Inject]
+        public WindowsProvider(IWindowsFactory windowsFactory) => 
+            _windowsFactory = windowsFactory;
 
         public void OpenWindow(WindowType window)
         {
             CloseWindow(window);
             
-            var windowInstance = Object.Instantiate(_windows[window], _uifactory.UIRoot.transform);
+            var windowInstance = _windowsFactory.CreateWindow(window, _windowSortOrder, () => CloseWindow(window));
             _openedWindows.Add(window, windowInstance);
+            
+            IncreaseWindowSortOrder();
+        }
+
+        public void OpenWindow<TPayload>(WindowType window, TPayload payload)
+        {
+            CloseWindow(window);
+            
+            var windowInstance = _windowsFactory.CreateWindow<TPayload>(window, _windowSortOrder, payload, () => CloseWindow(window));
+            _openedWindows.Add(window, windowInstance);
+            
+            IncreaseWindowSortOrder();
         }
 
         public void CloseWindow(WindowType window)
@@ -38,12 +42,19 @@ namespace Infrastructure.Services.WindowProvider
             if (_openedWindows.ContainsKey(window))
             {
                 WindowBase toClose = _openedWindows[window];
-                
+
                 if (toClose != null)
-                    _openedWindows[window].Close();
+                    Object.Destroy(toClose);
                 
+                DecreaseWindowSortOrder();
                 _openedWindows.Remove(window);
             }
         }
+
+        private void IncreaseWindowSortOrder() => 
+            _windowSortOrder++;
+
+        private void DecreaseWindowSortOrder() => 
+            _windowSortOrder--;
     }
 }

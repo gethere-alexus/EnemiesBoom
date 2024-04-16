@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7352131313101804735}
   - component: {fileID: 5658087763594912573}
+  - component: {fileID: -49681014579612813}
+  - component: {fileID: -6352998703696169273}
+  - component: {fileID: 892494079963169645}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -45,7 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: -49681014579612813}
+  - {fileID: -6352998703696169273}
+  - {fileID: 892494079963169645}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 0
   _editorReflectionBakingCoverageMode: 0
@@ -60,3 +66,40 @@ MonoBehaviour:
       _missingHandlerDefaultResponse: 2
       _requireStrictUnsubscribe: 0
       _defaultAsyncTickPriority: 1
+--- !u!114 &-49681014579612813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429298909019983773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77fdab5175d49688630e55b0d78dfb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _loadingCurtain: {fileID: 7892957124813156651, guid: cdabe5fe3c79cc24c8cd126a28193ef6, type: 3}
+--- !u!114 &-6352998703696169273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429298909019983773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17bb92ecdf7940fa96161ead928a82b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &892494079963169645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429298909019983773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60fa1f4816f4e1294a0db70a3dec32e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

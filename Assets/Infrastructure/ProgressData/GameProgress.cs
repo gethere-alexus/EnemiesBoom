@@ -14,6 +14,6 @@ namespace Infrastructure.ProgressData
         public FieldExtensionsData FieldExtensions;
         public AnvilData.AnvilData Anvil;
         public AnvilExtensionsData AnvilExtensions;
-        public int[] PurchasedHeroesID;
+        public HeroesProgress HeroesProgress;
     }
 }

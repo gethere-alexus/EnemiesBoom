@@ -17,6 +17,7 @@ namespace Infrastructure.Services.AssetsProvider
         /// <param name="path">Path to the object from resources directory</param>
         /// <returns></returns>
         TType Instantiate<TType>(string path, Transform parent) where TType : Object;
+        TType InstantiateFromZenject<TType>(string path, Transform parent) where TType : Object;
         
         /// <summary>
         /// Instantiate as a GameObject

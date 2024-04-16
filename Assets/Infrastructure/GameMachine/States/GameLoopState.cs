@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Infrastructure.GameMachine.States
 {
     /// <summary>
-    /// The state starts once components are good to go.
+    /// The state starts once components are instantiated and data loaded.
     /// </summary>
     public class GameLoopState : IState 
     {

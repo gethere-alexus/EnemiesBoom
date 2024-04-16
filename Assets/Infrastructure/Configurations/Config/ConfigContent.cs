@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Infrastructure.ProgressData;
 using NorskaLib.Spreadsheets;
-using Sources.HeroBase;
 
 namespace Infrastructure.Configurations.Config
 {
@@ -10,7 +11,10 @@ namespace Infrastructure.Configurations.Config
     {
         [SpreadsheetPage("Heroes")] public List<HeroData> Heroes;
 
-        [SpreadsheetPage("ActiveHeroesHolder")] public ActiveHeroesHolderConfig ActiveHeroesHolder;
+        [SpreadsheetPage("ActiveHeroesHolder")] public ActiveHeroesConfig ActiveHeroesSlots;
         [SpreadsheetPage("SlotsUnlock")] public SlotsUnlockConfig SlotsUnlock;
+
+        public HeroData GetHeroDataByID(int heroID) => 
+            Heroes.FirstOrDefault(data => data.ID == heroID);
     }
 }
