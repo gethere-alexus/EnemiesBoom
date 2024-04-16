@@ -3,7 +3,7 @@ using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.WindowProvider;
 using UnityEngine;
 
-namespace Infrastructure.Services.Factories.UIFactory
+namespace Infrastructure.Services.Factories.UI
 {
     public class UIRootFactory : IUIRootFactory
     {

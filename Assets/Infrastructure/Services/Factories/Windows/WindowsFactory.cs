@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Infrastructure.PrefabPaths;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.WindowProvider;
 using Sources.Windows;
@@ -11,7 +11,7 @@ using Sources.Windows.HeroesInventory.ActiveSlotSelection;
 using UnityEngine;
 using Zenject;
 
-namespace Infrastructure.Services.Factories.WindowFactory
+namespace Infrastructure.Services.Factories.Windows
 {
     public class WindowsFactory : IWindowsFactory
     {

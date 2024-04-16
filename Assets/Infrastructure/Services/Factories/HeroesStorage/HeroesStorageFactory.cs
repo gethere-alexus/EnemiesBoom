@@ -1,10 +1,10 @@
 using Infrastructure.PrefabPaths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.ProgressLoad;
-using Sources.Hero;
-using Sources.Hero.HeroesFieldBase;
+using Sources.HeroBase;
+using Sources.HeroBase.HeroesFieldBase;
 using UnityEngine;
 using Zenject;
 
@@ -39,11 +39,6 @@ namespace Infrastructure.Services.Factories.HeroesStorage
             
             _configLoader.RegisterLoader(heroesFieldDisplay.HeroesFieldInstance);
             _progressProvider.RegisterObserver(heroesFieldDisplay.HeroesFieldInstance);
-        }
-
-        public void CreateHeroesInventory()
-        {
-            HeroesInventory heroesInventory = new HeroesInventory();
         }
     }
 }

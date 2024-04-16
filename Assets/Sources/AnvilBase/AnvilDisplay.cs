@@ -1,4 +1,4 @@
-﻿using Sources.Item.ItemFieldBase;
+﻿using Sources.ItemsBase.ItemFieldBase;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,9 +12,9 @@ namespace Sources.AnvilBase
 
         private Anvil _anvilInstance;
 
-        public void Construct(ItemField itemField)
+        public void Construct(Anvil anvil)
         {
-            _anvilInstance = new Anvil(itemField);
+            _anvilInstance = anvil;
             AssignListeners();
         }
 

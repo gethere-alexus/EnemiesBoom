@@ -2,7 +2,8 @@
 using Infrastructure.ProgressData;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
-using Sources.Item.ItemFieldBase;
+using Sources.ItemsBase.ItemBase;
+using Sources.ItemsBase.ItemFieldBase;
 
 namespace Sources.AnvilBase
 {
@@ -43,7 +44,7 @@ namespace Sources.AnvilBase
         {
             if (_chargesLeft > 0)
             {
-                _itemField.PlaceItem(new Item.ItemBase.Item(_craftingItemLevel), out bool isSucceeded);
+                _itemField.PlaceItem(new Item(_craftingItemLevel), out bool isSucceeded);
 
                 if (isSucceeded)
                 {

@@ -1,9 +1,10 @@
 ﻿using Infrastructure.Curtain;
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.ConnectionCheck;
-using Infrastructure.Services.Factories.FieldFactory;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.Factories.ItemField;
+using Infrastructure.Services.Factories.UI;
+using Infrastructure.Services.Factories.Wallet;
 
 namespace Infrastructure.GameMachine.States
 {
@@ -19,17 +20,19 @@ namespace Infrastructure.GameMachine.States
         private readonly IItemFieldFactory _itemFieldFactory;
         private readonly IConnectionChecker _connectionChecker;
         private readonly IUIMenuFactory _uiMenuFactory;
+        private readonly IWalletFactory _walletFactory;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
 
         public LoadGameState(GameStateMachine gameStateMachine, IItemFieldFactory itemFieldFactory, IHeroesStorageFactory heroesStorageFactory
-            , IUIMenuFactory uiMenuFactory, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
+            , IUIMenuFactory uiMenuFactory, IWalletFactory walletFactory, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
         {
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
             _loadingCurtain = loadingCurtain;
             _heroesStorageFactory = heroesStorageFactory;
             _uiMenuFactory = uiMenuFactory;
+            _walletFactory = walletFactory;
             _itemFieldFactory = itemFieldFactory;
         }
 
@@ -43,7 +46,6 @@ namespace Infrastructure.GameMachine.States
         {
             _loadingCurtain.ShowCurtain();
             
-            _uiMenuFactory.CreateBottomMenu();
             CreateGameComponents();
             
             _gameStateMachine.Enter<LoadDataState>();
@@ -51,6 +53,8 @@ namespace Infrastructure.GameMachine.States
 
         private void CreateGameComponents()
         {
+            _uiMenuFactory.CreateBottomMenu();
+            _walletFactory.CreateWalletDisplay();
             _itemFieldFactory.CreateItemField();
             _heroesStorageFactory.CreateHeroesField();
         }

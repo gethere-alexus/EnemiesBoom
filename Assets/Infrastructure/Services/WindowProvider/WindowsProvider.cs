@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Infrastructure.Services.Factories.WindowFactory;
+using Infrastructure.Services.Factories.Windows;
 using Sources.Windows;
 using UnityEngine;
 using Zenject;

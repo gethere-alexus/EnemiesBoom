@@ -1,19 +1,18 @@
 using System;
-using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.ProgressData.Anvil;
 using Infrastructure.ProgressData.Field;
+using Infrastructure.ProgressData.Hero;
 
 namespace Infrastructure.ProgressData
 {
-    /// <summary>
-    /// Stores the game progress
-    /// </summary>
     [Serializable]
     public class GameProgress
     {
-        public GameFieldData GameField;
+        public ItemFieldData ItemField;
         public FieldExtensionsData FieldExtensions;
-        public AnvilData.AnvilData Anvil;
+        public AnvilData Anvil;
         public AnvilExtensionsData AnvilExtensions;
-        public HeroesProgress HeroesProgress;
+        public HeroesData HeroesData;
+        public WalletData WalletData;
     }
 }

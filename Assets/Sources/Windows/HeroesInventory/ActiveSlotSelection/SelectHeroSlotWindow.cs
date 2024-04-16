@@ -1,8 +1,9 @@
 using Infrastructure.PrefabPaths;
 using Infrastructure.ProgressData;
+using Infrastructure.ProgressData.Hero;
 using Infrastructure.Services.AssetsProvider;
-using Sources.Hero.HeroesFieldBase;
-using Sources.Hero.HeroSlotBase;
+using Sources.HeroBase.HeroesFieldBase;
+using Sources.HeroBase.HeroSlotBase;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

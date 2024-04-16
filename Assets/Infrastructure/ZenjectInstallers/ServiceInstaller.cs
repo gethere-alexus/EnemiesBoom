@@ -1,10 +1,11 @@
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.FieldFactory;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.UIFactory;
-using Infrastructure.Services.Factories.WindowFactory;
+using Infrastructure.Services.Factories.ItemField;
+using Infrastructure.Services.Factories.UI;
+using Infrastructure.Services.Factories.Wallet;
+using Infrastructure.Services.Factories.Windows;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.WindowProvider;
@@ -31,27 +32,40 @@ namespace Infrastructure.ZenjectInstallers
 
             IProgressProvider progressProvider = 
                 InstallProgressProvider(prefabLoader);
+            
+            IWalletFactory walletFactory = 
+                InstallWalletFactory(uiRootFactory, assetProvider, progressProvider, Container);
 
             IAutoProcessesController autoProcessesController = 
                 InstallAutoProcessesController();
 
             IItemFieldFactory itemFieldFactory = 
                 InstallGameFieldFactory(assetProvider, autoProcessesController, uiRootFactory, progressProvider, configLoader, Container);
-            
+
             IHeroesStorageFactory heroesStorageFactory = 
                 InstallHeroesStorageFactory(uiRootFactory, assetProvider, configLoader, progressProvider);
 
             IWindowsFactory windowsFactory = 
                 InstallWindowsFactory(uiRootFactory, prefabLoader);
-            
+
             IWindowsProvider windowsProvider = 
                 InstallWindowsProvider(windowsFactory);
+
 
             IUIMenuFactory uiMenuFactory = 
                 InstallUIMenuFactory(windowsProvider, assetProvider, uiRootFactory);
         }
 
         #region Installs
+
+        private IWalletFactory InstallWalletFactory(IUIRootFactory uiRootFactory, IAssetProvider assetProvider,
+            IProgressProvider progressProvider, DiContainer instanceRegistry)
+        {
+            IWalletFactory walletFactory =
+                new WalletFactory(uiRootFactory, assetProvider, progressProvider, instanceRegistry);
+            Container.Bind<IWalletFactory>().FromInstance(walletFactory).AsSingle();
+            return walletFactory;
+        }
 
         private IUIMenuFactory InstallUIMenuFactory(IWindowsProvider windowsProvider, IAssetProvider assetProvider,
             IUIRootFactory uiRootFactory)

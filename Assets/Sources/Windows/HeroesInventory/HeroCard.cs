@@ -1,5 +1,6 @@
 using System;
 using Infrastructure.ProgressData;
+using Infrastructure.ProgressData.Hero;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

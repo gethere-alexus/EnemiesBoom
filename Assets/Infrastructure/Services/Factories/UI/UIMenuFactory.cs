@@ -1,9 +1,9 @@
 using Infrastructure.PrefabPaths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.WindowProvider;
-using Sources.Menu;
+using Sources.MenuBase;
 
-namespace Infrastructure.Services.Factories.UIFactory
+namespace Infrastructure.Services.Factories.UI
 {
     public class UIMenuFactory : IUIMenuFactory
     {

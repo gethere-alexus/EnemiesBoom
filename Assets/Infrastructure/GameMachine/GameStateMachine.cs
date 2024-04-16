@@ -5,9 +5,10 @@ using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.FieldFactory;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.Factories.ItemField;
+using Infrastructure.Services.Factories.UI;
+using Infrastructure.Services.Factories.Wallet;
 using Infrastructure.Services.ProgressLoad;
 using Zenject;
 
@@ -25,17 +26,22 @@ namespace Infrastructure.GameMachine
             LoadingCurtain loadingCurtain)
         {
             diContainer.Bind<ICoroutineRunner>().FromInstance(coroutineRunner);
-
+            
+            IItemFieldFactory itemFieldFactory = diContainer.Resolve<IItemFieldFactory>();
+            IHeroesStorageFactory heroesStorageFactory = diContainer.Resolve<IHeroesStorageFactory>();
+            IWalletFactory walletFactory = diContainer.Resolve<IWalletFactory>();
+            IUIMenuFactory uiMenuFactory = diContainer.Resolve<IUIMenuFactory>();
+            IConfigLoader configLoader = diContainer.Resolve<IConfigLoader>();
+            IProgressProvider progressProvider = diContainer.Resolve<IProgressProvider>();
+            IAutoProcessesController autoProcessesController = diContainer.Resolve<IAutoProcessesController>();
+            
             _states = new Dictionary<Type, IState>()
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadGameState)] = new LoadGameState(this, diContainer.Resolve<IItemFieldFactory>(), diContainer.Resolve<IHeroesStorageFactory>(),
-                    diContainer.Resolve<IUIMenuFactory>(), sceneLoader, loadingCurtain),
-                [typeof(LoadDataState)] = new LoadDataState(this, diContainer.Resolve<IProgressProvider>(),
-                    diContainer.Resolve<IConfigLoader>(), loadingCurtain),
-                [typeof(GameLoopState)] = new GameLoopState(diContainer.Resolve<IProgressProvider>(),
-                    diContainer.Resolve<IAutoProcessesController>(), coroutineRunner,
-                    diContainer.Resolve<IConfigLoader>()),
+                [typeof(LoadGameState)] = new LoadGameState(this, itemFieldFactory, heroesStorageFactory,
+                    uiMenuFactory, walletFactory, sceneLoader, loadingCurtain),
+                [typeof(LoadDataState)] = new LoadDataState(this, progressProvider, configLoader, loadingCurtain),
+                [typeof(GameLoopState)] = new GameLoopState(progressProvider, autoProcessesController, coroutineRunner, configLoader),
                 [typeof(GameStoppedState)] = new GameStoppedState(sceneLoader),
             };
         }

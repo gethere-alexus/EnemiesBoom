@@ -33,6 +33,7 @@ MonoBehaviour:
   - _activeHeroesSlots
   - ActiveHeroesSlots
   - Heroes
+  - WalletData
   foldoutSerializationGUI: 1
   serializationOutputPath: ../../
   serializationFileName: Configs.v0.1
@@ -361,3 +362,5 @@ MonoBehaviour:
       Charges: 15
     AnvilAutoUsing:
       UsingCoolDown: 30
+    WalletData:
+      Balance: 1000000

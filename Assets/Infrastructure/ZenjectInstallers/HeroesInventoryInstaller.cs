@@ -1,5 +1,5 @@
 using Infrastructure.Services.ConfigLoad;
-using Sources.Hero;
+using Sources.HeroBase;
 using Zenject;
 
 namespace Infrastructure.ZenjectInstallers
@@ -12,12 +12,13 @@ namespace Infrastructure.ZenjectInstallers
             BindHeroesInventory();
         }
 
-        private void BindHeroesInventory() => 
+        private void BindHeroesInventory() =>
             Container.BindInterfacesTo<HeroesInventoryInstaller>().FromInstance(this).AsSingle();
 
         public void Initialize()
         {
-            HeroesInventory inventory = new HeroesInventory();
+            HeroesInventory inventory = Container.Instantiate<HeroesInventory>();
+            
             Container.Resolve<IConfigLoader>()
                 .RegisterLoader(inventory);
             Container.Bind<HeroesInventory>().FromInstance(inventory).AsSingle();

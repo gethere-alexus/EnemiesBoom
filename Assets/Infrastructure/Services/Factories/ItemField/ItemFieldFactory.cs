@@ -2,19 +2,19 @@
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.AnvilFactory;
-using Infrastructure.Services.Factories.UIFactory;
+using Infrastructure.Services.Factories.AnvilFactories;
+using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.ProgressLoad;
-using Sources.Item.ItemBase;
-using Sources.Item.ItemFieldBase;
-using Sources.Item.ItemFieldBase.Extensions.AutoMerge;
-using Sources.Item.ItemFieldBase.Extensions.ItemsSort;
-using Sources.Item.ItemFieldBase.Extensions.SlotsUnlock;
-using Sources.Item.ItemSlotBase;
+using Sources.ItemsBase.ItemBase;
+using Sources.ItemsBase.ItemFieldBase;
+using Sources.ItemsBase.ItemFieldBase.Extensions.AutoMerge;
+using Sources.ItemsBase.ItemFieldBase.Extensions.ItemsSort;
+using Sources.ItemsBase.ItemFieldBase.Extensions.SlotsUnlock;
+using Sources.ItemsBase.ItemSlotBase;
 using UnityEngine;
 using Zenject;
 
-namespace Infrastructure.Services.Factories.FieldFactory
+namespace Infrastructure.Services.Factories.ItemField
 {
     public class ItemFieldFactory : IItemFieldFactory
     {
@@ -54,13 +54,13 @@ namespace Infrastructure.Services.Factories.FieldFactory
             
             InstantiateFieldDisplay(_itemFieldDisplay.ItemFieldInstance.Grid);
 
-            _instanceRegistry.Bind<ItemField>().FromInstance(_itemFieldDisplay.ItemFieldInstance).AsSingle();
+            _instanceRegistry.Bind<Sources.ItemsBase.ItemFieldBase.ItemField>().FromInstance(_itemFieldDisplay.ItemFieldInstance).AsSingle();
             _progressProvider.RegisterObserver(_itemFieldDisplay.ItemFieldInstance);
         }
 
         private void InstantiateFieldDisplay(ItemSlot[] grid)
         {
-            ItemField itemField = _itemFieldDisplay.ItemFieldInstance;
+            Sources.ItemsBase.ItemFieldBase.ItemField itemField = _itemFieldDisplay.ItemFieldInstance;
             ItemDrag itemDrag = _itemFieldDisplay.ItemDrag;
             
             for (int i = 0; i < grid.Length; i++)
@@ -91,7 +91,7 @@ namespace Infrastructure.Services.Factories.FieldFactory
 
         private void CreateAnvil()
         {
-            IAnvilFactory anvilFactory = new AnvilFactory.AnvilFactory(_progressProvider,_itemFieldDisplay.ItemFieldInstance, _slotsControl.gameObject, _autoProcessesController);
+            IAnvilFactory anvilFactory = new AnvilFactory(_progressProvider,_itemFieldDisplay.ItemFieldInstance, _slotsControl.gameObject, _autoProcessesController);
             anvilFactory.CreateAnvil();
             anvilFactory.CreateAnvilExtensions();
         }

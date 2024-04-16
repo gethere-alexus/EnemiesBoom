@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Infrastructure.Services.Factories.UIFactory
+namespace Infrastructure.Services.Factories.UI
 {
     /// <summary>
     /// Creates and provide UI root

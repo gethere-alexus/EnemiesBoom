@@ -1,4 +1,4 @@
-namespace Infrastructure.Services.Factories.UIFactory
+namespace Infrastructure.Services.Factories.UI
 {
     /// <summary>
     /// Creates ui menus

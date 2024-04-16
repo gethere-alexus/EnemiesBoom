@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Services.Factories.FieldFactory
+﻿namespace Infrastructure.Services.Factories.ItemField
 {
     /// <summary>
     /// Creates item field, its control and extensions

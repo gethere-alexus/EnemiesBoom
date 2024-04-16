@@ -1,6 +1,6 @@
 ﻿using System;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.ProgressData.Anvil;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
 

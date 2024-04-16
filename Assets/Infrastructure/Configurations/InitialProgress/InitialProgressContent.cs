@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Configurations.Config;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.AnvilData;
+using Infrastructure.ProgressData.Anvil;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.ProgressData.Field.Slot;
+using Infrastructure.ProgressData.Hero;
 using Infrastructure.ProgressData.Item;
 using NorskaLib.Spreadsheets;
 
@@ -22,17 +23,19 @@ namespace Infrastructure.Configurations.InitialProgress
         [SpreadsheetPage("AnvilAutoRefiller")] public AnvilAutoRefillerData AutoRefiller;
         [SpreadsheetPage("AnvilRefill")] public AnvilRefillData AnvilRefilling;
         [SpreadsheetPage("AnvilAutoUse")] public AnvilAutoUseData AnvilAutoUsing;
+        [SpreadsheetPage("Wallet")] public WalletData WalletData;
 
         public GameProgress GetInitialProgress()
         {
             GameProgress toReturn = new GameProgress()
             {
                 Anvil = Anvil,
-                GameField = new GameFieldData()
+                ItemField = new ItemFieldData()
                 {
                     Grid = InitialFieldData.ToArray(),
                 },
-                HeroesProgress = new HeroesProgress()
+                WalletData = WalletData,
+                HeroesData = new HeroesData()
                 {
                     ActiveHeroes = GetInitiallyActiveHeroes(),
                     PurchasedHeroesIDs = GetInitialHeroesIDs(),

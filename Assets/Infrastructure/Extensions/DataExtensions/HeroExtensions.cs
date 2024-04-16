@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.ProgressData;
+using Infrastructure.ProgressData.Hero;
 
 namespace Infrastructure.Extensions.DataExtensions
 {

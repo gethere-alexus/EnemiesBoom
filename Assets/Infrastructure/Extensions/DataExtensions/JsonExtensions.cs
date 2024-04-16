@@ -1,11 +1,12 @@
 using Infrastructure.ProgressData;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.ProgressData.Field.Slot;
+using Infrastructure.ProgressData.Hero;
 using Infrastructure.ProgressData.Item;
-using Sources.Hero.HeroSlotBase;
-using Sources.Item.ItemBase;
-using Sources.Item.ItemFieldBase;
-using Sources.Item.ItemSlotBase;
+using Sources.HeroBase.HeroSlotBase;
+using Sources.ItemsBase.ItemBase;
+using Sources.ItemsBase.ItemFieldBase;
+using Sources.ItemsBase.ItemSlotBase;
 
 namespace Infrastructure.Extensions.DataExtensions
 {
@@ -117,13 +118,13 @@ namespace Infrastructure.Extensions.DataExtensions
         /// <summary>
         /// Converts Grid data from JSON convertable format.
         /// </summary>
-        public static ItemSlot[] FromSerializable(this GameFieldData serializableGameField, ItemField itemField)
+        public static ItemSlot[] FromSerializable(this ItemFieldData serializableItemField, ItemField itemField)
         {
-            ItemSlot[] toReturn = new ItemSlot[serializableGameField.Grid.Length];
+            ItemSlot[] toReturn = new ItemSlot[serializableItemField.Grid.Length];
 
             for (int i = 0; i < toReturn.Length; i++)
             {
-                toReturn[i] = serializableGameField.Grid[i].FromSerializable(itemField);
+                toReturn[i] = serializableItemField.Grid[i].FromSerializable(itemField);
             }
 
             return toReturn;
@@ -132,7 +133,7 @@ namespace Infrastructure.Extensions.DataExtensions
         /// <summary>
         /// Converts Slots array to JSON convertable format
         /// </summary>
-        public static GameFieldData ToSerializable(this ItemSlot[] grid)
+        public static ItemFieldData ToSerializable(this ItemSlot[] grid)
         {
             SlotData[] serializableField = new SlotData[grid.Length];
 
@@ -141,7 +142,7 @@ namespace Infrastructure.Extensions.DataExtensions
                 serializableField[i] = grid[i].ToSerializable();
             }
 
-            GameFieldData toReturn = new GameFieldData()
+            ItemFieldData toReturn = new ItemFieldData()
             {
                 Grid = serializableField,
             };

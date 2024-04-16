@@ -2,7 +2,7 @@ using Infrastructure.Curtain;
 using Infrastructure.ProgressData;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.FieldFactory;
+using Infrastructure.Services.Factories.ItemField;
 using Infrastructure.Services.ProgressLoad;
 
 namespace Infrastructure.GameMachine.States

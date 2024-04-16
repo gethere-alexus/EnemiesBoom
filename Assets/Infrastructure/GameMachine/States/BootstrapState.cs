@@ -2,13 +2,9 @@
 
 namespace Infrastructure.GameMachine.States
 {
-    /// <summary>
-    /// State where the services are being registered
-    /// </summary>
     public class BootstrapState : IState
     {
         private readonly SceneLoader _sceneLoader;
-        private readonly ICoroutineRunner _coroutineRunner;
         private readonly GameStateMachine _gameStateMachine;
 
         private const int BootstrapSceneIndex = 0;

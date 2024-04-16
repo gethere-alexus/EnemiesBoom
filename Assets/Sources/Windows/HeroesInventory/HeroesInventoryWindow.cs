@@ -1,5 +1,6 @@
 using Infrastructure.PrefabPaths;
 using Infrastructure.ProgressData;
+using Infrastructure.ProgressData.Hero;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.WindowProvider;
@@ -16,11 +17,11 @@ namespace Sources.Windows.HeroesInventory
         [SerializeField] private Button _closeButton;
         
         private HeroCard _heroCardTemplate;
-        private Hero.HeroesInventory _heroesInventoryInstance;
+        private HeroBase.HeroesInventory _heroesInventoryInstance;
         private IWindowsProvider _windowsProvider;
 
         [Inject]
-        public void Construct(IWindowsProvider windowsProvider, Hero.HeroesInventory inventoryInstance, IAssetProvider assetProvider, IPrefabLoader prefabLoader)
+        public void Construct(IWindowsProvider windowsProvider, HeroBase.HeroesInventory inventoryInstance, IAssetProvider assetProvider, IPrefabLoader prefabLoader)
         {
             _windowsProvider = windowsProvider;
             _heroesInventoryInstance = inventoryInstance;
@@ -48,7 +49,7 @@ namespace Sources.Windows.HeroesInventory
 
         private void OnHeroPurchased(HeroData heroData)
         {
-            _heroesInventoryInstance.AddAvailableHero(heroData.ID);
+            _heroesInventoryInstance.PurchaseHeroByID(heroData.ID);
             ConstructInventoryContent();
         }
         

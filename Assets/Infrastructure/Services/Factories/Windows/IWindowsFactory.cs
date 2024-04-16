@@ -2,7 +2,7 @@ using System;
 using Infrastructure.Services.WindowProvider;
 using Sources.Windows;
 
-namespace Infrastructure.Services.Factories.WindowFactory
+namespace Infrastructure.Services.Factories.Windows
 {
     /// <summary>
     /// Creates window

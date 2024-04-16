@@ -3,7 +3,6 @@ using System.IO;
 using Infrastructure.Configurations.InitialProgress;
 using Infrastructure.PrefabPaths;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.AnvilData;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
