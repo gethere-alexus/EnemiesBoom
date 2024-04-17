@@ -20,6 +20,8 @@ MonoBehaviour:
   - ActiveHeroesHolder
   - SlotsUnlock
   - ActiveHeroesSlots
+  - AnvilUpgradeCfg
+  - UpgradeData
   foldoutSerializationGUI: 0
   serializationOutputPath: ../../Configs
   serializationFileName: Configs.v0.1
@@ -218,3 +220,15 @@ MonoBehaviour:
       StartUnlockingLevel: 5
       UnlockStep: 1
       UnlockSlotsPerStep: 1
+    UpgradeData:
+    - UpgradeID: 0
+      UpgradeName: Crafting item level
+      UpgradeDescription: Upgrades level of the item which is being crafted with
+        Anvil by 1 for each stage. Once completely boosted you will increase your
+        item level by 9.
+      StartUpgradeStage: 1
+      MaxUpgradeStage: 10
+      InitialPrice: 500
+      UpgradePriceMultiplication: 2
+    AnvilUpgradeCfg:
+      ItemLevelStageUpgrade: 1

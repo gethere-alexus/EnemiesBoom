@@ -104,7 +104,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &5784415648324437792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelText: {fileID: 2215487729633461630}
-  _itemInput: {fileID: 0}
+  _itemInput: {fileID: 4576937164500492571}
 --- !u!114 &4576937164500492571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,8 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94324ef0d35438cb60f47e7bbf698b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controlInputFor: {fileID: 0}
-  _clicksToMerge: 2
+  _controlInputFor: {fileID: 5784415648324437792}
 --- !u!1 &2456439013642508642
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ namespace Infrastructure.Services.ConnectionCheck
         {
             if (_connectionStatus != ConnectionStatus.Connected)
             {
-                _windowsProvider.CloseWindow(WindowType.ConnectionLostWindow);
+                _windowsProvider.CloseWindow(WindowType.ConnectionLost);
                 ConnectionRenewed?.Invoke();
             }
 
@@ -69,7 +69,7 @@ namespace Infrastructure.Services.ConnectionCheck
         {
             if (_connectionStatus == ConnectionStatus.Connected)
             {
-                _windowsProvider.OpenWindow(WindowType.ConnectionLostWindow);
+                _windowsProvider.OpenWindow(WindowType.ConnectionLost);
                 ConnectionLost?.Invoke();
             }
 

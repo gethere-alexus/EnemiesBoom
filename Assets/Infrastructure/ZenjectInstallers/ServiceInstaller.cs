@@ -2,12 +2,13 @@ using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.ItemField;
+using Infrastructure.Services.Factories.ItemFactory;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.Factories.Wallet;
 using Infrastructure.Services.Factories.Windows;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.UpgradeRegistry;
 using Infrastructure.Services.WindowProvider;
 using Zenject;
 
@@ -20,10 +21,13 @@ namespace Infrastructure.ZenjectInstallers
         {
             IPrefabLoader prefabLoader = 
                 InstallPrefabLoader();
+
+            IUpgradesRegistry upgradesRegistry =
+                InstallUpgradesRegistry(prefabLoader);
             
             IConfigLoader configLoader = 
                 InstallConfigLoader(prefabLoader);
-            
+
             IAssetProvider assetProvider = 
                 InstallAssetProvider(prefabLoader);
             
@@ -40,7 +44,7 @@ namespace Infrastructure.ZenjectInstallers
                 InstallAutoProcessesController();
 
             IItemFieldFactory itemFieldFactory = 
-                InstallGameFieldFactory(assetProvider, autoProcessesController, uiRootFactory, progressProvider, configLoader, Container);
+                InstallGameFieldFactory(assetProvider, upgradesRegistry, autoProcessesController, uiRootFactory, progressProvider, configLoader, Container);
 
             IHeroesStorageFactory heroesStorageFactory = 
                 InstallHeroesStorageFactory(uiRootFactory, assetProvider, configLoader, progressProvider);
@@ -57,6 +61,13 @@ namespace Infrastructure.ZenjectInstallers
         }
 
         #region Installs
+
+        private IUpgradesRegistry InstallUpgradesRegistry(IPrefabLoader prefabLoader)
+        {
+            IUpgradesRegistry instance = new UpgradesRegistry(prefabLoader);
+            Container.Bind<IUpgradesRegistry>().FromInstance(instance).AsSingle();
+            return instance;
+        }
 
         private IWalletFactory InstallWalletFactory(IUIRootFactory uiRootFactory, IAssetProvider assetProvider,
             IProgressProvider progressProvider, DiContainer instanceRegistry)
@@ -139,11 +150,11 @@ namespace Infrastructure.ZenjectInstallers
             return prefabLoader;
         }
 
-        private IItemFieldFactory InstallGameFieldFactory(IAssetProvider assetProvider,
+        private IItemFieldFactory InstallGameFieldFactory(IAssetProvider assetProvider, IUpgradesRegistry upgradesRegistry,
             IAutoProcessesController autoProcessesController, IUIRootFactory uiRootFactory, 
             IProgressProvider progressProvider, IConfigLoader configLoader, DiContainer container)
         {
-            IItemFieldFactory itemFieldFactory = new ItemFieldFactory(assetProvider, autoProcessesController, uiRootFactory, progressProvider, configLoader, container);
+            IItemFieldFactory itemFieldFactory = new ItemFieldFactory(assetProvider, upgradesRegistry, autoProcessesController, uiRootFactory, progressProvider, configLoader, container);
             Container.Bind<IItemFieldFactory>().FromInstance(itemFieldFactory).AsSingle();
             
             return itemFieldFactory;

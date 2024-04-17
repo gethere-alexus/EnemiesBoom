@@ -6,10 +6,11 @@ using Infrastructure.SceneLoad;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.ItemField;
+using Infrastructure.Services.Factories.ItemFactory;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.Factories.Wallet;
 using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.UpgradeRegistry;
 using Zenject;
 
 namespace Infrastructure.GameMachine
@@ -28,6 +29,7 @@ namespace Infrastructure.GameMachine
             diContainer.Bind<ICoroutineRunner>().FromInstance(coroutineRunner);
             
             IItemFieldFactory itemFieldFactory = diContainer.Resolve<IItemFieldFactory>();
+            IUpgradesRegistry upgradesRegistry = diContainer.Resolve<IUpgradesRegistry>();
             IHeroesStorageFactory heroesStorageFactory = diContainer.Resolve<IHeroesStorageFactory>();
             IWalletFactory walletFactory = diContainer.Resolve<IWalletFactory>();
             IUIMenuFactory uiMenuFactory = diContainer.Resolve<IUIMenuFactory>();
@@ -40,7 +42,7 @@ namespace Infrastructure.GameMachine
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
                 [typeof(LoadGameState)] = new LoadGameState(this, itemFieldFactory, heroesStorageFactory,
                     uiMenuFactory, walletFactory, sceneLoader, loadingCurtain),
-                [typeof(LoadDataState)] = new LoadDataState(this, progressProvider, configLoader, loadingCurtain),
+                [typeof(LoadDataState)] = new LoadDataState(this, progressProvider, configLoader,upgradesRegistry, loadingCurtain),
                 [typeof(GameLoopState)] = new GameLoopState(progressProvider, autoProcessesController, coroutineRunner, configLoader),
                 [typeof(GameStoppedState)] = new GameStoppedState(sceneLoader),
             };

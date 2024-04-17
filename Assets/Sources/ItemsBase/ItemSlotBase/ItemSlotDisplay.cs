@@ -47,8 +47,13 @@ namespace Sources.ItemsBase.ItemSlotBase
             _itemSlotInstance?.PutItem(item, out bool isSucceeded);
         }
 
-        public void ClearStorage() => 
+        public void ClearStorage()
+        {
             _itemSlotInstance.RemoveStoringItem();
+        }
+
+        public Transform Storage => gameObject.transform;
+
 
         /// <summary>
         /// Once a slot is changing its condition, view will be updated afterwards

@@ -5,6 +5,7 @@ using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.AnvilFactories;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.UpgradeRegistry;
 using Sources.ItemsBase.ItemBase;
 using Sources.ItemsBase.ItemFieldBase;
 using Sources.ItemsBase.ItemFieldBase.Extensions.AutoMerge;
@@ -14,12 +15,13 @@ using Sources.ItemsBase.ItemSlotBase;
 using UnityEngine;
 using Zenject;
 
-namespace Infrastructure.Services.Factories.ItemField
+namespace Infrastructure.Services.Factories.ItemFactory
 {
     public class ItemFieldFactory : IItemFieldFactory
     {
         
         private readonly IAssetProvider _assetProvider;
+        private readonly IUpgradesRegistry _upgradesRegistry;
         private readonly IAutoProcessesController _autoProcessesController;
         private readonly IUIRootFactory _uiFactory;
         private readonly IProgressProvider _progressProvider;
@@ -29,10 +31,11 @@ namespace Infrastructure.Services.Factories.ItemField
         private ItemFieldDisplay _itemFieldDisplay;
         private Transform _slotsControl;
         
-        public ItemFieldFactory(IAssetProvider assetProvider, IAutoProcessesController autoProcessesController, 
+        public ItemFieldFactory(IAssetProvider assetProvider, IUpgradesRegistry upgradesRegistry, IAutoProcessesController autoProcessesController, 
             IUIRootFactory uiFactory, IProgressProvider progressProvider, IConfigLoader configLoader, DiContainer instanceRegistry)
         {
             _assetProvider = assetProvider;
+            _upgradesRegistry = upgradesRegistry;
             _autoProcessesController = autoProcessesController;
             _uiFactory = uiFactory;
             _progressProvider = progressProvider;
@@ -91,7 +94,9 @@ namespace Infrastructure.Services.Factories.ItemField
 
         private void CreateAnvil()
         {
-            IAnvilFactory anvilFactory = new AnvilFactory(_progressProvider,_itemFieldDisplay.ItemFieldInstance, _slotsControl.gameObject, _autoProcessesController);
+            IAnvilFactory anvilFactory = new AnvilFactory(_progressProvider, _upgradesRegistry, _configLoader,
+                _itemFieldDisplay.ItemFieldInstance, _slotsControl.gameObject, _autoProcessesController);
+            
             anvilFactory.CreateAnvil();
             anvilFactory.CreateAnvilExtensions();
         }

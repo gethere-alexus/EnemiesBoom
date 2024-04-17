@@ -23,18 +23,19 @@ namespace Sources.HeroBase.HeroSlotBase
         public void Store(Item item, out bool isSucceeded, IItemStorage previousStorage = null)
         {
             isSucceeded = false;
-            if (previousStorage != null)
-                previousStorage.ClearStorage();
+            
             _slotInstance.SetStoredItem(item, out isSucceeded, previousStorage);
+            
+            if (previousStorage != null && isSucceeded)
+                previousStorage.ClearStorage();
             
         }
 
         public void Store(Item item, IItemStorage previousStorage = null)
         {
-            if (previousStorage != null)
-                previousStorage.ClearStorage();
-            
             _slotInstance.SetStoredItem(item, out bool isSucceeded, previousStorage);
+            if (previousStorage != null && isSucceeded)
+                previousStorage.ClearStorage();
         }
 
         public void ClearStorage()
@@ -54,5 +55,6 @@ namespace Sources.HeroBase.HeroSlotBase
         }
 
         public HeroSlot SlotInstance => _slotInstance;
+        public Transform Storage => gameObject.transform;
     }
 }

@@ -1,9 +1,12 @@
 using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ProgressLoad;
+using Infrastructure.Services.UpgradeRegistry;
 using Sources.AnvilBase;
 using Sources.AnvilBase.AnvilExtensions.AutoRefiller;
 using Sources.AnvilBase.AnvilExtensions.AutoUse;
 using Sources.AnvilBase.AnvilExtensions.ChargesRefiller;
+using Sources.ItemsBase.ItemFieldBase;
 using UnityEngine;
 
 namespace Infrastructure.Services.Factories.AnvilFactories
@@ -11,16 +14,20 @@ namespace Infrastructure.Services.Factories.AnvilFactories
     public class AnvilFactory : IAnvilFactory
     {
         private readonly IProgressProvider _progressProvider;
-        private readonly Sources.ItemsBase.ItemFieldBase.ItemField _itemField;
+        private readonly IUpgradesRegistry _upgradesRegistry;
+        private readonly IConfigLoader _configLoader;
+        private readonly ItemField _itemField;
         private readonly GameObject _slotsControl;
         private readonly IAutoProcessesController _autoProcessesController;
 
         private Anvil _anvilInstance;
 
-        public AnvilFactory(IProgressProvider progressProvider, Sources.ItemsBase.ItemFieldBase.ItemField itemField, GameObject slotsControl,
+        public AnvilFactory(IProgressProvider progressProvider, IUpgradesRegistry upgradesRegistry, IConfigLoader configLoader, ItemField itemField, GameObject slotsControl,
             IAutoProcessesController autoProcessesController)
         {
             _progressProvider = progressProvider;
+            _upgradesRegistry = upgradesRegistry;
+            _configLoader = configLoader;
             _itemField = itemField;
             _slotsControl = slotsControl;
             _autoProcessesController = autoProcessesController;
@@ -34,6 +41,8 @@ namespace Infrastructure.Services.Factories.AnvilFactories
             display.Construct(anvilInstance);
             _anvilInstance = display.AnvilInstance;
             
+            _configLoader.RegisterLoader(anvilInstance);
+            _upgradesRegistry.Register(anvilInstance);
             _progressProvider.RegisterObserver(_anvilInstance);
         }
 
@@ -69,6 +78,6 @@ namespace Infrastructure.Services.Factories.AnvilFactories
             _progressProvider.RegisterObserver(refillDisplay.ChargesRefillInstance);
         }
 
-        public Sources.AnvilBase.Anvil Anvil => _anvilInstance;
+        public Anvil Anvil => _anvilInstance;
     }
 }

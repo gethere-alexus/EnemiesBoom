@@ -29,8 +29,9 @@ namespace Sources.Windows.HeroesInventory
                 prefabLoader.LoadPrefab<HeroCard>(HeroPaths.HeroCard);
         }
 
-        protected override void OnAwake()
+        protected override void OnEnabling()
         {
+            base.OnEnabling();
             _closeButton.onClick.AddListener(Close);
             ConstructInventoryContent();
         }

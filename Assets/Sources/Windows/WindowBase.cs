@@ -6,35 +6,41 @@ namespace Sources.Windows
     public abstract class WindowBase : MonoBehaviour
     {
         private event Action WindowClosing;
+
         public void SubscribeActions(Action onClosed)
         {
             WindowClosing += onClosed;
         }
+
         protected virtual void OnAwake()
         {
-            
+        }
+
+        protected virtual void OnEnabling()
+        {
         }
 
         protected virtual void OnDestroying()
         {
-            
         }
 
         protected virtual void OnDisabling()
         {
-            
         }
 
-        protected virtual void Close() => 
+        protected virtual void Close() =>
             WindowClosing?.Invoke();
 
-        private void Awake() 
-            => OnAwake();
+        private void OnEnable() => 
+            OnEnabling();
 
-        private void OnDisable() => 
+        private void Awake() => 
+            OnAwake();
+
+        private void OnDisable() =>
             OnDisabling();
 
-        private void OnDestroy() => 
+        private void OnDestroy() =>
             OnDestroying();
     }
 }

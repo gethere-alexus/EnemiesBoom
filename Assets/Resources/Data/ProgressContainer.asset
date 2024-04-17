@@ -34,6 +34,7 @@ MonoBehaviour:
   - ActiveHeroesSlots
   - Heroes
   - WalletData
+  - UpgradeData
   foldoutSerializationGUI: 1
   serializationOutputPath: ../../
   serializationFileName: Configs.v0.1
@@ -162,6 +163,16 @@ MonoBehaviour:
         Level: 0
     ActiveHeroesSlots:
       AvailableAmountOfSlots: 10
+    UpgradeData:
+    - UpgradeID: 0
+      UpgradeName: Crafting item level
+      UpgradeDescription: Upgrades level of the item which is being crafted with
+        Anvil by 1 for each stage. Once completely boosted you will increase your
+        item level by 9.
+      StartUpgradeStage: 1
+      MaxUpgradeStage: 10
+      InitialPrice: 500
+      UpgradePriceMultiplication: 2
     Heroes:
     - ID: 0
       Name: Bunny
@@ -353,8 +364,8 @@ MonoBehaviour:
       UsageCoolDown: 30
     Anvil:
       MaxCharges: 15
-      ChargesLeft: 10
-      CraftingItemLevel: 2
+      ChargesLeft: 15
+      CraftingItemLevel: 1
     AutoRefiller:
       RefillCoolDown: 30
       AmountChargesToAdd: 2

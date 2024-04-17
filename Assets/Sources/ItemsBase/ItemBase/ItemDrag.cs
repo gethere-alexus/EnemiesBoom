@@ -25,9 +25,9 @@ namespace Sources.ItemsBase.ItemBase
         private void Drag(ItemDisplay itemDisplay) =>
             itemDisplay.gameObject.transform.position = Input.mousePosition;
 
-        private void OnDragged(ItemDisplay itemDisplay, ItemSlotDisplay storingItemSlot, PointerEventData eventData)
+        private void OnDragged(ItemDisplay itemDisplay, IItemStorage storingItemSlot, PointerEventData eventData)
         {
-            SetItemPosition(itemDisplay.transform, returnTo: storingItemSlot.transform);
+            SetItemPosition(itemDisplay.transform, returnTo: storingItemSlot.Storage);
             
             if (Raycaster.TryGetComponent<IItemStorage>(eventData, out IItemStorage storage, storingItemSlot))
             {

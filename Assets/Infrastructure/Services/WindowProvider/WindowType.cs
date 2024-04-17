@@ -5,8 +5,9 @@ namespace Infrastructure.Services.WindowProvider
     /// </summary>
     public enum WindowType
     {
-        ConnectionLostWindow = 0,
+        ConnectionLost = 0,
         HeroesInventory = 1,
         SelectHeroSlot = 2,
+        UpgradesShop = 3,
     }
 }

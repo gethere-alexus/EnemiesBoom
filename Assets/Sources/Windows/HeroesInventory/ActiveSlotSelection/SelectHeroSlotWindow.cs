@@ -48,7 +48,7 @@ namespace Sources.Windows.HeroesInventory.ActiveSlotSelection
             Destroy(gameObject);   
         }
 
-        protected override void OnAwake() => 
+        protected override void OnEnabling() => 
             _closeButton.onClick.AddListener(Close);
 
         protected override void OnDisabling() => 

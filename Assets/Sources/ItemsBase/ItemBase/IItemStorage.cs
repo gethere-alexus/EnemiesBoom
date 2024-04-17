@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Sources.ItemsBase.ItemBase
 {
     public interface IItemStorage
@@ -5,5 +7,7 @@ namespace Sources.ItemsBase.ItemBase
         void Store(Item item, out bool isSucceeded, IItemStorage previousStorage = null);
         void Store(Item item, IItemStorage previousStorage = null);
         void ClearStorage();
+        
+        Transform Storage { get; }
     }
 }

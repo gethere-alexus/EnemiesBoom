@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Configurations.Config;
 using Infrastructure.ProgressData;
-using Infrastructure.ProgressData.Anvil;
+using Infrastructure.ProgressData.AnvilData;
 using Infrastructure.ProgressData.Field;
 using Infrastructure.ProgressData.Field.Slot;
 using Infrastructure.ProgressData.Hero;
 using Infrastructure.ProgressData.Item;
+using Infrastructure.Services.UpgradeRegistry;
 using NorskaLib.Spreadsheets;
 
 namespace Infrastructure.Configurations.InitialProgress
@@ -17,6 +18,7 @@ namespace Infrastructure.Configurations.InitialProgress
     {
         [SpreadsheetPage("InitField")] public List<SlotData> InitialFieldData;
         [SpreadsheetPage("ActiveHeroesHolder")] public ActiveHeroesConfig ActiveHeroesSlots;
+        [SpreadsheetPage("Upgrades")] public List<UpgradeConfiguration> UpgradeData;
         [SpreadsheetPage("Heroes")] public List<HeroData> Heroes;
         [SpreadsheetPage("AutoMerge")] public SlotsAutoMergerData AutoMerger;
         [SpreadsheetPage("Anvil")] public AnvilData Anvil;
@@ -29,12 +31,28 @@ namespace Infrastructure.Configurations.InitialProgress
         {
             GameProgress toReturn = new GameProgress()
             {
-                Anvil = Anvil,
+                Anvil = new AnvilData()
+                {
+                  ChargesLeft  = Anvil.ChargesLeft,
+                  CraftingItemLevel = Anvil.CraftingItemLevel,
+                  MaxCharges = Anvil.MaxCharges,
+                },
+                UpgradesData = new UpgradesData()
+                {
+                    AnvilUpgradeData = new UpgradeData()
+                    {
+                        CurrentUpgradeStage = UpgradeData.Find(data => 
+                            data.UpgradeID == Sources.AnvilBase.Anvil.UpgradeID).StartUpgradeStage,
+                    },
+                },
                 ItemField = new ItemFieldData()
                 {
                     Grid = InitialFieldData.ToArray(),
                 },
-                WalletData = WalletData,
+                WalletData = new WalletData()
+                {
+                    Balance = WalletData.Balance,
+                },
                 HeroesData = new HeroesData()
                 {
                     ActiveHeroes = GetInitiallyActiveHeroes(),

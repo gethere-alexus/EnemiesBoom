@@ -1,6 +1,6 @@
 using System;
 
-namespace Infrastructure.ProgressData.Anvil
+namespace Infrastructure.ProgressData.AnvilData
 {
     [Serializable]
     public class AnvilExtensionsData

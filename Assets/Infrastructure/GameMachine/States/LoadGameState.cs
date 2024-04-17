@@ -2,7 +2,7 @@
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.ConnectionCheck;
 using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.ItemField;
+using Infrastructure.Services.Factories.ItemFactory;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.Factories.Wallet;
 

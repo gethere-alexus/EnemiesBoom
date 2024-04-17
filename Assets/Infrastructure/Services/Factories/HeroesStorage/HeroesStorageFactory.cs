@@ -3,9 +3,7 @@ using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.Factories.UI;
 using Infrastructure.Services.ProgressLoad;
-using Sources.HeroBase;
 using Sources.HeroBase.HeroesFieldBase;
-using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.Services.Factories.HeroesStorage

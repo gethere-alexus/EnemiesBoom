@@ -20,10 +20,6 @@ namespace Sources.HeroBase.HeroSlotBase
         public void SetActiveHero(HeroData hero)
         {
             _storedHero = hero;
-            if (_storedItem == null)
-            {
-                SetStoredItem(new Item(1));
-            }
             SlotInformationUpdated?.Invoke();
         }
 
@@ -38,11 +34,7 @@ namespace Sources.HeroBase.HeroSlotBase
 
         public void SetStoredItem(Item item)
         {
-            if (IsHeroStored)
-            {
-                _storedItem = item;
-                SlotInformationUpdated?.Invoke();
-            }
+           SetStoredItem(item, out bool isSucceeded);
         }
 
         public void SetStoredItem(Item item, out bool isSucceeded, IItemStorage previousStorage = null)
@@ -50,10 +42,26 @@ namespace Sources.HeroBase.HeroSlotBase
             isSucceeded = false;
             if (IsHeroStored)
             {
-                if (!IsDefaultItemStored)
-                    ReturnStoredItem(previousStorage);
-                
-                _storedItem = item;
+                if (IsItemStored)
+                {
+                    if (_storedItem.Level == item.Level)
+                    {
+                        _storedItem.Upgrade();
+                    }
+                    else if (!IsDefaultItemStored)
+                    {
+                        ReturnStoredItem(previousStorage);
+                        _storedItem = item;
+                    }
+                    else
+                    {
+                        _storedItem = item;
+                    }
+                }
+                else
+                {
+                    _storedItem = item;
+                }
                 isSucceeded = true;
                 SlotInformationUpdated?.Invoke();
             }
@@ -72,7 +80,9 @@ namespace Sources.HeroBase.HeroSlotBase
             }
             
         }
-        public bool IsDefaultItemStored => _storedItem?.Level == 1;
+
+        public bool IsItemStored => _storedItem != null;
+        public bool IsDefaultItemStored => _storedItem.Level == 1;
         public bool IsHeroStored => _storedHero != null;
         public HeroData StoredHero => _storedHero;
 
