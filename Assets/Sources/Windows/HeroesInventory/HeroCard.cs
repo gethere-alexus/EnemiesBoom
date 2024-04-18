@@ -34,7 +34,9 @@ namespace Sources.Windows.HeroesInventory
         }
         private void ConstructDisplay(HeroData heroData, bool isPurchased)
         {
-            _heroNameText.text = heroData.Name;
+            string nameText = $"{heroData.Name} (id:{heroData.ID})";
+            _heroNameText.text = nameText;
+            
             _heroDamageText.text = $"Damage: {heroData.Damage}";
             _heroReloadSpeedText.text = $"Reload: {heroData.ReloadSpeed}s";
             _heroPurchaseText.text = $"Bought: {isPurchased}";

@@ -14,12 +14,25 @@ namespace Sources.ItemsBase.ItemFieldBase.Extensions.AutoMerge
     public class AutoSlotsMerger : MonoBehaviour, IAutoProcessController, IProgressWriter
     {
         private ItemField _itemField;
+
         private float _usageCoolDown;
-        
+        private const float MinCoolDown = 0.1f;
         public void Construct(ItemField itemField)
         {
             _itemField = itemField;
             _itemField.SlotsMerged += RestartProcess;
+        }
+
+        public void DecreaseMergeCoolDown(float decreaseBy)
+        {
+            StopProcess();
+            
+            _usageCoolDown -= decreaseBy;
+            
+            if (_usageCoolDown < MinCoolDown)
+                _usageCoolDown = MinCoolDown;
+            
+            StartProcess();
         }
 
         public void StartProcess() => 

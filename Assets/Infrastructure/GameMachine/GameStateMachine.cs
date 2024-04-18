@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Infrastructure.Curtain;
+using Infrastructure.Factories.HeroesStorage;
+using Infrastructure.Factories.ItemFactory;
+using Infrastructure.Factories.UI;
+using Infrastructure.Factories.Wallet;
 using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
 using Infrastructure.Services.AutoProcessesControl;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.HeroesStorage;
-using Infrastructure.Services.Factories.ItemFactory;
-using Infrastructure.Services.Factories.UI;
-using Infrastructure.Services.Factories.Wallet;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.UpgradeRegistry;
 using Zenject;
@@ -33,17 +33,17 @@ namespace Infrastructure.GameMachine
             IHeroesStorageFactory heroesStorageFactory = diContainer.Resolve<IHeroesStorageFactory>();
             IWalletFactory walletFactory = diContainer.Resolve<IWalletFactory>();
             IUIMenuFactory uiMenuFactory = diContainer.Resolve<IUIMenuFactory>();
-            IConfigLoader configLoader = diContainer.Resolve<IConfigLoader>();
+            IConfigProvider configProvider = diContainer.Resolve<IConfigProvider>();
             IProgressProvider progressProvider = diContainer.Resolve<IProgressProvider>();
             IAutoProcessesController autoProcessesController = diContainer.Resolve<IAutoProcessesController>();
             
             _states = new Dictionary<Type, IState>()
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadGameState)] = new LoadGameState(this, itemFieldFactory, heroesStorageFactory,
+                [typeof(LoadGameState)] = new LoadGameState(this,upgradesRegistry, itemFieldFactory, heroesStorageFactory,
                     uiMenuFactory, walletFactory, sceneLoader, loadingCurtain),
-                [typeof(LoadDataState)] = new LoadDataState(this, progressProvider, configLoader,upgradesRegistry, loadingCurtain),
-                [typeof(GameLoopState)] = new GameLoopState(progressProvider, autoProcessesController, coroutineRunner, configLoader),
+                [typeof(LoadDataState)] = new LoadDataState(this, progressProvider, configProvider,upgradesRegistry, loadingCurtain),
+                [typeof(GameLoopState)] = new GameLoopState(progressProvider, autoProcessesController, coroutineRunner, configProvider),
                 [typeof(GameStoppedState)] = new GameStoppedState(sceneLoader),
             };
         }

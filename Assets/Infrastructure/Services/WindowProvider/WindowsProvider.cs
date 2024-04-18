@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Infrastructure.Services.Factories.Windows;
+using Infrastructure.Factories.Windows;
 using Sources.Windows;
 using UnityEngine;
 using Zenject;
@@ -44,7 +44,7 @@ namespace Infrastructure.Services.WindowProvider
                 WindowBase toClose = _openedWindows[window];
 
                 if (toClose != null)
-                    Object.Destroy(toClose);
+                    Object.Destroy(toClose.gameObject);
                 
                 DecreaseWindowSortOrder();
                 _openedWindows.Remove(window);

@@ -15,16 +15,16 @@ namespace Infrastructure.GameMachine.States
         private readonly IProgressProvider _progressProvider;
         private readonly IAutoProcessesController _autoProcessesController;
         private readonly ICoroutineRunner _coroutineRunner;
-        private readonly IConfigLoader _configLoader;
+        private readonly IConfigProvider _configProvider;
 
         private const float SaveDelay = 5.0f; 
         public GameLoopState(IProgressProvider progressProvider, IAutoProcessesController autoProcessesController,
-            ICoroutineRunner coroutineRunner, IConfigLoader configLoader)
+            ICoroutineRunner coroutineRunner, IConfigProvider configProvider)
         {
             _progressProvider = progressProvider;
             _autoProcessesController = autoProcessesController;
             _coroutineRunner = coroutineRunner;
-            _configLoader = configLoader;
+            _configProvider = configProvider;
         }
 
         public void Enter()
@@ -49,7 +49,7 @@ namespace Infrastructure.GameMachine.States
             
             _progressProvider.ClearObservers();
             _autoProcessesController.ClearControllers();
-            _configLoader.ClearLoaders();
+            _configProvider.ClearLoaders();
         }
     }
 }

@@ -1,10 +1,11 @@
 using Infrastructure.Curtain;
+using Infrastructure.Factories.ItemFactory;
 using Infrastructure.ProgressData;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.ConfigLoad;
-using Infrastructure.Services.Factories.ItemFactory;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.UpgradeRegistry;
+using Zenject;
 
 namespace Infrastructure.GameMachine.States
 {
@@ -18,17 +19,17 @@ namespace Infrastructure.GameMachine.States
         private readonly IItemFieldFactory _itemFieldFactory;
 
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IConfigLoader _configLoader;
+        private readonly IConfigProvider _configProvider;
         private readonly IUpgradesRegistry _upgradesRegistry;
         private readonly LoadingCurtain _loadingCurtain;
 
 
         public LoadDataState(GameStateMachine gameStateMachine, IProgressProvider progressProvider, 
-            IConfigLoader configLoader, IUpgradesRegistry upgradesRegistry, LoadingCurtain loadingCurtain)
+            IConfigProvider configProvider, IUpgradesRegistry upgradesRegistry, LoadingCurtain loadingCurtain)
         {
             _gameStateMachine = gameStateMachine;
             _progressProvider = progressProvider;
-            _configLoader = configLoader;
+            _configProvider = configProvider;
             _upgradesRegistry = upgradesRegistry;
             _loadingCurtain = loadingCurtain;
         }
@@ -42,11 +43,11 @@ namespace Infrastructure.GameMachine.States
             _gameStateMachine.Enter<GameLoopState>();
         }
 
-        private void LoadUpgradesData() => 
+        private void LoadUpgradesData() =>
             _upgradesRegistry.LoadUpgradesData();
 
         private void LoadConfiguration() => 
-            _configLoader.LoadConfigs();
+            _configProvider.LoadConfigs();
 
         private void LoadProgress()
         {

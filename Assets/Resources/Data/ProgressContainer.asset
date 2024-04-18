@@ -172,7 +172,25 @@ MonoBehaviour:
       StartUpgradeStage: 1
       MaxUpgradeStage: 10
       InitialPrice: 500
-      UpgradePriceMultiplication: 2
+      UpgradePriceMultiplication: 3.5
+    - UpgradeID: 1
+      UpgradeName: Anvil charging speed
+      UpgradeDescription: Decreases the time, required to refill an anvil charge,
+        by 1.25 seconds for each stage. Once completely boosted you will decrease
+        time spend to refill one charge by 17.5 seconds.
+      StartUpgradeStage: 1
+      MaxUpgradeStage: 15
+      InitialPrice: 1500
+      UpgradePriceMultiplication: 7.5
+    - UpgradeID: 2
+      UpgradeName: 'Arrow craft time '
+      UpgradeDescription: Decreases the cooldown of anvil auto usage by 0.25 seconds
+        for each stage. Once completely boosted you will decrease time spend to automatically
+        craft one arrow by 3.5 seconds.
+      StartUpgradeStage: 1
+      MaxUpgradeStage: 5
+      InitialPrice: 5000
+      UpgradePriceMultiplication: 4.5
     Heroes:
     - ID: 0
       Name: Bunny

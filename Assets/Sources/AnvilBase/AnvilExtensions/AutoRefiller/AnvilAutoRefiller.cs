@@ -16,11 +16,25 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
         private Anvil _anvil;
         private int _amountChargesToAdd;
         private float _refillCoolDown;
+        private float _currentCooldownPercent;
+        private const float MinRefillCoolDown = 0.1f;
 
         public void Construct(Anvil anvil)
         {
             _anvil = anvil;
             anvil.ItemCrafted += RestartProcess;
+        }
+
+        public void DecreaseRefillCoolDown(float decreaseBy)
+        {
+            StopProcess();
+            
+            _refillCoolDown -= decreaseBy;
+            
+            if (_refillCoolDown < MinRefillCoolDown)
+                _refillCoolDown = MinRefillCoolDown;
+            
+            StartProcess();
         }
 
         public void StartProcess()
@@ -38,7 +52,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
         {
             StopAllCoroutines();
         }
-        
+
         public void LoadProgress(GameProgress progress)
         {
             _amountChargesToAdd = progress.AnvilExtensions.AnvilAutoRefiller.AmountChargesToAdd;
@@ -55,8 +69,16 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
         {
             while (true)
             {
-                yield return new WaitForSeconds(_refillCoolDown);
-
+                float pastTime = 0;
+                
+                while (pastTime <= _refillCoolDown)
+                {
+                    pastTime += Time.deltaTime;
+                    float percentElapsed = (pastTime / _refillCoolDown);
+                    _currentCooldownPercent = percentElapsed;
+                    yield return null;
+                }
+                
                 if (!_anvil.IsCompletelyCharged)
                     _anvil.AddCharge(_amountChargesToAdd);
             }
@@ -67,5 +89,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
             StopAllCoroutines();
             _anvil.ItemCrafted -= RestartProcess;
         }
+
+        public float CooldownPercent => _currentCooldownPercent;
     }
 }

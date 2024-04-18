@@ -1,5 +1,7 @@
 using System;
 using Infrastructure.Services.UpgradeRegistry;
+using Infrastructure.Services.UpgradeRegistry.Upgrades;
+using Sources.WalletBase;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +18,7 @@ namespace Sources.Windows.Upgrades
         [SerializeField] private TMP_Text _upgradePrice;
         [SerializeField] private Button _upgradeButton;
 
-        public void ConstructDisplay(IUpgradable upgradable, UpgradeConfiguration configuration, Action<IUpgradable> onUpgrading)
+        public void ConstructDisplay(UpgradeBase upgradable, UpgradeConfiguration configuration, Action<UpgradeBase> onUpgrading)
         {
             _upgradeName.text = configuration.UpgradeName;
             _upgradeDescription.text = configuration.UpgradeDescription;
@@ -28,7 +30,7 @@ namespace Sources.Windows.Upgrades
             _progressSlider.maxValue = configuration.MaxUpgradeStage;
             _progressSlider.value = upgradable.CurrentUpgradeStage;
 
-            string price = upgradable.IsCompletelyUpgraded ? "Max." : upgradable.UpgradePrice.ToString();
+            string price = upgradable.IsCompletelyUpgraded ? "Max." : WalletUtility.ConvertToPrettyFormat(upgradable.UpgradePrice, ',');
             _upgradePrice.text = price;
             _upgradeButton.onClick.AddListener(() => onUpgrading?.Invoke(upgradable));
         }

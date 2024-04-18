@@ -17,10 +17,10 @@ namespace Sources.ItemsBase.ItemFieldBase
         private ItemField _itemFieldInstance;
         private const int GridSlots = 40;
 
-        public void Construct()
+        public void Construct(ItemField instance)
         {
             ClearStorage();
-            _itemFieldInstance = new ItemField();
+            _itemFieldInstance = instance;
         }
 
         /// <summary>

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
+using Infrastructure.Services.UpgradeRegistry.Upgrades;
 
 namespace Infrastructure.Services.UpgradeRegistry
 {
     public interface IUpgradesRegistry
     {
-        void Register(IUpgradable toRegister);
         void LoadUpgradesData();
-        void ClearRegistry();
-        
-        List<IUpgradable> Upgradeables { get; }
+        UpgradeBase[] Upgrades { get; }
+        void CreateUpgrades();
     }
 }

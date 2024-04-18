@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: HeroField
+    uniqueID: 2460942345
+    locked: 0
+  - name: ItemFieldControll
+    uniqueID: 3095180021
+    locked: 0
+  - name: ItemField
+    uniqueID: 1199543937
+    locked: 0

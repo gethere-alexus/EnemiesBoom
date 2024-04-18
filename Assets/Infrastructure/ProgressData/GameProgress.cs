@@ -16,11 +16,4 @@ namespace Infrastructure.ProgressData
         public HeroesData HeroesData;
         public WalletData WalletData;
     }
-
-    [Serializable]
-    public class UpgradesData
-    {
-        public UpgradeData AnvilUpgradeData;
-        
-    }
 }

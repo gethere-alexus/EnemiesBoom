@@ -32,20 +32,18 @@ namespace Sources.ItemsBase.ItemSlotBase
             UpdateView();
         }
 
-        public void Store(ItemBase.Item item, out bool isSucceeded, IItemStorage previousStorage = null)
+        public void Store(Item item, out bool isSucceeded, IItemStorage previousStorage = null)
         {
             isSucceeded = false;
-            if (previousStorage != null)
+            
+            _itemSlotInstance.PutItem(item, out isSucceeded);
+            
+            if (previousStorage != null && isSucceeded)
                 previousStorage.ClearStorage();
-            _itemSlotInstance?.PutItem(item, out isSucceeded);
         }
 
-        public void Store(ItemBase.Item item, IItemStorage previousStorage = null)
-        {
-            if (previousStorage != null)
-                previousStorage.ClearStorage();
-            _itemSlotInstance?.PutItem(item, out bool isSucceeded);
-        }
+        public void Store(Item item, IItemStorage previousStorage = null) => 
+            Store(item, out bool isSucceeded, previousStorage);
 
         public void ClearStorage()
         {

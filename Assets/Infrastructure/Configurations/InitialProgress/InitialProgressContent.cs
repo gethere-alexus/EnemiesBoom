@@ -9,6 +9,9 @@ using Infrastructure.ProgressData.Field.Slot;
 using Infrastructure.ProgressData.Hero;
 using Infrastructure.ProgressData.Item;
 using Infrastructure.Services.UpgradeRegistry;
+using Infrastructure.Services.UpgradeRegistry.Upgrades.AnvilAutoUseUpgrade;
+using Infrastructure.Services.UpgradeRegistry.Upgrades.AnvilReloadSpeedUpgrade;
+using Infrastructure.Services.UpgradeRegistry.Upgrades.CraftingItemLevel;
 using NorskaLib.Spreadsheets;
 
 namespace Infrastructure.Configurations.InitialProgress
@@ -17,7 +20,10 @@ namespace Infrastructure.Configurations.InitialProgress
     public class InitialProgressContent
     {
         [SpreadsheetPage("InitField")] public List<SlotData> InitialFieldData;
-        [SpreadsheetPage("ActiveHeroesHolder")] public ActiveHeroesConfig ActiveHeroesSlots;
+
+        [SpreadsheetPage("ActiveHeroesHolder")]
+        public ActiveHeroesConfig ActiveHeroesSlots;
+
         [SpreadsheetPage("Upgrades")] public List<UpgradeConfiguration> UpgradeData;
         [SpreadsheetPage("Heroes")] public List<HeroData> Heroes;
         [SpreadsheetPage("AutoMerge")] public SlotsAutoMergerData AutoMerger;
@@ -33,17 +39,27 @@ namespace Infrastructure.Configurations.InitialProgress
             {
                 Anvil = new AnvilData()
                 {
-                  ChargesLeft  = Anvil.ChargesLeft,
-                  CraftingItemLevel = Anvil.CraftingItemLevel,
-                  MaxCharges = Anvil.MaxCharges,
+                    ChargesLeft = Anvil.ChargesLeft,
+                    CraftingItemLevel = Anvil.CraftingItemLevel,
+                    MaxCharges = Anvil.MaxCharges,
                 },
                 UpgradesData = new UpgradesData()
                 {
-                    AnvilUpgradeData = new UpgradeData()
+                    AnvilItemUpgradeData = new UpgradeData()
                     {
-                        CurrentUpgradeStage = UpgradeData.Find(data => 
-                            data.UpgradeID == Sources.AnvilBase.Anvil.UpgradeID).StartUpgradeStage,
+                        CurrentUpgradeStage = UpgradeData.Find(data =>
+                            data.UpgradeID == AnvilCraftingItemUpgrade.UpgradeID).StartUpgradeStage,
                     },
+                    AnvilReloadUpgradesData = new UpgradeData()
+                    {
+                        CurrentUpgradeStage = UpgradeData.Find(data =>
+                            data.UpgradeID == AnvilReloadSpeedUpgrade.UpgradeID).StartUpgradeStage,
+                    },
+                    AnvilAutoUseUpgradesData = new UpgradeData()
+                    {
+                        CurrentUpgradeStage = UpgradeData.Find(data =>
+                            data.UpgradeID == AnvilAutoUseUpgrade.UpgradeID).StartUpgradeStage,
+                    }
                 },
                 ItemField = new ItemFieldData()
                 {
@@ -60,13 +76,27 @@ namespace Infrastructure.Configurations.InitialProgress
                 },
                 AnvilExtensions = new AnvilExtensionsData()
                 {
-                    AnvilAutoRefiller = AutoRefiller,
-                    AnvilAutoUse = AnvilAutoUsing,
-                    AnvilRefill = AnvilRefilling,
+                    AnvilAutoRefiller = new AnvilAutoRefillerData()
+                    {
+                        AmountChargesToAdd = AutoRefiller.AmountChargesToAdd,
+                        RefillCoolDown = AutoRefiller.RefillCoolDown,
+                    },
+                    
+                    AnvilAutoUse = new AnvilAutoUseData()
+                    {
+                      UsingCoolDown  = AnvilAutoUsing.UsingCoolDown,
+                    },
+                    AnvilRefill = new AnvilRefillData()
+                    {
+                        Charges = AnvilRefilling.Charges,
+                    }
                 },
                 FieldExtensions = new FieldExtensionsData()
                 {
-                    SlotsAutoMerger = AutoMerger,
+                    SlotsAutoMerger = new SlotsAutoMergerData()
+                    {
+                        UsageCoolDown = AutoMerger.UsageCoolDown,
+                    }
                 },
             };
             return toReturn;

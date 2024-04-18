@@ -16,12 +16,26 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoUse
         private Anvil _anvil;
         
         private float _usingCooldown;
+        private const float MinRefillCoolDown = 0.1f;
+
 
         public void Construct(Anvil anvil)
         {
             _anvil = anvil;
             _anvil.ItemCrafted += RestartProcess;
             
+        }
+
+        public void DecreaseUsageCoolDown(float decreaseBy)
+        {
+            StopProcess();
+
+            _usingCooldown -= decreaseBy;
+            
+            if (_usingCooldown < MinRefillCoolDown)
+                _usingCooldown = MinRefillCoolDown;
+            
+            StartProcess();
         }
 
         public void StartProcess() =>

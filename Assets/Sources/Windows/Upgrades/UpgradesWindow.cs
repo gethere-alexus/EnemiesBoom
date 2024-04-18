@@ -1,6 +1,7 @@
 using Infrastructure.PrefabPaths;
 using Infrastructure.Services.AssetsProvider;
 using Infrastructure.Services.UpgradeRegistry;
+using Infrastructure.Services.UpgradeRegistry.Upgrades;
 using Sources.Utils;
 using Sources.WalletBase;
 using UnityEngine;
@@ -31,13 +32,13 @@ namespace Sources.Windows.Upgrades
         {
             ContentUtility.ClearContentStorage(_contentStorage);
             
-            foreach (var upgradable in _upgradesRegistry.Upgradeables)
+            foreach (var upgradable in _upgradesRegistry.Upgrades)
             {
                 _assetProvider.Instantiate<UpgradeCard>(WindowPaths.UpgradeCard, _contentStorage)
-                    .ConstructDisplay(upgradable, upgradable.UpgradeInformation, OnUpgradePurchasing);
+                    .ConstructDisplay(upgradable, upgradable.UpgradeConfiguration, OnUpgradePurchasing);
             }
         }
-        private void OnUpgradePurchasing(IUpgradable upgradable)
+        private void OnUpgradePurchasing(UpgradeBase upgradable)
         {
             if (upgradable.IsUpgradable)
             {

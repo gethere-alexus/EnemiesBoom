@@ -13,6 +13,6 @@ namespace Infrastructure.Services.UpgradeRegistry
         public int StartUpgradeStage, MaxUpgradeStage;
        
         public int InitialPrice;
-        public int UpgradePriceMultiplication;
+        public float UpgradePriceMultiplication;
     }
 }
