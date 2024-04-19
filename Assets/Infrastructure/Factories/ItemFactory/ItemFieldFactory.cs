@@ -2,7 +2,7 @@
 using Infrastructure.Factories.UI;
 using Infrastructure.PrefabPaths;
 using Infrastructure.Services.AssetsProvider;
-using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.UpgradeRegistry;
@@ -21,7 +21,7 @@ namespace Infrastructure.Factories.ItemFactory
     {
         
         private readonly IAssetProvider _assetProvider;
-        private readonly IAutoProcessesController _autoProcessesController;
+        private readonly IAutoPlayController _autoPlayController;
         private readonly IUIRootFactory _uiRootFactory;
         private readonly IProgressProvider _progressProvider;
         private readonly IConfigProvider _configProvider;
@@ -33,18 +33,18 @@ namespace Infrastructure.Factories.ItemFactory
         private readonly ItemField _itemField;
         private FieldControl _fieldControl;
 
-        public ItemFieldFactory(IAssetProvider assetProvider, IAutoProcessesController autoProcessesController, 
+        public ItemFieldFactory(IAssetProvider assetProvider, IAutoPlayController autoPlayController, 
             IUIRootFactory uiRootFactory, IProgressProvider progressProvider, IConfigProvider configProvider, DiContainer instanceRegistry)
         {
             _assetProvider = assetProvider;
-            _autoProcessesController = autoProcessesController;
+            _autoPlayController = autoPlayController;
             _uiRootFactory = uiRootFactory;
             _progressProvider = progressProvider;
             _configProvider = configProvider;
             _instanceRegistry = instanceRegistry;
 
             _itemField = new ItemField();
-            _anvilFactory = new AnvilFactory(this, progressProvider, autoProcessesController,instanceRegistry, _itemField);
+            _anvilFactory = new AnvilFactory(this, progressProvider, autoPlayController,instanceRegistry, _itemField);
         }
 
         public void CreateItemField()
@@ -119,7 +119,7 @@ namespace Infrastructure.Factories.ItemFactory
             autoMerge.Construct(_itemFieldDisplay.ItemFieldInstance);
             
             _progressProvider.RegisterObserver(autoMerge);
-            _autoProcessesController.RegisterController(autoMerge);
+            _autoPlayController.RegisterAutoPlay(autoMerge);
             
             _instanceRegistry.Bind<AutoSlotsMerger>().FromInstance(autoMerge).AsSingle();
         }

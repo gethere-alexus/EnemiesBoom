@@ -36,7 +36,7 @@ namespace Sources.Windows.HeroesInventory.ActiveSlotSelection
                 instance.GetComponentInChildren<TMP_Text>().text = $"{i + 1}";
                 instance.onClick.AddListener((() =>
                 {
-                    slotToPlace.SetActiveHero(payload);
+                    slotToPlace.SetActiveHero(payload, true);
                     Close();
                 }));
             }

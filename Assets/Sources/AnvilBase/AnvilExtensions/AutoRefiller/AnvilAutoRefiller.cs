@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Infrastructure.ProgressData;
-using Infrastructure.Services.AutoProcessesControl.Connection;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
 using UnityEngine;
@@ -11,7 +11,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoRefiller
     /// Automatically refills anvil's charges if it is not full.
     /// Parametrized by AnvilAutoRefillConfig.
     /// </summary>
-    public class AnvilAutoRefiller : MonoBehaviour, IProgressWriter, IAutoProcessController
+    public class AnvilAutoRefiller : MonoBehaviour, IProgressWriter, IAutoPlay
     {
         private Anvil _anvil;
         private int _amountChargesToAdd;

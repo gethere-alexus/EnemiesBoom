@@ -1,5 +1,5 @@
 using Infrastructure.Services.AssetsProvider;
-using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.PrefabLoad;
 using Infrastructure.Services.ProgressLoad;
@@ -25,17 +25,17 @@ namespace Infrastructure.Installers.BootstrapInstaller
             IProgressProvider progressProvider = 
                 InstallProgressProvider(prefabLoader);
 
-            IAutoProcessesController autoProcessesController = 
+            IAutoPlayController autoPlayController = 
                 InstallAutoProcessesController();
         }
 
         #region Installs
 
-        private IAutoProcessesController InstallAutoProcessesController()
+        private IAutoPlayController InstallAutoProcessesController()
         {
-            IAutoProcessesController autoProcessesController = new AutoProcessesController();
-            Container.Bind<IAutoProcessesController>().FromInstance(autoProcessesController).AsSingle();
-            return autoProcessesController;
+            IAutoPlayController autoPlayController = new AutoPlayController();
+            Container.Bind<IAutoPlayController>().FromInstance(autoPlayController).AsSingle();
+            return autoPlayController;
         }
 
         private IProgressProvider InstallProgressProvider(IPrefabLoader prefabLoader)

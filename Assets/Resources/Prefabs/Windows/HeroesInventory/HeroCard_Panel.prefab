@@ -669,6 +669,7 @@ GameObject:
   - component: {fileID: 5194530935207109991}
   - component: {fileID: 5355925728496586543}
   - component: {fileID: -8674266696418966677}
+  - component: {fileID: 9106386018643392929}
   m_Layer: 5
   m_Name: HeroCard_Panel
   m_TagString: Untagged
@@ -755,6 +756,26 @@ MonoBehaviour:
   _heroReloadSpeedText: {fileID: 4049318828189660616}
   _heroPurchaseText: {fileID: 8129623029785021199}
   _interactHeroButton: {fileID: 991053465870570393}
+--- !u!114 &9106386018643392929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6823031720464590155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: 1
+  m_LayoutPriority: 1
 --- !u!1 &9204350963927315236
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,11 @@ namespace Sources.ItemsBase.ItemBase
             _level = itemLevel;
         }
 
+        public Item()
+        {
+            _level = MinItemLevel;
+        }
+
         /// <summary>
         /// Upgrades an item
         /// </summary>
@@ -32,6 +37,12 @@ namespace Sources.ItemsBase.ItemBase
             if (toSet < MinItemLevel)
                 toSet = MinItemLevel;
             _level = toSet;
+            LevelChanged?.Invoke();
+        }
+
+        public void SetDefaultLevel()
+        {
+            _level = MinItemLevel;
             LevelChanged?.Invoke();
         }
 
@@ -51,5 +62,6 @@ namespace Sources.ItemsBase.ItemBase
         }
 
         public int Level => _level;
+        public bool IsDefaultItemLevel => _level == MinItemLevel;
     }
 }

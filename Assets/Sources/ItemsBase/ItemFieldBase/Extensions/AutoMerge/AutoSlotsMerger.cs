@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Infrastructure.ProgressData;
-using Infrastructure.Services.AutoProcessesControl.Connection;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ProgressLoad.Connection;
 using Sources.ItemsBase.ItemSlotBase;
 using UnityEngine;
@@ -11,7 +11,7 @@ namespace Sources.ItemsBase.ItemFieldBase.Extensions.AutoMerge
     /// Automatically merges the items, placed on a grid.
     /// Parametrized by AutoMergerConfig.
     /// </summary>
-    public class AutoSlotsMerger : MonoBehaviour, IAutoProcessController, IProgressWriter
+    public class AutoSlotsMerger : MonoBehaviour, IAutoPlay, IProgressWriter
     {
         private ItemField _itemField;
 

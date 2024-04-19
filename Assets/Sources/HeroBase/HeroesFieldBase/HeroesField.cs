@@ -47,7 +47,7 @@ namespace Sources.HeroBase.HeroesFieldBase
 
                     Item itemToPlace = progress.HeroesData.ActiveHeroes[i].StoredItem.FromSerializable();
 
-                    _activeHeroesSlots[i].SetActiveHero(heroToPlace);
+                    _activeHeroesSlots[i].SetActiveHero(heroToPlace, false);
                     _activeHeroesSlots[i].SetStoredItem(itemToPlace);
                 }
             }

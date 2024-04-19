@@ -3,7 +3,7 @@ using Infrastructure.Factories.ItemFactory;
 using Infrastructure.Factories.UI;
 using Infrastructure.Factories.Wallet;
 using Infrastructure.Services.AssetsProvider;
-using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.UpgradeRegistry;
@@ -22,7 +22,7 @@ namespace Infrastructure.Installers.BootstrapInstaller
         {
             IAssetProvider assetProvider = Container.Resolve<IAssetProvider>();
             IProgressProvider progressProvider = Container.Resolve<IProgressProvider>();
-            IAutoProcessesController autoProcessesController = Container.Resolve<IAutoProcessesController>();
+            IAutoPlayController autoPlayController = Container.Resolve<IAutoPlayController>();
             IConfigProvider configProvider = Container.Resolve<IConfigProvider>();
             IWindowsProvider windowsProvider = Container.Resolve<IWindowsProvider>();
             IUIRootFactory uiRootFactory = Container.Resolve<IUIRootFactory>();
@@ -31,7 +31,7 @@ namespace Infrastructure.Installers.BootstrapInstaller
                 InstallUIMenuFactory(windowsProvider, assetProvider, uiRootFactory);
             
             IItemFieldFactory itemFieldFactory = 
-                InstallGameFieldFactory(assetProvider, autoProcessesController, uiRootFactory, progressProvider, configProvider, Container);
+                InstallGameFieldFactory(assetProvider, autoPlayController, uiRootFactory, progressProvider, configProvider, Container);
             
             IWalletFactory walletFactory = 
                 InstallWalletFactory(uiRootFactory, assetProvider, progressProvider, Container);
@@ -62,10 +62,10 @@ namespace Infrastructure.Installers.BootstrapInstaller
             Container.Bind<IWalletFactory>().FromInstance(walletFactory).AsSingle();
             return walletFactory;
         }
-        private IItemFieldFactory InstallGameFieldFactory(IAssetProvider assetProvider, IAutoProcessesController autoProcessesController, 
+        private IItemFieldFactory InstallGameFieldFactory(IAssetProvider assetProvider, IAutoPlayController autoPlayController, 
             IUIRootFactory uiRootFactory, IProgressProvider progressProvider, IConfigProvider configProvider, DiContainer container)
         {
-            IItemFieldFactory itemFieldFactory = new ItemFieldFactory(assetProvider, autoProcessesController, uiRootFactory, progressProvider, configProvider, container);
+            IItemFieldFactory itemFieldFactory = new ItemFieldFactory(assetProvider, autoPlayController, uiRootFactory, progressProvider, configProvider, container);
             Container.Bind<IItemFieldFactory>().FromInstance(itemFieldFactory).AsSingle();
             
             return itemFieldFactory;

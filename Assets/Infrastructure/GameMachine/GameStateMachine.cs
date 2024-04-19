@@ -7,7 +7,7 @@ using Infrastructure.Factories.UI;
 using Infrastructure.Factories.Wallet;
 using Infrastructure.GameMachine.States;
 using Infrastructure.SceneLoad;
-using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.UpgradeRegistry;
@@ -35,7 +35,7 @@ namespace Infrastructure.GameMachine
             IUIMenuFactory uiMenuFactory = diContainer.Resolve<IUIMenuFactory>();
             IConfigProvider configProvider = diContainer.Resolve<IConfigProvider>();
             IProgressProvider progressProvider = diContainer.Resolve<IProgressProvider>();
-            IAutoProcessesController autoProcessesController = diContainer.Resolve<IAutoProcessesController>();
+            IAutoPlayController autoPlayController = diContainer.Resolve<IAutoPlayController>();
             
             _states = new Dictionary<Type, IState>()
             {
@@ -43,7 +43,7 @@ namespace Infrastructure.GameMachine
                 [typeof(LoadGameState)] = new LoadGameState(this,upgradesRegistry, itemFieldFactory, heroesStorageFactory,
                     uiMenuFactory, walletFactory, sceneLoader, loadingCurtain),
                 [typeof(LoadDataState)] = new LoadDataState(this, progressProvider, configProvider,upgradesRegistry, loadingCurtain),
-                [typeof(GameLoopState)] = new GameLoopState(progressProvider, autoProcessesController, coroutineRunner, configProvider),
+                [typeof(GameLoopState)] = new GameLoopState(progressProvider, autoPlayController, coroutineRunner, configProvider),
                 [typeof(GameStoppedState)] = new GameStoppedState(sceneLoader),
             };
         }

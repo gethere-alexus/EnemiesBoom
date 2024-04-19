@@ -17,10 +17,17 @@ namespace Sources.HeroBase.HeroSlotBase
         public HeroSlot(ItemField itemField) => 
             _itemField = itemField;
 
-        public void SetActiveHero(HeroData hero)
+        public void SetActiveHero(HeroData hero, bool setDefaultItem)
         {
-            _storedHero = hero;
-            SlotInformationUpdated?.Invoke();
+            if (hero != null)
+            {
+                _storedHero = hero;
+                
+                if(setDefaultItem)
+                    _storedItem ??= new Item();
+                
+                SlotInformationUpdated?.Invoke();                
+            }
         }
 
         public void RemoveStoredItem()
@@ -28,12 +35,12 @@ namespace Sources.HeroBase.HeroSlotBase
             if (IsHeroStored && !IsDefaultItemStored)
             {
                 _itemField.FirstEmpty?.PutItem(_storedItem);
-                _storedItem.SetLevel(1);
+                _storedItem.SetDefaultLevel();
             }
         }
 
         public void SetStoredItem(Item item)
-        {
+        { 
            SetStoredItem(item, out bool isSucceeded);
         }
 
@@ -82,8 +89,8 @@ namespace Sources.HeroBase.HeroSlotBase
         }
 
         public bool IsItemStored => _storedItem != null;
-        public bool IsDefaultItemStored => _storedItem.Level == 1;
         public bool IsHeroStored => _storedHero != null;
+        public bool IsDefaultItemStored => _storedItem.IsDefaultItemLevel;
         public HeroData StoredHero => _storedHero;
 
         public Item StoredItem => _storedItem;

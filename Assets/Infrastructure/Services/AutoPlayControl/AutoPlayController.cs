@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using Infrastructure.Services.AutoProcessesControl.Connection;
 
-namespace Infrastructure.Services.AutoProcessesControl
+namespace Infrastructure.Services.AutoPlayControl
 {
-    public class AutoProcessesController : IAutoProcessesController
+    public class AutoPlayController : IAutoPlayController
     {
-        public List<IAutoProcessController> ProcessControllers { get; } = new List<IAutoProcessController>();
+        public List<IAutoPlay> ProcessControllers { get; } = new List<IAutoPlay>();
 
-        public void StartAllProcesses()
+        public void StartAutoPlays()
         {
             foreach (var processController in ProcessControllers)
             {
@@ -15,7 +14,7 @@ namespace Infrastructure.Services.AutoProcessesControl
             }
         }
 
-        public void RestartAllProcesses()
+        public void RestartAutoPlays()
         {
             foreach (var processController in ProcessControllers)
             {
@@ -24,7 +23,7 @@ namespace Infrastructure.Services.AutoProcessesControl
             }
         }
 
-        public void StopAllProcesses()
+        public void StopAutoPlays()
         {
             foreach (var processController in ProcessControllers)
             {
@@ -35,7 +34,7 @@ namespace Infrastructure.Services.AutoProcessesControl
         public void ClearControllers() => 
             ProcessControllers.Clear();
 
-        public void RegisterController(IAutoProcessController controller) 
+        public void RegisterAutoPlay(IAutoPlay controller) 
             => ProcessControllers.Add(controller);
     }
 }

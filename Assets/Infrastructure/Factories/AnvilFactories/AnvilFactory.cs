@@ -1,5 +1,5 @@
 using Infrastructure.Factories.ItemFactory;
-using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ProgressLoad;
 using Sources.AnvilBase;
 using Sources.AnvilBase.AnvilExtensions.AutoRefiller;
@@ -14,17 +14,17 @@ namespace Infrastructure.Factories.AnvilFactories
     {
         private readonly IItemFieldFactory _fieldFactory;
         private readonly IProgressProvider _progressProvider;
-        private readonly IAutoProcessesController _autoProcessesController;
+        private readonly IAutoPlayController _autoPlayController;
         private readonly DiContainer _diRegistry;
 
         private Anvil _anvilInstance;
 
-        public AnvilFactory(IItemFieldFactory fieldFactory, IProgressProvider progressProvider, IAutoProcessesController autoProcessesController,
+        public AnvilFactory(IItemFieldFactory fieldFactory, IProgressProvider progressProvider, IAutoPlayController autoPlayController,
             DiContainer diRegistry, ItemField itemField)
         {
             _fieldFactory = fieldFactory;
             _progressProvider = progressProvider;
-            _autoProcessesController = autoProcessesController;
+            _autoPlayController = autoPlayController;
             _diRegistry = diRegistry;
 
             _anvilInstance = new Anvil(itemField);
@@ -53,7 +53,7 @@ namespace Infrastructure.Factories.AnvilFactories
             autoUsing.Construct(_anvilInstance);
 
             _progressProvider.RegisterObserver(autoUsing);
-            _autoProcessesController.RegisterController(autoUsing);
+            _autoPlayController.RegisterAutoPlay(autoUsing);
             
             _diRegistry.Bind<AnvilAutoUse>().FromInstance(autoUsing).AsSingle();
         }
@@ -64,7 +64,7 @@ namespace Infrastructure.Factories.AnvilFactories
             autoRefiller.Construct(_anvilInstance);
 
             _progressProvider.RegisterObserver(autoRefiller);
-            _autoProcessesController.RegisterController(autoRefiller);
+            _autoPlayController.RegisterAutoPlay(autoRefiller);
             _diRegistry.Bind<AnvilAutoRefiller>().FromInstance(autoRefiller).AsSingle();
         }
 

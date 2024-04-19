@@ -12,6 +12,7 @@ using Infrastructure.Services.UpgradeRegistry;
 using Infrastructure.Services.UpgradeRegistry.Upgrades.AnvilAutoUseUpgrade;
 using Infrastructure.Services.UpgradeRegistry.Upgrades.AnvilReloadSpeedUpgrade;
 using Infrastructure.Services.UpgradeRegistry.Upgrades.CraftingItemLevel;
+using Infrastructure.Services.UpgradeRegistry.Upgrades.SlotMergeUpgrade;
 using NorskaLib.Spreadsheets;
 
 namespace Infrastructure.Configurations.InitialProgress
@@ -59,7 +60,12 @@ namespace Infrastructure.Configurations.InitialProgress
                     {
                         CurrentUpgradeStage = UpgradeData.Find(data =>
                             data.UpgradeID == AnvilAutoUseUpgrade.UpgradeID).StartUpgradeStage,
-                    }
+                    },
+                    SlotsMergeUpgradeData = new UpgradeData()
+                    {
+                        CurrentUpgradeStage = UpgradeData.Find(data =>
+                            data.UpgradeID == SlotsMergeUpgrade.UpgradeID).StartUpgradeStage,
+                    },
                 },
                 ItemField = new ItemFieldData()
                 {

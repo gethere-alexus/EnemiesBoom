@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Sources.ItemsBase.ItemSlotBase;
 using Sources.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,8 +21,11 @@ namespace Sources.ItemsBase.ItemBase
         private void StartDrag(ItemDisplay itemDisplay) =>
             itemDisplay.gameObject.transform.SetParent(transform);
 
-        private void Drag(ItemDisplay itemDisplay) =>
+        private void Drag(ItemDisplay itemDisplay)
+        {
             itemDisplay.gameObject.transform.position = Input.mousePosition;
+        }
+            
 
         private void OnDragged(ItemDisplay itemDisplay, IItemStorage storingItemSlot, PointerEventData eventData)
         {

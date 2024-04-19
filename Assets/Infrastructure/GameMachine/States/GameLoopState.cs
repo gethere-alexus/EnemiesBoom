@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Infrastructure.SceneLoad;
-using Infrastructure.Services.AutoProcessesControl;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ConfigLoad;
 using Infrastructure.Services.ProgressLoad;
 using UnityEngine;
@@ -13,16 +13,16 @@ namespace Infrastructure.GameMachine.States
     public class GameLoopState : IState 
     {
         private readonly IProgressProvider _progressProvider;
-        private readonly IAutoProcessesController _autoProcessesController;
+        private readonly IAutoPlayController _autoPlayController;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly IConfigProvider _configProvider;
 
         private const float SaveDelay = 5.0f; 
-        public GameLoopState(IProgressProvider progressProvider, IAutoProcessesController autoProcessesController,
+        public GameLoopState(IProgressProvider progressProvider, IAutoPlayController autoPlayController,
             ICoroutineRunner coroutineRunner, IConfigProvider configProvider)
         {
             _progressProvider = progressProvider;
-            _autoProcessesController = autoProcessesController;
+            _autoPlayController = autoPlayController;
             _coroutineRunner = coroutineRunner;
             _configProvider = configProvider;
         }
@@ -30,7 +30,7 @@ namespace Infrastructure.GameMachine.States
         public void Enter()
         {
             _coroutineRunner.StartCoroutine(StartAutoSaving());
-            _autoProcessesController.StartAllProcesses();
+            _autoPlayController.StartAutoPlays();
         }
         private IEnumerator StartAutoSaving()
         {
@@ -44,11 +44,11 @@ namespace Infrastructure.GameMachine.States
         public void Exit()
         {
             _coroutineRunner.StopCoroutine(StartAutoSaving());
-            _autoProcessesController.StopAllProcesses();
+            _autoPlayController.StopAutoPlays();
             _progressProvider.SaveProgress();
             
             _progressProvider.ClearObservers();
-            _autoProcessesController.ClearControllers();
+            _autoPlayController.ClearControllers();
             _configProvider.ClearLoaders();
         }
     }

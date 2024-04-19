@@ -42,7 +42,7 @@ namespace Infrastructure.Extensions.DataExtensions
             HeroSlot[] toReturn = new HeroSlot[heroesData.Length];
             for (int i = 0; i < toReturn.Length; i++)
             {
-                toReturn[i].SetActiveHero(gameHeroes.GetHeroByID(heroesData[i].HeroID));
+                toReturn[i].SetActiveHero(gameHeroes.GetHeroByID(heroesData[i].HeroID), false);
             }
 
             return toReturn;

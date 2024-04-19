@@ -191,6 +191,15 @@ MonoBehaviour:
       MaxUpgradeStage: 5
       InitialPrice: 5000
       UpgradePriceMultiplication: 4.5
+    - UpgradeID: 3
+      UpgradeName: Merge time
+      UpgradeDescription: Decreases the cooldown of merge auto usage by 0.25 seconds
+        for each stage. Once completely boosted you will decrease time spend to automatically
+        craft one arrow by 1 seconds.
+      StartUpgradeStage: 1
+      MaxUpgradeStage: 20
+      InitialPrice: 2500
+      UpgradePriceMultiplication: 3
     Heroes:
     - ID: 0
       Name: Bunny

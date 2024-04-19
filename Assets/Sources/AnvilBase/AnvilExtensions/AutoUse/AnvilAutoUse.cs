@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Infrastructure.ProgressData;
-using Infrastructure.Services.AutoProcessesControl.Connection;
+using Infrastructure.Services.AutoPlayControl;
 using Infrastructure.Services.ProgressLoad;
 using Infrastructure.Services.ProgressLoad.Connection;
 using UnityEngine;
@@ -11,7 +11,7 @@ namespace Sources.AnvilBase.AnvilExtensions.AutoUse
     /// Automatically uses the anvil, creating the items
     /// Parametrized by AnvilAutoUseConfig.
     /// </summary>
-    public class AnvilAutoUse : MonoBehaviour, IAutoProcessController, IProgressWriter
+    public class AnvilAutoUse : MonoBehaviour, IAutoPlay, IProgressWriter
     {
         private Anvil _anvil;
         
